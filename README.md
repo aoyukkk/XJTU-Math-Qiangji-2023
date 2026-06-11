@@ -50,4 +50,12 @@ When adding materials, place them under the relevant course folder and use clear
 
 ## Disclaimer
 
-This is an unofficial student-maintained archive. It is not affiliated with or endorsed by Xi'an Jiaotong University.
+This repository is an unofficial personal collection of study materials for the 2023 Mathematics Qiangji Program at Xi'an Jiaotong University. It is created only for learning, review, and non-commercial educational purposes.
+
+The materials in this repository may include personal notes, review summaries, past exam papers, problem sets, and other course-related resources. Some materials may come from course handouts, previous exams, classmates' notes, or publicly circulated resources. The copyright of these materials belongs to their original authors, teachers, institutions, or other rightful owners.
+
+This repository does not represent Xi'an Jiaotong University or any official course group. The accuracy, completeness, and timeliness of the materials are not guaranteed. Users should use the materials only as references and should verify the content independently.
+
+If any content in this repository infringes copyright, violates course policies, or is inappropriate for public sharing, please contact me. I will remove or modify the relevant content as soon as possible.
+
+All materials are provided for personal study and academic reference only. They should not be used for commercial purposes or improper academic conduct.
