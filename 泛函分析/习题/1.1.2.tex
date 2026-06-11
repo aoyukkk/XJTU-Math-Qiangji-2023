@@ -1,0 +1,147 @@
+\documentclass[hyperref={pdfpagelabels=false}, xelatex, aspectratio=169, 10pt]{beamer}
+
+% 编码设置
+\usepackage{fontspec}
+\usepackage{ctex} % 中文支持
+\usepackage{xeCJK} % 更好的中文支持
+
+% 宏包
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+
+% 颜色设置 (可自定义)
+\definecolor{MyBlue}{RGB}{43, 87, 151}
+\definecolor{MyGray}{RGB}{235, 235, 235}
+\definecolor{MyWhite}{RGB}{255, 255, 255}
+
+% 主题设置
+\usetheme{Madrid} % 使用 Madrid 主题
+
+% 自定义颜色
+\setbeamercolor{palette primary}{bg=MyBlue,fg=MyWhite}
+\setbeamercolor{palette secondary}{bg=MyBlue,fg=MyWhite}
+\setbeamercolor{palette tertiary}{bg=MyBlue,fg=MyWhite}
+\setbeamercolor{palette quaternary}{bg=MyBlue,fg=MyWhite}
+\setbeamercolor{structure}{fg=MyBlue} % 结构元素颜色
+\setbeamercolor{title in head/foot}{bg=MyBlue,fg=MyWhite} % 标题颜色
+\setbeamercolor{section in head/foot}{bg=MyBlue,fg=MyWhite} % 章节颜色
+\setbeamercolor{subsection in head/foot}{bg=MyBlue,fg=MyWhite} % 子章节颜色
+
+% 帧标题背景颜色
+\setbeamercolor{frametitle}{bg=MyBlue,fg=MyWhite}
+
+% 块(block)颜色
+\setbeamercolor{block title}{bg=MyGray,fg=MyBlue}
+\setbeamercolor{block body}{bg=MyGray,fg=black}
+
+% 字体设置
+\setCJKmainfont{宋体} % 可根据需要替换为其他字体，例如：思源宋体
+\setCJKsansfont{黑体} % 可根据需要替换为其他字体，例如：思源黑体
+\setCJKmonofont{楷体} % 可根据需要替换为其他字体，例如：思源楷体
+
+% 页脚设置
+\setbeamertemplate{footline}
+{
+  \usebeamerfont{footline}
+  \insertframenumber/\inserttotalframenumber
+  \hfill%
+  \insertshortauthor\ \ \ \ \ \insertshortdate
+  \vskip2pt%
+}
+
+% 封面页
+\title{牛顿法（Newton 法）} % 幻灯片标题
+\author{柯力洲} % 作者
+\date{2025年9月17日} % 修改为当前日期或您需要的日期
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}[fragile]
+  \frametitle{牛顿法（Newton 法）}
+  \begin{example}[例 8 (Newton 法)]
+    设 $f(x)$ 是定义在 $[a, b]$ 上的二次连续可微的
+    实值函数，设 $\hat x \in (a, b)$，使得 $f(\hat x) = 0, f'(\hat x) \neq 0$. 求证：存在 $\hat x$ 的邻域
+    $U(\hat x)$，使得任选 $x_0 \in U(\hat x)$，迭代序列
+    \[
+      x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} \quad (n=0, 1, 2, \dots)
+    \]
+    是收敛的，并且
+    \[
+      \lim_{n \to \infty} x_n = \hat x.
+    \]
+  \end{example}
+  
+  \begin{proof}[证]
+    考虑不动点迭代函数 $Tx \stackrel{\mathrm{def}}{=} x - \frac{f(x)}{f'(x)}$.
+    我们的目标是证明 $T$ 在 $\hat x$ 的某个邻域上是一个压缩映射, 并应用\textbf{巴拿赫不动点定理}。
+
+    \medskip % 增加一点垂直间距
+
+    首先, 计算其导数 $T'(x)$:
+  \end{proof}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{证明（续）}
+    \begin{proof}[续]
+
+
+    \[
+      T'(x) = \frac{d}{dx}(Tx) = 1 - \frac{(f'(x))^2 - f(x)f''(x)}{(f'(x))^2} = \frac{f(x)f''(x)}{(f'(x))^2}.
+    \]
+
+    因为 $f(\hat x) = 0, f'(\hat x) \neq 0$, 且 $f, f', f''$ 连续, 所以 $T'(x)$ 在 $\hat x$ 点附近连续, 且 $T'(\hat x) = 0$.
+
+    \medskip
+
+    根据极限的定义, 对于任意给定的 $\alpha \in (0, 1)$, 存在 $\delta > 0$, 使得当 $x \in I = [\hat x - \delta, \hat x + \delta]$ 时, 都有 $|T'(x)| \leq \alpha$.
+
+    \medskip
+
+        我们考虑度量空间 $(I, d)$, 其中 $I = [\hat x - \delta, \hat x + \delta]$ 是实数集 $\mathbb{R}$ 上的闭区间, $d(x, y) = |x - y|$ 是标准的欧氏距离。作为 $\mathbb{R}$ 上的一个闭子集, \textbf{该度量空间是完备的}。
+
+    \medskip
+
+    现在验证压缩映像原理的条件:
+
+        1. \textbf{$T$ 是 $I$ 到自身的映射 ($T: I \to I$)}:
+        对任意 $x \in I$, 因为 $T(\hat x)=\hat x$, 由中值定理可得:
+        \[ |Tx - \hat x| = |Tx - T\hat x| = |T'(\xi)|\,|x - \hat x| \le \alpha |x - \hat x| \le \alpha\delta < \delta \]
+        其中 $\xi$ 在 $x$ 和 $\hat x$ 之间。这说明 $Tx$ 也在 $I$ 内。
+
+        \medskip
+        2. \textbf{$T$ 是 $I$ 上的压缩映射}:
+        对任意 $x, y \in I$, 由中值定理:
+
+  \end{proof}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{证明（续）}
+    \begin{proof}[续]
+
+        \[ |Tx - Ty| = |T'(\zeta)|\,|x-y| \le \alpha\,|x-y| \]
+        其中 $\zeta$ 在 $x$ 和 $y$ 之间。
+
+    \medskip
+
+    根据\textbf{巴拿赫不动点定理}, 
+    
+    $T$ 在完备度量空间 $I$ 上存在唯一的不动点 $x^*$。
+    
+    任取 $x_0 \in I$, 迭代序列 $x_{n+1}=Tx_n$ 必收敛到该不动点。
+
+    该不动点 $x^*$ 满足 $x^* = T(x^*)$, 即 $f(x^*)=0$. 
+    
+    由于在邻域 $I$ 中 $\hat x$ 是唯一的根, 故 $x^* = \hat x$.
+
+    因此, $\lim\limits_{n \to \infty} x_n = \hat x$.
+  \end{proof}
+\end{frame}
+
+\end{document}

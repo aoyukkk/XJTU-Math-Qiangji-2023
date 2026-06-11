@@ -1,0 +1,103 @@
+# Operating system metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+__MACOSX/
+
+# Secrets and credentials
+.env
+.env.*
+*password*
+*passwd*
+*secret*
+*token*
+*.pem
+*.key
+id_rsa*
+
+# Archives and executables
+*.zip
+*.rar
+*.7z
+*.exe
+*.dll
+*.msi
+*.bat
+*.cmd
+*.ps1
+*.lnk
+*.mp4
+
+# LaTeX and document build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.maf
+*.mtc
+*.mtc0
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.before-*.tex
+document.before-*.tex
+*讲稿*
+
+# Personal work, assignments, experiments, and report folders
+**/*homework*/
+*homework*
+**/*assignment*
+*assignment*
+**/*work*/
+**/*作业*
+*作业*
+**/*实验*/
+**/*aippt*/
+*柯力洲*
+*陈宇昂*
+*屠宰*
+*术士*
+
+# Course slide dumps and teaching handouts that are outside the exam/review scope
+**/*课件*/
+*课件*
+**/PPT/
+**/*PPT*/
+**/*ppt*/
+*_ppt.txt
+**/*教案*/
+运筹学/2025/
+
+# Full textbooks, book scans, and files from shadow-library sources
+*Z-Library*
+*z-library*
+*1lib*
+*Anna*
+*Archive*
+高等代数/高等代数（第5版）.pdf
+随机过程/随机过程 (何书元) (z-library.sk, 1lib.sk, z-lib.sk)(1).pdf
+抽象代数/近世代数.pdf
+数学分析/数学分析（上册课本）.pdf
+数学分析/数学分析入门（下册）.pdf
+泛函分析/泛函分析讲义 (第二版) (上) (张恭庆,林源渠) (Z-Library).pdf
+泛函分析/泛函分析学习指南+林源渠.pdf
+泛函分析/泛函分析中的反例 -- 汪林 -- 现代数学基础, 2014 -- 高等教育出版社 -- 9787040388909 -- 500ad26cb92e45ebf73bfbbf70c67123 -- Anna’s Archive.pdf
+泛函分析/FunctionalAnalysisBook250911.pdf
+实变函数/实变函数论(第3版) -- 周民强 -- 3, 2016 -- 北京大学出版社 -- 9787301276471 -- 7e426308d8411f30ce7bfd756f51d800 -- Anna’s Archive.pdf
+运筹学/运筹学 第四版 (刁在筠 刘桂真 戎晓霞 王光辉) (Z-Library).pdf
+偏微分方程/数学物理方程讲义 第3版 (姜礼尚等编 etc.) (Z-Library)(1).pdf
+偏微分方程/数学物理方程(第2版) -- 申建中,刘峰 -- 2, 2018 -- 西安交通大学出版社 -- 9787569304169 -- e61fbf6600fd6cd9d0dc5bb40971b3b0 -- Anna’s Archive.pdf
+偏微分方程/Partial Differential Equations (Lawrence C. Evans.pdf
+概率论与数理统计/概率论第三版苏淳.pdf
+概率论与数理统计/概率论与数理统计教程 第三版.pdf
+概率论与数理统计/数理统计课件/Introduction to the theory of statistics-McGraw-Hill Education by Boes, Duane C._Graybill, Franklin A._Mood, Alexander McFarlane (India) (2013).pdf
+数值分析/数値分析 (李乃成, 梅立泉) .pdf
+微分几何/微分几何张正策.pdf
+复变函数/gallery pages.pdf
+偏微分方程/PDE Chapter1.pdf
+偏微分方程/PDE Chapter2.pdf

@@ -1,0 +1,120 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+
+
+% 页边距设置
+\geometry{left=2cm, right=2cm, top=2.5cm, bottom=2.5cm}
+
+% 页眉页脚设置
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{数学试卷}
+\fancyhead[R]{第 \thepage 页}
+
+% 定理环境设置
+\newtheorem{definition}{定义}
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}{引理}
+\newtheorem{corollary}{推论}
+
+\begin{document}
+	
+	\title{2024数学强基数学分析II期末试题}
+	\author{柯力洲}
+	\date{\today}
+	
+	\maketitle
+	
+	\section*{定义}
+	\begin{definition}
+		$lebesgue$零测集
+	\end{definition}
+	
+	\begin{definition}
+	积分第二中值定理
+	\end{definition}
+	
+		\begin{definition}
+	$f_n(x)$一致收敛于$f(x)$
+	\end{definition}
+
+		\begin{definition}
+	连通集
+	\end{definition}
+	
+	\begin{definition}
+		含参变量积分不一致收敛的$Cauchy$法则
+	\end{definition}
+	
+	
+	
+	\section*{计算}
+	\begin{enumerate}
+		\item 计算下列表达式的值：
+		\begin{equation*}
+		\lim\limits_{x \to 0} \dfrac{\int_{0}^{x} \frac{1-\cot t}{t} dt}{x^2}
+		\end{equation*}
+		
+		\item 求下列级数的收敛半径:
+		\begin{equation*}
+			\sum\limits_{n=1}^{\infty} n^nx^{n^2}
+		\end{equation*}
+		
+		\item $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$在$x_0(\frac{a}{\sqrt{2}},\frac{b}{\sqrt{2}})$处的内法线方向为$U$，求$z=1-\frac{x^2}{a^2}-\frac{y^2}{b^2}$在$x_0$处$U$方向的导数
+		
+		\item 已知$x+y=y+v,xe^u=vy$求：
+		\[
+		\begin{bmatrix}
+			\frac{\partial u}{\partial x} & \frac{\partial u}{\partial y} \\
+			\frac{\partial v}{\partial x} & \frac{\partial v}{\partial y}
+		\end{bmatrix}
+		\]
+		
+		\item 求曲线$x^2+2y^2+3z^2=21$平行于$x+4y+6z=0$的切平面方程
+		
+		\item 对下列函数麦克劳林展开四项：
+		\begin{equation*}
+			f(x)=log(1+e^x)
+		\end{equation*}
+		
+		\item 求$f_{xy}$,其中：
+		\begin{equation*}
+			f(x,y)=\int_{\frac{x}{y}}^{xy}(x-ty)\phi (t)dt
+		\end{equation*}
+		
+		
+	\end{enumerate}
+	
+	
+	
+	
+	\section*{证明}
+	\begin{enumerate}
+		\item 证明下列定理：\\
+
+			设$E \subset R^n \quad f:E \to R$对$\forall \delta >0$记$\Omega_f (\delta)=\sup\limits_{\vec{x},\vec{y} \in E ; |\vec{x}-\vec{y}|<\delta}|f(\vec{x})-f(\vec{y})|$
+			则$f$在$E$上一致连续的充要条件是$\lim\limits_{\delta \to 0^+} \Omega_f (\delta)=0$
+
+		
+		\item $u_n(x)=\dfrac{(-1)^n(x+n)^n}{n^{n+1}}$,求$\sum\limits_{n+1}^{\infty} u_n(x)$的一致收敛性和绝对收敛性
+		
+		\item 求$\alpha$的范围使得$f(x,y)$可微
+		\[
+		f(x,y) =
+		\begin{cases}
+			(x^2+y^2)^{\alpha} \sin \dfrac{1}{x^2+y^2}, & \text{if } x^2+y^2 \neq 0 \\
+			0, & \text{if } x^2+y^2 = 0 \\
+		\end{cases}
+		\]
+		
+		\item 求$I_n(\alpha)$其中：\\
+		$I_n(\alpha)=\int_{0}^{+\infty} \dfrac{dx}{(x^2+a)^{n+1}}$
+	\end{enumerate}
+	
+	
+	
+\end{document}

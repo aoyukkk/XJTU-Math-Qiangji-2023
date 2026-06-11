@@ -1,0 +1,63 @@
+\documentclass[12pt]{ctexart}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage[a4paper, margin=1in]{geometry}
+\everymath{\displaystyle}
+
+\title{\textbf{数学强基复变函数期末考试}}
+\author{Lizhou Ke}
+\date{\today}
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+
+	\begin{enumerate}
+		
+		\item 
+		求幂级数 $\sum\limits_{n=1}^{\infty}(2+(-1)^n)^nz^n$ 的收敛半径。
+		
+		\item 
+		将函数 $f(z) = \dfrac{e^z}{z(z^2+1)}$ 在圆环域 $A = \{z \in \mathbb{C} : 0 < |z| < 1\}$ 内展开为洛朗级数并且写出$z^{-1} , z^0 , z , z^2$的系数。
+		
+		\item 
+		（1）计算积分 $\oint_C \dfrac{2i}{z^2+2az+1} dz ,(a>1)$，其中围线 $C$ 为圆周 $|z|=1$，沿逆时针方向。
+		
+		 
+		（2）计算积分 $\oint_C \dfrac{1}{(z^2+1)(z-1)^2} dz$，其中围线 $C$ 是由方程 $x^2+y^2=2(x+y)$ 所定义的圆，沿逆时针方向。
+		
+		\item 计算积分$\int_{0}^{2\pi}\dfrac{1}{(2+\sqrt{3}\cos x )^2}dx$
+		
+		\item 
+		记函数
+		\begin{enumerate}
+			\item $f(x+yi)=x^2+x+y^2+i(2xy+y^2)$
+			\item $f(z)=Im(z)$
+		\end{enumerate}
+		判断这两个函数的可导性与解析性
+		
+		\item 
+		设 $f(z)$ 为整函数且存在实常数 $M$ 使得对所有 $z \in \mathbb{C}$ 都有 $\text{Re}(f(z)) \le M$，证明 $f(z)$ 必为常数函数。
+		
+		\item 
+		设函数 $f(z)$ 在开圆盘 $D_R = \{z \in \mathbb{C} : |z|<R\}$ 内解析，其幂级数展开为 $f(z) = \sum\limits_{n=0}^{\infty} a_n z^n$。令 $M = \sup\limits_{|z|<R} |f(z)|$，求证：$|z|<\dfrac{|a_0|}{|a_0|+M}\rho $时$f(z)$没有零点。
+		
+		\item 
+		求多项式 $P(z) = z^4 - 8z + 10$ 在圆环域 $A = \{z \in \mathbb{C} : 1 < |z| < 3\}$ 内的零点个数。
+		
+		\item 
+		设函数 $f(z)$ 在一条简单闭合曲线 $C$ 的外部区域 $D$ 内解析，且在 $C$ 上连续。记 $f(\infty) = \lim_{z \to \infty} f(z)=a_0$ （其中$a_0$为洛朗级数中的系数）。如果 $C$ 的方向为顺时针，证明：
+		
+		\[
+		\frac{1}{2\pi i} \oint_C \frac{f(\zeta)}{\zeta-z} d\zeta = 
+		\begin{cases} 
+			f(z) - f(\infty) & \text{当 } z \in D \text{ (C 的外部)} \\ 
+			-f(\infty) & \text{当 } z \in \bar{D} \text{ (C 的内部)} 
+		\end{cases}
+		\]
+		
+		\item 
+		$C=\{z:|z|=1\}$,求$\oint_C \dfrac{1}{z+2}dz$,并利用该结果证明$\int_0^{\pi}\dfrac{1+2\cos \theta}{5+4\cos \theta }d\theta$
+		
+	\end{enumerate}
+	
+\end{document}

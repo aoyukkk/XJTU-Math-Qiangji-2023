@@ -1,0 +1,3602 @@
+\documentclass[12pt,a4paper,openany]{ctexrep}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+\geometry{left=2.15cm,right=2.15cm,top=2.35cm,bottom=2.35cm}
+\setlength{\headheight}{14pt}
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks
+\renewcommand{\arraystretch}{1.16}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!60!black,
+	urlcolor=blue!60!black,
+	citecolor=blue!60!black
+}
+
+\ctexset{
+	chapter = {
+		format = \centering\Huge\bfseries,
+		name = {第,章},
+		number = \chinese{chapter},
+		beforeskip = 0pt,
+		afterskip = 1.8em
+	},
+	section = {
+		format = \Large\bfseries
+	},
+	subsection = {
+		format = \large\bfseries
+	}
+}
+
+\definecolor{reviewblue}{HTML}{24517A}
+\definecolor{reviewlight}{HTML}{F3F7FB}
+\definecolor{reviewgray}{HTML}{5F6670}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 随机过程总复习}
+\fancyhead[R]{\small \leftmark}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlist[enumerate]{itemsep=0.18em,topsep=0.3em,leftmargin=2.1em}
+\setlist[itemize]{itemsep=0.18em,topsep=0.3em,leftmargin=2.1em}
+\setlist[description]{itemsep=0.25em,topsep=0.35em,leftmargin=2.2em,style=nextline}
+
+\tcbset{
+	colback=reviewlight,
+	colframe=reviewblue,
+	boxrule=0.5pt,
+	arc=1.5mm,
+	left=1.2mm,
+	right=1.2mm,
+	top=1mm,
+	bottom=1mm
+}
+\newtcolorbox{reviewbox}[1]{title=\textbf{#1},fonttitle=\small\bfseries}
+
+\title{随机过程总复习}
+\author{傲宇}
+\date{\today}
+
+\theoremstyle{definition}
+\newtheorem{definition}{定义}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{property}{性质}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{exercise}{习题}[section]
+\newenvironment{solution}{\par\noindent\textbf{解：}}{\hfill$\square$\par}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\ind}{\mathbf{1}}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\clearpage
+
+\chapter*{考试导向}
+\addcontentsline{toc}{chapter}{考试导向}
+
+本版只保留本次考试最可能用到的内容：
+\begin{enumerate}[label=(\arabic*)]
+	\item \textbf{定义/定理默写}：随机过程基本概念、Poisson 过程、Markov 链、连续时间 Markov 链、布朗运动等核心定义和结论。
+	\item \textbf{计算题}：Poisson 叠加与拆分、Markov 平稳分布、返回时间、转移速率矩阵、嵌入链、生灭过程、排队模型、几何布朗运动和反正弦律。
+	\item \textbf{最后一节重点}：来自 0522 复习课的习题单独整理在最后一章，建议优先刷。
+\end{enumerate}
+
+证明性内容已删去或压缩为“用法”。复习时优先背每章“默写清单”和“计算套路”，再做最后一章习题。
+
+\chapter{随机过程基本概念}
+
+\section{概率论基础速查}
+
+这部分来自《概率论基础知识》课件，只保留本课计算题最常调用的公式。
+
+\begin{reviewbox}{条件概率与分解公式}
+\[
+\Pp(A\mid B)=\frac{\Pp(AB)}{\Pp(B)},\qquad \Pp(B)>0.
+\]
+\[
+\Pp(B_1\cdots B_n\mid A)
+=\Pp(B_1\mid A)\Pp(B_2\mid B_1A)\cdots
+\Pp(B_n\mid B_1\cdots B_{n-1}A).
+\]
+若 $\{A_i\}$ 是完备事件组，则
+\[
+\Pp(B)=\sum_i\Pp(A_i)\Pp(B\mid A_i),\qquad
+\Pp(A_i\mid B)=\frac{\Pp(A_i)\Pp(B\mid A_i)}
+{\sum_j\Pp(A_j)\Pp(B\mid A_j)}.
+\]
+\end{reviewbox}
+
+\begin{reviewbox}{常见分布}
+\[
+B(n,p):\quad \Pp(X=k)=\binom nkp^k(1-p)^{n-k}.
+\]
+\[
+\Pois(\lambda):\quad \Pp(X=k)=\e^{-\lambda}\frac{\lambda^k}{k!},\qquad
+\E X=\Var(X)=\lambda.
+\]
+\[
+\Exp(\lambda):\quad \Pp(X>t)=\e^{-\lambda t},\quad
+F(t)=1-\e^{-\lambda t},\quad \E X=\frac1\lambda.
+\]
+指数分布无记忆性：
+\[
+\Pp(X>s+t\mid X>s)=\Pp(X>t).
+\]
+\end{reviewbox}
+
+\begin{reviewbox}{期望、条件期望与不等式}
+\[
+\E X=\sum_k x_kp_k\quad\text{或}\quad \E X=\int_{-\infty}^{\infty}xf(x)\dd x.
+\]
+若 $X$ 取非负整数值，则
+\[
+\E X=\sum_{k=1}^{\infty}\Pp(X\ge k).
+\]
+条件期望常用性质：
+\[
+\E[\E(X\mid Y)]=\E X,\qquad
+\E[aX+bZ\mid Y]=a\E(X\mid Y)+b\E(Z\mid Y).
+\]
+常用不等式：
+\[
+\Pp(|X|\ge \varepsilon)\le \frac{\E |X|^r}{\varepsilon^r},\qquad
+\Pp(|X-\E X|\ge \varepsilon)\le \frac{\Var(X)}{\varepsilon^2}.
+\]
+\[
+[\Cov(X,Y)]^2\le \Var(X)\Var(Y).
+\]
+\end{reviewbox}
+
+\begin{reviewbox}{矩母函数与特征函数}
+矩母函数和特征函数用于快速识别分布、计算矩：
+\[
+M_X(s)=\E\e^{sX},\qquad \varphi_X(t)=\E\e^{itX}.
+\]
+若 $X\sim N(\mu,\sigma^2)$，则
+\[
+M_X(s)=\exp\left(\mu s+\frac12\sigma^2s^2\right).
+\]
+几何布朗运动、分支过程母函数题常用这一行。
+\end{reviewbox}
+
+\section{默写清单}
+
+\begin{definition}[随机过程]
+设 $(\Omega,\mathcal F,\Pp)$ 为概率空间，$T$ 为参数集。若对任意 $t\in T$，
+$X(\omega,t)$ 是随机变量，则随机变量族
+\[
+\{X(t),t\in T\}
+\]
+称为随机过程。
+\end{definition}
+
+\begin{itemize}
+	\item $T$ 称为参数集或指标集，可以离散，也可以连续。
+	\item 固定 $t$，$X(t)$ 是随机变量，表示 $t$ 时刻的状态。
+	\item 固定 $\omega$，$X(\omega,t)$ 是关于 $t$ 的样本函数，也称一条轨道。
+	\item $X(t)$ 全部可能取值组成状态空间 $S$。
+\end{itemize}
+
+\begin{definition}[有限维分布函数]
+对任意 $n\ge1$ 和 $t_1,\dots,t_n\in T$，定义
+\[
+F(x_1,\dots,x_n;t_1,\dots,t_n)
+=
+\Pp\{X(t_1)\le x_1,\dots,X(t_n)\le x_n\}.
+\]
+它称为随机过程的 $n$ 维有限维分布函数。有限维分布族刻画随机过程的概率特性。
+\end{definition}
+
+\begin{definition}[均值函数、相关函数与协方差函数]
+若相应期望存在，则
+\[
+m_X(t)=\E X(t),
+\]
+\[
+R_X(s,t)=\E[X(s)X(t)],
+\]
+\[
+C_X(s,t)=\Cov(X(s),X(t))
+=\E\{[X(s)-m_X(s)][X(t)-m_X(t)]\}.
+\]
+当 $s=t$ 时，$C_X(t,t)=\Var(X(t))$。
+\end{definition}
+
+\begin{definition}[互相关函数与互协方差函数]
+设 $\{X(t)\}$ 与 $\{Y(t)\}$ 是两个随机过程。若相应期望存在，则
+\[
+R_{XY}(s,t)=\E[X(s)Y(t)]
+\]
+称为互相关函数，
+\[
+C_{XY}(s,t)=\Cov(X(s),Y(t))
+=R_{XY}(s,t)-m_X(s)m_Y(t)
+\]
+称为互协方差函数。若 $C_{XY}(s,t)=0$，称 $X(s)$ 与 $Y(t)$ 不相关。
+\end{definition}
+
+\begin{definition}[二阶矩过程]
+若对任意 $t\in T$，$\E X^2(t)<\infty$，则称 $\{X(t)\}$ 为二阶矩过程。二阶矩过程的均值函数和相关函数都存在。
+\end{definition}
+
+\begin{definition}[Gauss 过程]
+若随机过程 $\{X(t),t\in T\}$ 的任意有限维随机向量
+\[
+(X(t_1),\dots,X(t_n))
+\]
+均服从多元正态分布，则称 $\{X(t)\}$ 为正态过程或 Gauss 过程。
+\end{definition}
+
+\begin{definition}[独立增量过程]
+若对任意
+\[
+t_1<t_2<\cdots<t_n,
+\]
+增量
+\[
+X(t_2)-X(t_1),\ X(t_3)-X(t_2),\dots,X(t_n)-X(t_{n-1})
+\]
+相互独立，则称 $\{X(t)\}$ 为独立增量过程。
+\end{definition}
+
+\begin{definition}[平稳增量过程]
+若对任意 $s,t,h\ge0$，
+\[
+X(t+s)-X(s)\quad\text{与}\quad X(t+h)-X(h)
+\]
+同分布，即增量分布只依赖时间长度 $t$，则称 $\{X(t)\}$ 为平稳增量过程。
+\end{definition}
+
+\begin{definition}[正交增量过程]
+若 $\{X(t)\}$ 为二阶矩过程，并且对任意 $0\le t_1<t_2\le t_3<t_4$，
+\[
+\E[(X(t_2)-X(t_1))(X(t_4)-X(t_3))]=0,
+\]
+则称 $\{X(t)\}$ 为正交增量过程。
+\end{definition}
+
+\begin{definition}[严平稳过程]
+若对任意 $n\ge1$、任意 $t_1,\dots,t_n\in T$ 和平移量 $h$，随机向量
+\[
+(X(t_1),\dots,X(t_n))
+\]
+与
+\[
+(X(t_1+h),\dots,X(t_n+h))
+\]
+同分布，则称 $\{X(t)\}$ 为严平稳过程。
+\end{definition}
+
+\begin{definition}[宽平稳过程]
+若 $\{X(t)\}$ 为二阶矩过程，且
+\begin{enumerate}[label=(\arabic*)]
+	\item $\E X(t)$ 与 $t$ 无关；
+	\item $\E X^2(t)$ 与 $t$ 无关；
+	\item $\E[X(t)X(t+s)]$ 只依赖于 $s$，
+\end{enumerate}
+则称 $\{X(t)\}$ 为二阶宽平稳过程。
+\end{definition}
+
+\section{基本类型速记}
+
+\begin{center}
+\begin{tabular}{p{3.1cm}p{5.4cm}p{5.2cm}}
+\toprule
+分类角度 & 常见类型 & 本课程重点 \\
+\midrule
+参数集与状态空间 & 离散/连续参数，离散/连续状态 & Poisson、Markov、布朗运动 \\
+统计特性 & 二阶矩、Gauss、正交增量、独立增量、平稳增量、严/宽平稳 & 布朗运动、Poisson 过程 \\
+Markov 性 & 离散时间 Markov 链、连续时间 Markov 链 & 平稳分布、转移矩阵、$Q$ 矩阵 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\chapter{Poisson 过程}
+
+\section{定义与基本性质}
+
+\begin{definition}[Poisson 过程]
+计数过程 $\{N(t),t\ge0\}$ 称为强度为 $\lambda$ 的 Poisson 过程，若
+\begin{enumerate}[label=(\arabic*)]
+	\item $N(0)=0$；
+	\item 具有独立增量；
+	\item 对任意 $s,t\ge0$，
+	\[
+	N(t+s)-N(s)\sim \Pois(\lambda t).
+	\]
+\end{enumerate}
+\end{definition}
+
+等价的小时间定义：
+\[
+\Pp\{N(t+h)-N(t)=1\}=\lambda h+o(h),
+\]
+\[
+\Pp\{N(t+h)-N(t)\ge2\}=o(h).
+\]
+
+\begin{property}[分布与数字特征]
+\[
+N(t)\sim\Pois(\lambda t),\qquad
+\Pp\{N(t)=k\}=\e^{-\lambda t}\frac{(\lambda t)^k}{k!}.
+\]
+\[
+\E N(t)=\lambda t,\qquad \Var(N(t))=\lambda t.
+\]
+若 $s\le t$，则
+\[
+\Cov(N(s),N(t))=\lambda s.
+\]
+\end{property}
+
+\begin{property}[等待时间与到达时刻]
+相邻事件间隔 $X_1,X_2,\dots$ 独立同分布，且
+\[
+X_i\sim \Exp(\lambda),\qquad \E X_i=\frac1\lambda.
+\]
+第 $n$ 次到达时刻
+\[
+S_n=X_1+\cdots+X_n\sim \Gamma(n,\lambda),
+\]
+\[
+f_{S_n}(t)=\frac{\lambda^n t^{n-1}}{(n-1)!}\e^{-\lambda t},\qquad t>0.
+\]
+并且
+\[
+\{N(t)\ge n\}=\{S_n\le t\}.
+\]
+\end{property}
+
+\begin{property}[条件均匀性质]
+在 $N(t)=n$ 条件下，$n$ 个到达时刻与 $n$ 个独立 $U(0,t)$ 随机变量的顺序统计量同分布。
+\[
+f_{S_1,\dots,S_n\mid N(t)=n}(s_1,\dots,s_n)=\frac{n!}{t^n},
+\quad 0<s_1<\cdots<s_n<t.
+\]
+\end{property}
+
+\section{汇合、分流与复合 Poisson 过程}
+
+\begin{theorem}[汇合]
+若 $N_1(t),\dots,N_m(t)$ 相互独立，且 $N_i(t)$ 为强度 $\lambda_i$ 的 Poisson 过程，则
+\[
+N(t)=\sum_{i=1}^m N_i(t)
+\]
+是强度 $\lambda_1+\cdots+\lambda_m$ 的 Poisson 过程。
+\end{theorem}
+
+\begin{theorem}[分流]
+设 $N(t)$ 为强度 $\lambda$ 的 Poisson 过程。每个事件独立地以概率 $p_i$ 分到第 $i$ 类，
+$\sum_i p_i=1$。则各类计数过程相互独立，且第 $i$ 类为强度 $\lambda p_i$ 的 Poisson 过程。
+\end{theorem}
+
+\begin{definition}[复合 Poisson 过程]
+若 $N(t)$ 是强度 $\lambda$ 的 Poisson 过程，$Y_1,Y_2,\dots$ 独立同分布且与 $N(t)$ 独立，则
+\[
+X(t)=\sum_{k=1}^{N(t)}Y_k
+\]
+称为复合 Poisson 过程。
+\end{definition}
+
+\[
+\E X(t)=\lambda t\,\E Y,\qquad
+\Var(X(t))=\lambda t\,\E(Y^2).
+\]
+
+\section{计算套路}
+
+\begin{enumerate}[label=\textbf{套路 \arabic*:}]
+	\item \textbf{看到多个独立 Poisson 流}：直接叠加强度。
+	\[
+	\lambda_{\text{总}}=\sum_i\lambda_i.
+	\]
+	\item \textbf{看到随机分类/下车/车型}：先拆分，再叠加。
+	\[
+	N_i(t)\sim\Pois(\lambda p_i t).
+	\]
+	\item \textbf{看到等待第 $n$ 次事件}：转成 $S_n\sim\Gamma(n,\lambda)$。
+	\item \textbf{看到某时刻累计污染/收益}：用复合 Poisson 期望公式或积分。
+	\[
+	\E\left[\sum_{\tau_k\le t} g(t-\tau_k)Y_k\right]
+	=
+	\lambda \E Y\int_0^t g(s)\dd s.
+	\]
+\end{enumerate}
+
+\section{重点题解}
+
+\begin{exercise}[病毒感染次数]
+实验室有 $m$ 台计算机，每台计算机等待被病毒感染的时间相互独立，均服从均值为 $1/\lambda$ 的指数分布。计算 $[0,t]$ 内被感染总次数及其均值。
+\end{exercise}
+
+\begin{solution}
+第 $i$ 台计算机感染过程 $N_i(t)$ 是强度 $\lambda$ 的 Poisson 过程，且相互独立。总感染次数
+\[
+N(t)=\sum_{i=1}^m N_i(t)
+\]
+为强度 $m\lambda$ 的 Poisson 过程。因此
+\[
+N(t)\sim\Pois(m\lambda t),\qquad \E N(t)=m\lambda t.
+\]
+\end{solution}
+
+\begin{exercise}[公交下车人数]
+第 $i$ 站上车人数 $N_i\sim\Pois(\lambda_i)$。第 $i$ 站上车乘客以概率 $p_{ij}$ 在第 $j$ 站下车。求第 $j$ 站下车人数分布和不同站下车人数联合分布。
+\end{exercise}
+
+\begin{solution}
+设 $N_{kj}$ 为第 $k$ 站上车且第 $j$ 站下车的人数，则
+\[
+N_{kj}\sim \Pois(\lambda_k p_{kj}).
+\]
+第 $j$ 站下车人数
+\[
+M_j=\sum_{k=1}^{j-1}N_{kj}
+\]
+服从 Poisson 分布，参数
+\[
+\mu_j=\sum_{k=1}^{j-1}\lambda_kp_{kj}.
+\]
+所以
+\[
+\Pp\{M_j=y\}=\e^{-\mu_j}\frac{\mu_j^y}{y!}.
+\]
+不同下车站点的下车人数由 Poisson 独立拆分得到，故 $M_i$ 与 $M_j$ 独立：
+\[
+\Pp\{M_i=x,M_j=y\}
+=
+\e^{-\mu_i}\frac{\mu_i^x}{x!}
+\e^{-\mu_j}\frac{\mu_j^y}{y!}.
+\]
+\end{solution}
+
+\begin{exercise}[车辆污染]
+汽车按强度 $\lambda$ 的 Poisson 流通过广场，$3/5$ 为小车，$1/5$ 为公交车，$1/5$ 为货车。三类车初始污染分别为 $D_1,D_2,D_3$，经过时间 $s$ 衰减为 $D_i h(s)$。求 $t$ 时刻平均污染。
+\end{exercise}
+
+\begin{solution}
+三类车分别为独立 Poisson 流，强度
+\[
+\lambda_1=\frac35\lambda,\qquad
+\lambda_2=\frac15\lambda,\qquad
+\lambda_3=\frac15\lambda.
+\]
+第 $k$ 类贡献的期望为
+\[
+\E Y_k(t)=\lambda_k\E D_k\int_0^t h(s)\dd s.
+\]
+总污染均值为
+\[
+\E Y(t)
+=
+\lambda\left(
+\frac35\E D_1+\frac15\E D_2+\frac15\E D_3
+\right)
+\int_0^t h(s)\dd s.
+\]
+\end{solution}
+
+\chapter{离散时间 Markov 链}
+
+\section{定义/定理默写}
+
+\begin{definition}[离散时间 Markov 链]
+随机过程 $\{X_n,n\ge0\}$ 称为离散时间 Markov 链，若状态空间 $S$ 有限或可数，并且对任意
+\[
+i_0,\dots,i_{n-1},i,j\in S,
+\]
+有
+\[
+\Pp\{X_{n+1}=j\mid X_n=i,X_{n-1}=i_{n-1},\dots,X_0=i_0\}
+=
+\Pp\{X_{n+1}=j\mid X_n=i\}.
+\]
+\end{definition}
+
+\begin{definition}[时齐 Markov 链与转移矩阵]
+若
+\[
+p_{ij}=\Pp\{X_{n+1}=j\mid X_n=i\}
+\]
+与 $n$ 无关，则称为时齐 Markov 链。矩阵 $P=(p_{ij})$ 称为一步转移矩阵。
+\[
+p_{ij}\ge0,\qquad \sum_jp_{ij}=1.
+\]
+\end{definition}
+
+\begin{theorem}[Chapman--Kolmogorov 方程]
+对时齐 Markov 链，
+\[
+p_{ij}^{(m+n)}=\sum_k p_{ik}^{(m)}p_{kj}^{(n)}.
+\]
+矩阵形式：
+\[
+P^{(n)}=P^n.
+\]
+\end{theorem}
+
+\begin{definition}[可达与互通]
+若存在 $n\ge1$ 使 $p_{ij}^{(n)}>0$，称 $i$ 可达 $j$，记为 $i\to j$。若 $i\to j$ 且 $j\to i$，称 $i$ 与 $j$ 互通，记为 $i\leftrightarrow j$。
+\end{definition}
+
+\begin{definition}[首达概率与常返]
+设
+\[
+T_{ij}=\inf\{n\ge1:X_n=j\mid X_0=i\}.
+\]
+\[
+f_{ij}^{(n)}=\Pp\{T_{ij}=n\mid X_0=i\},\qquad
+f_{ij}^*=\sum_{n=1}^{\infty}f_{ij}^{(n)}.
+\]
+若 $f_{ii}^*=1$，则 $i$ 为常返状态；若 $f_{ii}^*<1$，则 $i$ 为非常返状态。
+\end{definition}
+
+\begin{definition}[正常返、零常返、周期]
+若 $i$ 常返且平均返回时间
+\[
+\mu_i=\E[T_{ii}\mid X_0=i]<\infty,
+\]
+称 $i$ 正常返；若 $\mu_i=\infty$，称 $i$ 零常返。
+
+状态 $i$ 的周期为
+\[
+d_i=\gcd\{n\ge1:p_{ii}^{(n)}>0\}.
+\]
+若 $d_i=1$，称为非周期。
+\end{definition}
+
+\begin{definition}[不变分布/平稳分布]
+概率分布 $\pi=(\pi_i)$ 称为不变分布，若
+\[
+\pi P=\pi,\qquad \sum_i\pi_i=1,\qquad \pi_i\ge0.
+\]
+若以 $\pi$ 为初始分布，则链为平稳序列，因此也称平稳分布。
+\end{definition}
+
+\begin{theorem}[遍历定理]
+若 Markov 链不可约、正常返且非周期，则存在唯一平稳分布 $\pi$，且
+\[
+\lim_{n\to\infty}p_{ij}^{(n)}=\pi_j.
+\]
+并且
+\[
+\mu_j=\frac1{\pi_j}.
+\]
+\end{theorem}
+
+\begin{definition}[可逆分布]
+若
+\[
+\pi_i p_{ij}=\pi_jp_{ji},\qquad i,j\in S,
+\]
+则称 $\pi$ 为可逆分布。该方程称为详细平衡方程。详细平衡推出不变分布。
+\end{definition}
+
+\section{分支过程}
+
+\begin{definition}[Galton--Watson 分支过程]
+设 $X_n$ 为第 $n$ 代个体数，每个个体独立地产生后代，后代数分布为
+\[
+\Pp\{\xi=k\}=p_k,\qquad k=0,1,2,\dots.
+\]
+则
+\[
+X_{n+1}=\sum_{r=1}^{X_n}\xi_{n,r}
+\]
+称为 Galton--Watson 分支过程。
+\end{definition}
+
+若 $m=\E\xi$，则
+\[
+\E[X_n\mid X_0=1]=m^n.
+\]
+灭绝概率 $\rho$ 是方程
+\[
+s=f(s),\qquad f(s)=\sum_{k=0}^{\infty}p_ks^k
+\]
+在 $[0,1]$ 中的最小根。若 $m\le1$ 且 $p_1\ne1$，则 $\rho=1$；若 $m>1$，则 $\rho<1$。
+
+\section{计算套路}
+
+\begin{enumerate}[label=\textbf{套路 \arabic*:}]
+	\item \textbf{求 $n$ 步转移概率}：有限状态直接算 $P^n$；随机游走用组合数。
+	\item \textbf{判断互通/闭类}：画状态转移图，找连通块和不能出去的集合。
+	\item \textbf{求平稳分布}：解
+	\[
+	\pi P=\pi,\qquad \sum_i\pi_i=1.
+	\]
+	\item \textbf{平均返回时间}：若已求平稳分布，
+	\[
+	\mu_i=\frac1{\pi_i}.
+	\]
+	\item \textbf{生灭链/随机游走}：若离散时间中
+	\[
+	p_i=P(i,i+1),\qquad q_i=P(i,i-1),
+	\]
+	则优先用详细平衡
+	\[
+	\pi_i p_i=\pi_{i+1}q_{i+1}.
+	\]
+	连续时间生灭过程对应写成 $\pi_i\lambda_i=\pi_{i+1}\mu_{i+1}$。
+\end{enumerate}
+
+\section{重点题解}
+
+\begin{exercise}[岗位变更平稳比例]
+某公司有 $A,B,C$ 三种岗位，转移矩阵
+\[
+P=
+\begin{pmatrix}
+0.3&0.2&0.5\\
+0.3&0&0.7\\
+0.5&0.5&0
+\end{pmatrix}.
+\]
+估算各岗位平均人数比例。
+\end{exercise}
+
+\begin{solution}
+设平稳分布为 $\pi=(\pi_1,\pi_2,\pi_3)$。解
+\[
+\pi P=\pi,\qquad \pi_1+\pi_2+\pi_3=1.
+\]
+即
+\[
+\begin{cases}
+0.3\pi_1+0.3\pi_2+0.5\pi_3=\pi_1,\\
+0.2\pi_1+0.5\pi_3=\pi_2,\\
+0.5\pi_1+0.7\pi_2=\pi_3.
+\end{cases}
+\]
+解得
+\[
+\pi_1=\frac{65}{174},\qquad
+\pi_2=\frac{45}{174}=\frac{15}{58},\qquad
+\pi_3=\frac{64}{174}=\frac{32}{87}.
+\]
+所以平均人数比例为
+\[
+A:B:C=65:45:64.
+\]
+\end{solution}
+
+\begin{exercise}[离散排队模型]
+第 $n$ 小时有 $Z_n$ 个顾客到达，$Z_0,Z_1,\dots$ 独立同分布，$\Pp\{Z_0=i\}=p_i$。每小时只能服务一人。令 $X_n$ 为 $n$ 时系统人数。
+\begin{enumerate}[label=(\alph*)]
+	\item 用 $\{Z_n\}$ 表示 $\{X_n\}$，说明 $\{X_n\}$ 是 Markov 链；
+	\item 写出转移概率 $p_{ij}$；
+	\item 给出平稳分布存在条件；
+	\item 稳态下求服务台空闲概率。
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}
+状态递推为
+\[
+X_{n+1}=\max(X_n-1,0)+Z_{n+1}.
+\]
+由于 $Z_{n+1}$ 与过去独立，$X_{n+1}$ 只依赖 $X_n$，所以 $\{X_n\}$ 为 Markov 链。
+
+转移概率为：
+\[
+p_{0j}=p_j,\qquad j\ge0.
+\]
+当 $i>0$ 时，
+\[
+p_{ij}=
+\begin{cases}
+p_{j-i+1},&j\ge i-1,\\
+0,&j<i-1.
+\end{cases}
+\]
+平稳分布存在条件为
+\[
+\E Z_0<1.
+\]
+在稳态下，对递推式取期望：
+\[
+\E X_{n+1}=\E X_n-\Pp\{X_n>0\}+\E Z_{n+1}.
+\]
+故
+\[
+\Pp\{X>0\}=\E Z_0,
+\]
+服务台空闲概率
+\[
+\pi_0=1-\E Z_0.
+\]
+\end{solution}
+
+\begin{exercise}[三状态经济效益]
+状态为 $-1,0,1$，转移矩阵
+\[
+P=
+\begin{pmatrix}
+0.8&0.2&0\\
+0.3&0.3&0.4\\
+0&0.5&0.5
+\end{pmatrix}.
+\]
+求各状态平均比例与平均返回时间。
+\end{exercise}
+
+\begin{solution}
+设平稳分布为 $(\pi_{-1},\pi_0,\pi_1)$。解 $\pi P=\pi$ 与归一化条件，得
+\[
+\pi_{-1}=\frac5{11},\qquad
+\pi_0=\frac{10}{33},\qquad
+\pi_1=\frac8{33}.
+\]
+平均返回时间为
+\[
+\mu_{-1}=\frac1{\pi_{-1}}=\frac{11}{5}=2.2,
+\]
+\[
+\mu_0=\frac1{\pi_0}=\frac{33}{10}=3.3,
+\qquad
+\mu_1=\frac1{\pi_1}=\frac{33}{8}=4.125.
+\]
+\end{solution}
+
+\chapter{连续时间 Markov 链}
+
+\section{定义/定理默写}
+
+\begin{definition}[连续时间 Markov 链]
+随机过程 $\{X(t),t\ge0\}$ 称为连续时间离散状态 Markov 链，若状态空间 $S$ 有限或可数，并且给定当前状态后，未来与过去无关：
+\[
+\Pp\{X(t_{n+1})=j\mid X(t_n)=i,X(t_{n-1})=i_{n-1},\dots\}
+=
+\Pp\{X(t_{n+1})=j\mid X(t_n)=i\}.
+\]
+\end{definition}
+
+\begin{definition}[时齐与转移概率矩阵]
+若
+\[
+\Pp\{X(t+s)=j\mid X(s)=i\}
+=
+\Pp\{X(t)=j\mid X(0)=i\},
+\]
+称为时齐连续时间 Markov 链。定义
+\[
+p_{ij}(t)=\Pp\{X(t+s)=j\mid X(s)=i\},\qquad P(t)=(p_{ij}(t)).
+\]
+\end{definition}
+
+\[
+P(0)=I,\qquad \sum_jp_{ij}(t)=1,\qquad P(t+s)=P(t)P(s).
+\]
+
+\begin{definition}[转移速率矩阵]
+若极限存在，定义
+\[
+q_{ij}=\lim_{h\downarrow0}\frac{p_{ij}(h)-\delta_{ij}}{h}.
+\]
+矩阵 $Q=(q_{ij})$ 称为转移速率矩阵或 $Q$ 矩阵。
+\[
+q_{ij}\ge0\ (i\ne j),\qquad q_{ii}\le0,\qquad q_i=-q_{ii}.
+\]
+保守性：
+\[
+\sum_jq_{ij}=0,\qquad q_i=\sum_{j\ne i}q_{ij}.
+\]
+\end{definition}
+
+\begin{theorem}[Kolmogorov--Feller 方程]
+向后方程：
+\[
+P'(t)=QP(t),\qquad
+p'_{ij}(t)=\sum_kq_{ik}p_{kj}(t).
+\]
+向前方程：
+\[
+P'(t)=P(t)Q,\qquad
+p'_{ij}(t)=\sum_kp_{ik}(t)q_{kj}.
+\]
+有限状态下
+\[
+P(t)=\e^{Qt}.
+\]
+\end{theorem}
+
+\begin{theorem}[停留时间与下一跳]
+若 $X(0)=i$，令
+\[
+\tau=\inf\{t>0:X(t)\ne i\}.
+\]
+若 $q_i>0$，则
+\[
+\tau\sim\Exp(q_i),\qquad \E\tau=\frac1{q_i}.
+\]
+且对 $j\ne i$，
+\[
+\Pp\{X(\tau)=j\mid X(0)=i\}=\frac{q_{ij}}{q_i}.
+\]
+若 $q_i=0$，则 $i$ 是吸收状态。
+\end{theorem}
+
+\begin{definition}[嵌入链]
+令跳时刻
+\[
+\tau_0=0,\qquad \tau_{n+1}=\inf\{t>\tau_n:X(t)\ne X(\tau_n)\},
+\]
+并定义
+\[
+X_n=X(\tau_n).
+\]
+则 $\{X_n\}$ 为离散时间 Markov 链，称为嵌入链或跳跃链，其一步转移概率为
+\[
+k_{ij}=
+\begin{cases}
+q_{ij}/q_i,&q_i>0,\ i\ne j,\\
+0,&q_i>0,\ i=j,\\
+\delta_{ij},&q_i=0.
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}[$h$-骨架链]
+对固定 $h>0$，令
+\[
+Y_n=X(nh),\qquad n=0,1,2,\dots .
+\]
+则 $\{Y_n\}$ 是离散时间 Markov 链，转移矩阵为
+\[
+P_h=P(h)=(p_{ij}(h)).
+\]
+它常用于把连续时间链的状态分类、平稳性问题转化为离散时间链来判断。
+\end{definition}
+
+\section{生灭过程与平稳分布}
+
+\begin{definition}[生灭过程]
+若状态空间为 $\{0,1,2,\dots\}$，且只允许相邻状态跳转：
+\[
+q_{i,i+1}=\lambda_i,\qquad q_{i,i-1}=\mu_i,\qquad
+q_{ii}=-(\lambda_i+\mu_i),
+\]
+则称为生灭过程。
+\end{definition}
+
+停留时间和嵌入链：
+\[
+T_i\sim\Exp(\lambda_i+\mu_i),
+\]
+\[
+\Pp\{i\to i+1\}=\frac{\lambda_i}{\lambda_i+\mu_i},\qquad
+\Pp\{i\to i-1\}=\frac{\mu_i}{\lambda_i+\mu_i}.
+\]
+
+平稳分布优先用详细平衡：
+\[
+\pi_i\lambda_i=\pi_{i+1}\mu_{i+1}.
+\]
+令
+\[
+\rho_0=1,\qquad
+\rho_n=\frac{\lambda_0\lambda_1\cdots\lambda_{n-1}}
+{\mu_1\mu_2\cdots\mu_n}.
+\]
+若
+\[
+Z=\sum_{n=0}^{\infty}\rho_n<\infty,
+\]
+则
+\[
+\pi_n=\frac{\rho_n}{Z}.
+\]
+
+\begin{definition}[平稳分布与可逆分布]
+连续时间链的平稳分布满足
+\[
+\pi P(t)=\pi,\qquad t\ge0.
+\]
+通常解
+\[
+\pi Q=0,\qquad \sum_i\pi_i=1.
+\]
+若
+\[
+\pi_iq_{ij}=\pi_jq_{ji},
+\]
+则 $\pi$ 为平稳可逆分布。
+\end{definition}
+
+\begin{reviewbox}{极限分布与平稳分布速记}
+若极限
+\[
+\pi_j=\lim_{t\to\infty}p_{ij}(t)
+\]
+存在且与初始状态 $i$ 无关，则 $\pi=(\pi_j)$ 称为极限分布。有限或正常返互通情形下，极限分布也是平稳分布，计算时优先解
+\[
+\pi Q=0,\qquad \sum_j\pi_j=1.
+\]
+可逆分布更强：若 $\pi_iq_{ij}=\pi_jq_{ji}$，则自动推出 $\pi Q=0$。
+\end{reviewbox}
+
+\section{计算套路}
+
+\begin{enumerate}[label=\textbf{套路 \arabic*:}]
+	\item \textbf{小时间概率写 $Q$}：
+	\[
+	p_{ij}(h)=a_{ij}h+o(h)\Rightarrow q_{ij}=a_{ij}\quad(i\ne j),
+	\]
+	\[
+	q_{ii}=-\sum_{j\ne i}q_{ij}.
+	\]
+	\item \textbf{由 $Q$ 求停留时间}：
+	\[
+	q_i=-q_{ii},\qquad T_i\sim\Exp(q_i),\qquad \E T_i=1/q_i.
+	\]
+	\item \textbf{由 $Q$ 求嵌入链}：
+	\[
+	k_{ij}=q_{ij}/q_i,\qquad i\ne j.
+	\]
+	\item \textbf{求平稳分布}：有限状态解 $\pi Q=0$；生灭过程用详细平衡。
+	\item \textbf{排队模型}：到达为出生，服务完成为死亡，死亡率等于正在服务人数乘服务率。
+\end{enumerate}
+
+\section{重点题解}
+
+\begin{exercise}[生物群体动态]
+设 $T_1,T_2,T_3$ 相互独立，且 $T_i\sim\Exp(\lambda_i)$。从任意时刻开始，群体中每个个体等待 $T_1$ 后分裂成两个个体，等待 $T_2$ 后离开群体；外部个体等待 $T_3$ 后进入群体。令 $X(t)$ 表示 $t$ 时刻群体中的个体数。
+\begin{enumerate}[label=(\alph*)]
+	\item 说明 $\{X(t)\}$ 的状态空间，并写出转移速率矩阵 $Q=(q_{ij})$；
+	\item 若个体总数达到 $m$ 后停止新的外部迁入，重新写出 $Q$ 中非零元素。
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}
+\textbf{(a)} 状态空间为
+\[
+S=\{0,1,2,\dots\}.
+\]
+这是连续时间生灭过程，只可能从 $n$ 跳到 $n+1$ 或 $n-1$。
+
+状态为 $n$ 时，人数增加 $1$ 的来源有两类：
+\begin{itemize}
+	\item 群体内某个个体分裂：单个个体速率为 $\lambda_1$，共有 $n$ 个个体，总速率为 $n\lambda_1$；
+	\item 外部个体进入：速率为 $\lambda_3$。
+\end{itemize}
+因此出生率为
+\[
+q_{n,n+1}=n\lambda_1+\lambda_3,\qquad n\ge0.
+\]
+人数减少 $1$ 来自群体内个体离开：单个个体离开速率为 $\lambda_2$，共有 $n$ 个个体，所以死亡率为
+\[
+q_{n,n-1}=n\lambda_2,\qquad n\ge1.
+\]
+对角元由每行和为 $0$ 确定：
+\[
+q_{nn}=-(n\lambda_1+\lambda_3+n\lambda_2).
+\]
+其余元素均为 $0$。也就是说，
+\[
+q_{ij}=0,\qquad |i-j|\ge2.
+\]
+
+\textbf{(b)} 若个体总数达到 $m$ 后停止新的外部迁入，则当 $n<m$ 时仍允许外部进入；当 $n\ge m$ 时，$\lambda_3$ 项消失。因此
+\[
+q_{n,n+1}=
+\begin{cases}
+n\lambda_1+\lambda_3,&n<m,\\
+n\lambda_1,&n\ge m,
+\end{cases}
+\]
+而死亡率不变：
+\[
+q_{n,n-1}=n\lambda_2,\qquad n\ge1.
+\]
+对角元仍由负行和确定：
+\[
+q_{nn}=-(q_{n,n+1}+q_{n,n-1}),
+\]
+其中 $q_{0,-1}$ 不存在，状态 $0$ 只可能向 $1$ 跳。
+\end{solution}
+
+\begin{exercise}[M/M/1/1 诊室损失制]
+病人按强度 $\lambda$ 的 Poisson 流到达，医生服务时间服从 $\Exp(\mu)$。诊室容量为 $1$：若到达病人发现诊室已有病人，则直接离开。令 $X(t)$ 表示 $t$ 时刻诊室中的病人数。
+\begin{enumerate}[label=(\alph*)]
+	\item 写出 $\{X(t)\}$ 的状态空间和转移速率矩阵 $Q$；
+	\item 求稳定状态下诊室的平均人数；
+	\item 求医生可用度；
+	\item 求到达病人中能够看病的比例。
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}
+\textbf{(a)} 状态空间为
+\[
+S=\{0,1\},
+\]
+其中 $0$ 表示诊室空闲，$1$ 表示诊室中有一名病人。状态 $0$ 到 $1$ 来自病人到达，速率为 $\lambda$；状态 $1$ 到 $0$ 来自服务完成，速率为 $\mu$。故
+\[
+q_{01}=\lambda,\qquad q_{10}=\mu.
+\]
+转移速率矩阵为
+\[
+Q=
+\begin{pmatrix}
+-\lambda&\lambda\\
+\mu&-\mu
+\end{pmatrix}.
+\]
+
+\textbf{(b)} 设平稳分布为 $\pi=(\pi_0,\pi_1)$。平稳方程可由详细平衡写成
+\[
+\pi_0\lambda=\pi_1\mu,
+\]
+再加归一化条件
+\[
+\pi_0+\pi_1=1.
+\]
+解得
+\[
+\pi_0=\frac{\mu}{\lambda+\mu},\qquad
+\pi_1=\frac{\lambda}{\lambda+\mu}.
+\]
+稳定状态下的平均病人数为
+\[
+\E X=\sum_{i=0}^{1}i\pi_i=\pi_1=\frac{\lambda}{\lambda+\mu}.
+\]
+
+\textbf{(c)} 医生可用度就是医生空闲的长期比例，即
+\[
+\pi_0=\frac{\mu}{\lambda+\mu}.
+\]
+
+\textbf{(d)} 到达过程为 Poisson 流，由 PASTA 性质，到达者看到系统空闲的概率等于时间平均空闲概率。因此能够看病的比例为
+\[
+\frac{\mu}{\lambda+\mu}.
+\]
+\end{solution}
+
+\begin{exercise}[M/M/1/2 加油站]
+加油站只有一个油泵和一个候车位，因此系统最多容纳 $2$ 辆车。汽车按强度 $\lambda$ 的 Poisson 流到达，单辆车加油时间服从 $\Exp(\mu)$；若到达时已有 $2$ 辆车，则新到车辆离去。令 $X(t)$ 表示 $t$ 时刻加油站内车辆数。
+\begin{enumerate}[label=(\alph*)]
+	\item 写出状态空间和转移速率矩阵 $Q$；
+	\item 写出嵌入链转移矩阵 $K$；
+	\item 求稳定状态下加油站的平均车辆数。
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}
+\textbf{(a)} 状态空间为
+\[
+S=\{0,1,2\}.
+\]
+当系统未满，即状态 $0,1$ 时，到达使状态增加 $1$，速率为 $\lambda$；状态 $2$ 时再到达车辆会离去，状态不变，不计入状态跳转。服务完成使状态减少 $1$，速率为 $\mu$。因此
+\[
+q_{01}=\lambda,\qquad q_{12}=\lambda,\qquad
+q_{10}=\mu,\qquad q_{21}=\mu.
+\]
+对角元为负行和，所以
+\[
+Q=
+\begin{pmatrix}
+-\lambda&\lambda&0\\
+\mu&-(\lambda+\mu)&\lambda\\
+0&\mu&-\mu
+\end{pmatrix}.
+\]
+
+\textbf{(b)} 嵌入链只记录实际跳变后的状态。由
+\[
+k_{ij}=\frac{q_{ij}}{-q_{ii}}\qquad(i\ne j)
+\]
+得
+\[
+K=
+\begin{pmatrix}
+0&1&0\\
+\dfrac{\mu}{\lambda+\mu}&0&\dfrac{\lambda}{\lambda+\mu}\\
+0&1&0
+\end{pmatrix}.
+\]
+
+\textbf{(c)} 设 $\rho=\lambda/\mu$。这是有限状态生灭过程，可用详细平衡：
+\[
+\pi_0\lambda=\pi_1\mu,\qquad
+\pi_1\lambda=\pi_2\mu.
+\]
+于是
+\[
+\pi_1=\rho\pi_0,\qquad
+\pi_2=\rho^2\pi_0.
+\]
+由归一化条件
+\[
+\pi_0+\pi_1+\pi_2=1
+\]
+得到
+\[
+\pi_0=\frac1{1+\rho+\rho^2},\qquad
+\pi_1=\frac{\rho}{1+\rho+\rho^2},\qquad
+\pi_2=\frac{\rho^2}{1+\rho+\rho^2}.
+\]
+稳定状态下平均车辆数为
+\[
+L=\E X=0\cdot\pi_0+1\cdot\pi_1+2\cdot\pi_2
+=\frac{\rho+2\rho^2}{1+\rho+\rho^2}.
+\]
+\end{solution}
+
+\begin{exercise}[生灭过程分类]
+设连续时间生灭过程的出生率为 $\lambda_n$，死亡率为 $\mu_n$。判断以下三个过程分别是非常返、零常返还是正常返；若为正常返，求平稳分布。
+\[
+(a)\quad \lambda_n=n+2,\qquad \mu_n=n;
+\]
+\[
+(b)\quad \lambda_n=n+1,\qquad \mu_n=n;
+\]
+\[
+(c)\quad \mu_n=n,\qquad \lambda_0=\lambda_1=1,\qquad \lambda_n=n-1\ (n\ge2).
+\]
+\end{exercise}
+
+\begin{solution}
+生灭过程分类先计算势函数
+\[
+\rho_0=1,\qquad
+\rho_n=\frac{\lambda_0\lambda_1\cdots\lambda_{n-1}}
+{\mu_1\mu_2\cdots\mu_n},\quad n\ge1.
+\]
+判别准则为：
+\begin{itemize}
+	\item 若 $\sum_{n=0}^{\infty}\rho_n<\infty$，则过程正常返，且平稳分布为
+	\[
+	\pi_n=\frac{\rho_n}{\sum_{k=0}^{\infty}\rho_k}.
+	\]
+	\item 若 $\sum_{n=0}^{\infty}\rho_n=\infty$ 且 $\sum_{n=0}^{\infty}\dfrac1{\lambda_n\rho_n}=\infty$，则过程零常返。
+	\item 若 $\sum_{n=0}^{\infty}\rho_n=\infty$ 且 $\sum_{n=0}^{\infty}\dfrac1{\lambda_n\rho_n}<\infty$，则过程非常返。
+\end{itemize}
+
+\textbf{(a)} 当 $\lambda_n=n+2,\mu_n=n$ 时，
+\[
+\rho_n=\frac{2\cdot3\cdots(n+1)}{1\cdot2\cdots n}=n+1.
+\]
+所以
+\[
+\sum_{n=0}^{\infty}\rho_n=\sum_{n=0}^{\infty}(n+1)=\infty.
+\]
+继续检验第二个级数：
+\[
+\sum_{n=0}^{\infty}\frac1{\lambda_n\rho_n}
+=\sum_{n=0}^{\infty}\frac1{(n+2)(n+1)}<\infty.
+\]
+因此 (a) 非常返。
+
+\textbf{(b)} 当 $\lambda_n=n+1,\mu_n=n$ 时，
+\[
+\rho_n=\frac{1\cdot2\cdots n}{1\cdot2\cdots n}=1.
+\]
+所以
+\[
+\sum_{n=0}^{\infty}\rho_n=\sum_{n=0}^{\infty}1=\infty.
+\]
+第二个级数为
+\[
+\sum_{n=0}^{\infty}\frac1{\lambda_n\rho_n}
+=\sum_{n=0}^{\infty}\frac1{n+1}=\infty.
+\]
+因此 (b) 零常返。
+
+\textbf{(c)} 当 $\mu_n=n,\lambda_0=\lambda_1=1,\lambda_n=n-1\ (n\ge2)$ 时，
+\[
+\rho_0=1,\qquad \rho_1=1.
+\]
+对 $n\ge2$，
+\[
+\rho_n=
+\frac{1\cdot1\cdot2\cdots(n-2)}{1\cdot2\cdots n}
+=\frac{(n-2)!}{n!}
+=\frac1{n(n-1)}.
+\]
+于是
+\[
+\sum_{n=0}^{\infty}\rho_n
+=1+1+\sum_{n=2}^{\infty}\frac1{n(n-1)}
+=2+\sum_{n=2}^{\infty}\left(\frac1{n-1}-\frac1n\right)
+=3<\infty.
+\]
+因此 (c) 正常返。平稳分布为
+\[
+\pi_n=\frac{\rho_n}{\sum_{k=0}^{\infty}\rho_k}=\frac{\rho_n}{3},
+\]
+即
+\[
+\pi_0=\frac13,\qquad
+\pi_1=\frac13,\qquad
+\pi_n=\frac1{3n(n-1)},\quad n\ge2.
+\]
+\end{solution}
+
+\begin{exercise}[M/M/m 排队]
+顾客按强度 $\lambda$ 的 Poisson 流到达有 $m$ 个相同服务台的服务系统。每个服务台服务率为 $\mu$，顾客服务时间相互独立。若所有服务台忙，新到顾客排队等待。令 $X(t)$ 表示 $t$ 时刻系统中的顾客总数。
+\begin{enumerate}[label=(\arabic*)]
+	\item 说明 $\{X(t)\}$ 是连续时间 Markov 链；
+	\item 写出转移速率矩阵 $Q$；
+	\item 写出嵌入链转移概率；
+	\item 给出稳定条件。
+\end{enumerate}
+\end{exercise}
+
+\begin{solution}
+\textbf{(1)} 到达过程为 Poisson 流，服务时间为指数分布，两者都具有无记忆性。给定当前系统人数后，将来的到达和服务完成只依赖当前人数，与过去历史无关，所以 $\{X(t)\}$ 是连续时间 Markov 链。
+
+\textbf{(2)} 状态空间为
+\[
+S=\{0,1,2,\dots\}.
+\]
+任意状态 $n$ 下，到达使系统人数从 $n$ 增至 $n+1$，速率为
+\[
+q_{n,n+1}=\lambda,\qquad n\ge0.
+\]
+服务完成使系统人数从 $n$ 减至 $n-1$。当 $1\le n<m$ 时，正在服务的顾客数为 $n$，总服务完成率为 $n\mu$；当 $n\ge m$ 时，$m$ 个服务台全忙，总服务完成率为 $m\mu$。记
+\[
+\mu_n=\min\{n,m\}\mu,
+\]
+则
+\[
+q_{n,n-1}=\mu_n,\qquad n\ge1.
+\]
+对角元为
+\[
+q_{00}=-\lambda,\qquad
+q_{nn}=-(\lambda+\mu_n),\quad n\ge1.
+\]
+其余 $q_{ij}=0$。
+
+\textbf{(3)} 嵌入链转移概率由 $k_{ij}=q_{ij}/(-q_{ii})$ 得到。状态 $0$ 只能跳到 $1$：
+\[
+k_{0,1}=1.
+\]
+当 $1\le n<m$ 时，
+\[
+k_{n,n+1}=\frac{\lambda}{\lambda+n\mu},\qquad
+k_{n,n-1}=\frac{n\mu}{\lambda+n\mu}.
+\]
+当 $n\ge m$ 时，
+\[
+k_{n,n+1}=\frac{\lambda}{\lambda+m\mu},\qquad
+k_{n,n-1}=\frac{m\mu}{\lambda+m\mu}.
+\]
+
+\textbf{(4)} 大状态下最多每单位时间平均完成 $m\mu$ 个服务，因此稳定条件为到达率小于最大服务率：
+\[
+\lambda<m\mu.
+\]
+\end{solution}
+
+\chapter{布朗运动}
+
+\section{定义/定理默写}
+
+\begin{definition}[布朗运动]
+随机过程 $\{B(t),t\ge0\}$ 称为标准布朗运动，若
+\begin{enumerate}[label=(\arabic*)]
+	\item $B(0)=0$；
+	\item 具有独立增量；
+	\item 具有平稳增量，且
+	\[
+	B(t)-B(s)\sim N(0,t-s),\qquad 0\le s<t;
+	\]
+	\item 样本轨道连续的概率为 $1$。
+\end{enumerate}
+\end{definition}
+
+\begin{property}[均值、方差、协方差]
+\[
+\E B(t)=0,\qquad \Var(B(t))=t,
+\]
+\[
+\Cov(B(s),B(t))=\min\{s,t\}.
+\]
+\end{property}
+
+\begin{definition}[二维标准布朗运动]
+若 $X(t)$ 与 $Y(t)$ 是相互独立的标准布朗运动，则
+\[
+B(t)=(X(t),Y(t)),\qquad t\ge0,
+\]
+称为二维标准布朗运动。对任意常数 $\theta$，
+\[
+W(t)=X(t)\cos\theta+Y(t)\sin\theta
+\]
+仍是标准布朗运动。
+\end{definition}
+
+\begin{theorem}[高斯过程判别]
+若 $\{X(t)\}$ 是高斯过程，且
+\[
+\E X(t)=0,\qquad \Cov(X(s),X(t))=\min\{s,t\},
+\]
+并且轨道连续，则 $\{X(t)\}$ 是标准布朗运动。
+\end{theorem}
+
+\section{常用结论}
+
+\begin{theorem}[首中时]
+令
+\[
+T_a=\inf\{t\ge0:B(t)=a\},\qquad a\ne0.
+\]
+则
+\[
+\Pp\{T_a\le t\}
+=
+2\left[1-\Phi\left(\frac{|a|}{\sqrt t}\right)\right],
+\]
+密度为
+\[
+f_{T_a}(t)=\frac{|a|}{\sqrt{2\pi t^3}}\exp\left(-\frac{a^2}{2t}\right),\qquad t>0.
+\]
+\[
+\Pp\{T_a<\infty\}=1,\qquad \E T_a=\infty.
+\]
+\end{theorem}
+
+\begin{theorem}[最大值分布]
+令 $M(t)=\max_{0\le s\le t}B(s)$。若 $a\ge0$，
+\[
+\Pp\{M(t)\le a\}
+=
+1-2\left[1-\Phi\left(\frac{a}{\sqrt t}\right)\right]
+=
+2\Phi\left(\frac{a}{\sqrt t}\right)-1.
+\]
+\[
+\E M(t)=\sqrt{\frac{2t}{\pi}}.
+\]
+\end{theorem}
+
+\begin{theorem}[反正弦律]
+设 $\tau$ 为标准布朗运动在 $[0,1]$ 内最后一次回到 $0$ 的时刻：
+\[
+\tau=\sup\{t\le1:B(t)=0\}.
+\]
+则
+\[
+\Pp\{\tau\le x\}=\frac2\pi\arcsin\sqrt{x},\qquad 0\le x\le1.
+\]
+\end{theorem}
+
+\begin{definition}[布朗桥]
+设 $\{B(t),0\le t\le1\}$ 为标准布朗运动，
+\[
+X(t)=B(t)-tB(1),\qquad 0\le t\le1.
+\]
+则 $\{X(t)\}$ 称为布朗桥。
+\[
+\E X(t)=0,\qquad
+\Cov(X(s),X(t))=\min\{s,t\}-st.
+\]
+\end{definition}
+
+\begin{reviewbox}{布朗运动低频变形速记}
+这些出现在 PPT 后半部分，通常作为了解或小计算，不按证明准备。
+\[
+\text{反射布朗运动：}\quad Z(t)=|B(t)|.
+\]
+\[
+\text{几何布朗运动：}\quad Y(t)=\e^{B(t)}.
+\]
+\[
+\text{有漂移布朗运动：}\quad X(t)=\mu t+\sigma B(t).
+\]
+\[
+\text{OU 型过程：}\quad U(t)=\e^{-t}B(\e^{2t})\quad\text{（按 PPT 记号）}.
+\]
+经验过程与不变原理只记关键词：经验过程极限与布朗桥相关；不变原理是中心极限定理在随机过程层面的推广。
+\end{reviewbox}
+
+\section{计算套路}
+
+\begin{enumerate}[label=\textbf{套路 \arabic*:}]
+	\item \textbf{计算均值/方差}：先判断 $B(t)\sim N(0,t)$，再用正态矩母函数。
+	\item \textbf{判断是否仍是标准布朗运动}：检查初值、正态增量、独立增量、平稳增量、协方差 $\min(s,t)$。
+	\item \textbf{首中时/最大值}：优先用反射原理对应公式。
+	\item \textbf{布朗桥}：直接用
+	\[
+	X(t)=B(t)-tB(1)
+	\]
+	展开协方差。
+\end{enumerate}
+
+\section{重点题解}
+
+\begin{exercise}[几何布朗运动]
+令
+\[
+Y(t)=\exp(B(t)).
+\]
+求 $\E Y(t)$ 和 $\Var(Y(t))$。
+\end{exercise}
+
+\begin{solution}
+因为 $B(t)\sim N(0,t)$，且若 $X\sim N(\mu,\sigma^2)$，
+\[
+\E\e^{sX}=\exp\left(\mu s+\frac12\sigma^2s^2\right).
+\]
+取 $s=1$：
+\[
+\E Y(t)=\E\e^{B(t)}=\e^{t/2}.
+\]
+取 $s=2$：
+\[
+\E Y^2(t)=\E\e^{2B(t)}=\e^{2t}.
+\]
+因此
+\[
+\Var(Y(t))=\e^{2t}-\e^t=\e^t(\e^t-1).
+\]
+\end{solution}
+
+\begin{exercise}[最后一次回到零点]
+设
+\[
+\tau=\sup\{t:t\le1,\ B(t)=0\}.
+\]
+求 $\tau$ 的分布函数。
+\end{exercise}
+
+\begin{solution}
+由布朗运动反正弦律，
+\[
+F_\tau(x)=\Pp\{\tau\le x\}
+=
+\frac2\pi\arcsin\sqrt{x},\qquad 0\le x\le1.
+\]
+补充：
+\[
+F_\tau(x)=0\quad(x<0),\qquad F_\tau(x)=1\quad(x>1).
+\]
+\end{solution}
+
+\chapter{应用模型补充}
+
+\section{PageRank 与半马氏过程}
+
+\subsection{PageRank 的 Markov 链模型}
+
+把网页编号为 $1,\dots,n$，用户从网页 $i$ 跳到网页 $j$ 的概率为
+\[
+p_{ij}=
+\begin{cases}
+1/m(i),&i\text{ 有通向 }j\text{ 的链接},\\
+0,&\text{其他}.
+\end{cases}
+\]
+若链有限、互通、非周期，则存在唯一平稳分布
+\[
+\pi P=\pi.
+\]
+$\pi_i$ 表示长期访问网页 $i$ 的比例，可用来排序网页重要性。
+
+非互通时常用随机冲浪者修正：
+\[
+\widetilde P=\alpha P+\frac{1-\alpha}{n}E,\qquad 0<\alpha<1,
+\]
+其中 $E$ 为全 $1$ 矩阵，常取 $\alpha=0.85$。
+
+\subsection{半马氏过程}
+
+PageRank 若要考虑每个网页的停留时间，应使用半马氏过程。
+\begin{itemize}
+	\item $p_{ij}$：从网站 $i$ 跳到网站 $j$ 的概率；
+	\item $T_{ij}$：已知从 $i$ 跳到 $j$ 时，在 $i$ 的浏览时间；
+	\item $Y(t)$：$t$ 时刻正在访问的网站。
+\end{itemize}
+
+网站 $i$ 的平均停留时间
+\[
+\mu_i=\sum_j p_{ij}\E T_{ij}.
+\]
+若嵌入链平稳分布为 $\pi=(\pi_i)$，则半马氏过程的长期时间比例为
+\[
+p_i=\frac{\pi_i\mu_i}{\sum_j\pi_j\mu_j}.
+\]
+直观含义：
+\[
+\text{时间占比}=\frac{\text{访问频率}\times\text{单次平均停留时间}}{\text{总归一化权重}}.
+\]
+
+\begin{example}[网站状态时间比例]
+网站有维护 $(1)$、被访问 $(2)$、没被访问 $(3)$ 三个状态，嵌入链转移矩阵
+\[
+K=\frac1{100}
+\begin{pmatrix}
+0&99&1\\
+1&0&99\\
+1&99&0
+\end{pmatrix}.
+\]
+平均停留时间
+\[
+\mu_1=0.01,\qquad \mu_2=9.8,\qquad \mu_3=5.2.
+\]
+先求嵌入链平稳分布 $\pi K=\pi$，再代入
+\[
+p_i=\frac{\pi_i\mu_i}{\sum_j\pi_j\mu_j}.
+\]
+计算得到
+\[
+p_1\approx0.00001,\qquad
+p_2\approx0.65556,\qquad
+p_3\approx0.34442.
+\]
+所以网站大部分时间处于被访问状态。
+\end{example}
+
+\section{排队模型补充}
+
+\subsection{M/G/1 忙期与闲期}
+
+顾客按强度 $\lambda$ 的 Poisson 流到达，服务时间为 $Y$，均值 $\E Y$。
+
+闲期 $V$ 是等待下一个顾客到达的时间：
+\[
+V\sim\Exp(\lambda),\qquad \E V=\frac1\lambda.
+\]
+忙期 $U$ 的均值满足
+\[
+\E U=\E Y+\lambda\E Y\,\E U.
+\]
+若 $\lambda\E Y<1$，
+\[
+\E U=\frac{\E Y}{1-\lambda\E Y}.
+\]
+若 $\lambda\E Y\ge1$，则忙期期望无穷。
+
+充分长时间后，到达顾客需要排队的概率为机器忙的概率：
+\[
+p=\frac{\E U}{\E U+\E V}
+=
+\begin{cases}
+\lambda\E Y,&\lambda\E Y<1,\\
+1,&\lambda\E Y\ge1.
+\end{cases}
+\]
+
+\subsection{M/M/m 平稳分布与平均等待}
+
+M/M/m 中，稳定条件为
+\[
+\lambda<m\mu.
+\]
+令 $\rho=\lambda/\mu$。平稳分布可写为
+\[
+p_k=
+\begin{cases}
+\dfrac{\rho^k}{k!}c_0,&0\le k\le m,\\[1ex]
+\dfrac{\rho^k}{m!m^{k-m}}c_0,&k\ge m+1,
+\end{cases}
+\]
+其中 $c_0$ 由 $\sum_kp_k=1$ 确定。
+
+若 $W$ 为到达顾客的排队时间，则
+\[
+\E W=\frac{m\mu}{(m\mu-\lambda)^2}p_m.
+\]
+特别地，M/M/1 中若 $\lambda<\mu$，
+\[
+\E X=\frac{\lambda}{\mu-\lambda},
+\qquad
+\E W_q=\frac{\lambda}{\mu(\mu-\lambda)}.
+\]
+
+\section{系统维修模型}
+
+第 $i$ 个部件寿命 $U_i\sim\Exp(\lambda_i)$，更换时间 $V_i\sim\Exp(\mu_i)$。单个部件长期处于工作状态的概率为
+\[
+K_i=\frac{1/\lambda_i}{1/\lambda_i+1/\mu_i}
+=
+\frac{\mu_i}{\lambda_i+\mu_i}.
+\]
+若 $m$ 个部件独立，系统要求全部部件工作，则系统可用度为
+\[
+K_0=\prod_{i=1}^m\frac{\mu_i}{\lambda_i+\mu_i}.
+\]
+
+\section{机器人转移模型模板}
+
+若机器人每次访问一个站点，并按转移矩阵 $P=(p_{ij})$ 在若干站点之间移动，则位置序列 $\{X_n\}$ 是离散时间 Markov 链。考试中通常按三步处理：
+\[
+\Pp\{X_{n+1}=j\mid X_n=i\}=p_{ij},\qquad
+\pi P=\pi,\qquad \sum_i\pi_i=1.
+\]
+若每到达站点 $i$ 后停留时间为指数分布 $\Exp(\lambda_i)$，则连续时间位置过程的嵌入链为 $P$，转移速率矩阵为
+\[
+q_{ij}=\lambda_i p_{ij}\quad(i\ne j),\qquad
+q_{ii}=-\lambda_i.
+\]
+
+\chapter{课后作业题清单}
+
+本章按布置日期整理课后作业题。用途是快速核对“哪些题要会做”；题目后统一给出参考解答，记号尽量沿用 PPT 中的 $P,\pi,Q,K,q_i$ 等写法。
+
+\section{260303：概率基础与条件期望}
+
+\begin{description}
+	\item[\textbf{P23/1.1}] 当 $\Pp(AB)>0$ 时，推导
+	\[
+	P_A(C\mid B)=\Pp(C\mid AB).
+	\]
+	\item[\textbf{P23/1.2}] 当 $\Pp(A)>0$ 时，推导乘法公式
+	\[
+	\Pp(B_1B_2\cdots B_n\mid A)
+	=
+	\Pp(B_1\mid A)\Pp(B_2\mid B_1A)\cdots
+	\Pp(B_n\mid B_1B_2\cdots B_{n-1}A).
+	\]
+	\item[\textbf{P23/1.5}] 设 $X_1,X_2,\dots$ 是来自总体 $X$ 的随机变量，
+	\[
+	\mu=\E X,\qquad \sigma^2=\Var(X)<\infty.
+	\]
+	设 $N$ 是与总体 $X$ 独立的非负整数值随机变量，且
+	\[
+	\sigma_N^2=\Var(N)<\infty.
+	\]
+	计算
+	\[
+	\E(X_1+\cdots+X_N),\qquad
+	\Var(X_1+\cdots+X_N).
+	\]
+	\item[\textbf{P23/1.6}] 设 $X$ 是非负随机变量，$X_1,\dots,X_n$ 是来自总体 $X$ 的样本，$k\le n$。
+	\begin{enumerate}[label=(\alph*)]
+		\item 计算
+		\[
+		\E(X_1+\cdots+X_k\mid X_1+\cdots+X_n=t).
+		\]
+		\item 若 $U$ 在 $[0,t]$ 上均匀分布，且与 $X_1,X_2$ 独立，计算
+		\[
+		\Pp(U<X_1\mid X_1+X_2=t).
+		\]
+	\end{enumerate}
+\end{description}
+
+\section{260310：Poisson 过程}
+
+\begin{description}
+	\item[\textbf{P32/2.1(2)}] 设 $\{N(t)\}$ 是强度为 $\lambda$ 的泊松过程，$0\le s<t$。验证在条件
+	\[
+	N(t)=n
+	\]
+	下，$N(s)$ 服从二项分布 $B(n,s/t)$。
+	\item[\textbf{P32/2.1(3)}] 对于泊松过程 $\{N(t)\}$，计算
+	\[
+	\E[N(t)N(t+s)],\qquad
+	\E[N(t+s)\mid N(t)].
+	\]
+	\item[\textbf{P32/2.1(4)}] 某高速公路上超速车流形成平均每小时 $3$ 辆的泊松过程，用 $T$ 表示雷达记录 $n$ 辆超速汽车所用的时间，计算
+	\[
+	\Pp(T>t).
+	\]
+\end{description}
+
+\section{260313：Poisson 过程补充}
+
+\begin{description}
+	\item[\textbf{独立 Poisson 过程之差}] 设 $\{N_1(t),t\ge0\}$ 与 $\{N_2(t),t\ge0\}$ 是相互独立的 Poisson 过程，强度分别为 $\lambda_1,\lambda_2$。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 求
+		\[
+		N_0(t)=N_1(t)-N_2(t)
+		\]
+		的均值函数与相关函数。
+		\item 判断 $N_0(t)=N_1(t)-N_2(t)$ 是否为 Poisson 过程。
+	\end{enumerate}
+	\item[\textbf{到达时刻}] 讨论 $S_{N(t)}$ 与 $S_{N(t)+1}$ 的分布。
+\end{description}
+
+\section{260317：布朗运动}
+
+\begin{description}
+	\item[\textbf{随堂练习 1}] 设 $W(t)$ 和 $B(t)$ 是独立的标准布朗运动。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 若
+		\[
+		X(t)=aB(t)+bW(t)
+		\]
+		也是标准布朗运动，问 $a,b$ 应满足什么条件。
+		\item 判断
+		\[
+		Y(t)=B(2t)-B(t)
+		\]
+		是否为标准布朗运动。
+	\end{enumerate}
+	\item[\textbf{随堂练习 2}] 设 $\{B(t),t\ge0\}$ 是标准布朗运动，考虑随机过程 $\{B(t^2),t\ge0\}$。计算
+	\[
+	\E[B(t^2)],\qquad \Cov(B(s^2),B(t^2)),
+	\]
+	判断 $B(t^2)$ 是否为标准布朗运动并说明理由。
+	\item[\textbf{P279/6.1}] 用 $(X(t),Y(t))$ 表示二维标准布朗运动，证明对任意常数 $\theta$，
+	\[
+	W(t)=X(t)\cos\theta+Y(t)\sin\theta,\qquad t\ge0
+	\]
+	是标准布朗运动。
+	\item[\textbf{P279/6.6}] 对于布朗桥 $\{X(t)\mid t\in[0,1]\}$，验证
+	\[
+	W(t)=(t+1)X\left(\frac{t}{1+t}\right),\qquad t\ge0
+	\]
+	是标准布朗运动。
+\end{description}
+
+\section{260324：离散时间 Markov 链建模}
+
+\begin{description}
+	\item[\textbf{洗发水购买模型}] 甲洗发水改变广告方式。根据调查，买甲和另外三种竞争对手乙、丙、丁的顾客每两个月的转换概率构成转移矩阵
+	\[
+	P=
+	\begin{pmatrix}
+	0.95&0.02&0.02&0.01\\
+	0.30&0.60&0.06&0.04\\
+	0.20&0.10&0.70&0\\
+	0.20&0.20&0.10&0.50
+	\end{pmatrix}.
+	\]
+	初始购买甲、乙、丙、丁的概率为
+	\[
+	(0.25,\ 0.30,\ 0.35,\ 0.10).
+	\]
+	求半年后买甲洗发水的顾客概率。
+	\item[\textbf{两人得分随机游动}] $A,B$ 两人游戏，每局 $A$ 胜概率为 $p$，$B$ 胜概率为 $q$，平局概率为 $r$，其中 $p+q+r=1$。每局胜者得 $1$ 分，负者失 $1$ 分，平局得分不变；一人累计到 $2$ 分时游戏结束。令 $X_n$ 为第 $n$ 局后 $A$ 的得分。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 写出 $\{X_n\}$ 的状态空间。
+		\item 写出一步转移概率矩阵。
+		\item 若当前 $A$ 已得 $1$ 分，求游戏在两局内结束的概率。
+	\end{enumerate}
+	\item[\textbf{两端吸收壁随机游动}] 设质点在 $S=\{0,1,\dots,n\}$ 上做简单随机游动。在内部状态 $1,\dots,n-1$ 时，以概率 $p$ 向右移动一步，以概率 $q=1-p$ 向左移动一步；到达 $0$ 或 $n$ 后吸收。说明 $\{X_n\}$ 是 Markov 链，并写出转移规律。
+	\item[\textbf{两端反射壁随机游动}] 设质点在 $S=\{0,1,\dots,n\}$ 上做简单随机游动。在内部状态按概率 $p,q$ 左右移动；到达 $n$ 后下一步一定返回 $n-1$，到达 $0$ 后下一步一定返回 $1$。说明 $\{X_n\}$ 是 Markov 链，并写出转移规律。
+\end{description}
+
+\section{260331：离散 Markov 链状态分类}
+
+\begin{description}
+	\item[\textbf{两端吸收壁随机游动}] 质点在 $S=\{0,1,\dots,n\}$ 上随机游动，其中 $0,n$ 为吸收壁。对 $1\le i\le n-1$，从 $i$ 以概率 $p$ 转移到 $i+1$，以概率 $q=1-p$ 转移到 $i-1$。分析各状态之间的可达关系、互通类以及闭类。
+	\item[\textbf{课堂例题 6}] 设 Markov 链状态空间 $S=\{1,2,3,4\}$，一步转移矩阵为
+	\[
+	P=
+	\begin{pmatrix}
+	1/2&1/2&0&0\\
+	1&0&0&0\\
+	0&1/3&2/3&0\\
+	1/2&0&1/2&0
+	\end{pmatrix}.
+	\]
+	分析各状态之间的可达关系、互通关系，并给出状态空间分解。
+	\item[\textbf{课堂例题 7}] 设 Markov 链状态空间 $S=\{0,1,2\}$，一步转移矩阵为
+	\[
+	P=
+	\begin{pmatrix}
+	1/2&1/2&0\\
+	1/2&1/4&1/4\\
+	0&1/3&2/3
+	\end{pmatrix}.
+	\]
+	分析各状态之间的可达关系、互通关系，并判断各状态的常返性。
+\end{description}
+
+\section{260410：可逆分布与分支过程}
+
+\begin{description}
+	\item[\textbf{P184/4}] 蜘蛛在座钟的 $12$ 个数字上做随机游动，每次以概率 $p$ 顺时针爬到相邻数字，以概率 $q=1-p$ 逆时针爬到相邻数字。令 $X_n$ 为第 $n$ 次移动后的位置。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 说明 $\{X_n\}$ 是 Markov 链，写出转移概率，并求平稳不变分布。
+		\item 给出可逆分布存在的条件，并在条件成立时求出可逆分布。
+	\end{enumerate}
+	\item[\textbf{半线随机游动}] 设质点在 $I=\{0,1,2,\dots\}$ 上随机游动，一步转移概率满足
+	\[
+	p_{ij}=
+	\begin{cases}
+	p_i,&j=i+1,\ i\ge0,\\
+	1-p_i,&j=i-1,\ i\ge1,\\
+	0,&\text{其他情形},
+	\end{cases}
+	\]
+	其中 $p_{01}=p_0=1$，且当 $i>1$ 时 $p_i\in(0,1)$。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 证明存在对称化序列 $\{\eta_i\}$。
+		\item 给出可逆分布存在的充要条件。
+		\item 给出不变分布存在的充要条件。
+	\end{enumerate}
+	\item[\textbf{P191/2(b)}] 对于 Galton--Watson 分支过程，设从一个粒子出发，后代分布为
+	\[
+	p_0=0.2,\qquad p_1=0.3,\qquad p_2=0.5.
+	\]
+	计算群体灭绝概率 $\rho_0$。
+	\item[\textbf{P191/3}] 设 $\xi\sim B(2,p)$，分支过程中每个粒子分裂成的后代数是来自总体 $\xi$ 的随机变量。当 $X_0=1$ 时，计算：
+	\begin{enumerate}[label=(\arabic*)]
+		\item 群体灭绝的概率。
+		\item 群体恰在第 $2$ 代灭亡的概率。
+		\item 若 $X_0\sim P(\mu)$ 且 $p>0.5$，计算群体最终灭绝的概率。
+	\end{enumerate}
+	\item[\textbf{P209/2，练习 5.2(2)}] 一个 $t$ 时刻存活的生物在 $(t,t+h]$ 内寿终的概率为
+	\[
+	\lambda h+o(h).
+	\]
+	计算该生物寿命的生存函数。
+	\item[\textbf{P209/3，练习 5.2(3)}] $t$ 时刻有 $m$ 个生物独立存活，每个生物在长度为 $h$ 的时间内寿终的概率为 $\lambda h+o(h)$。从 $t$ 时刻开始，用 $T_m$ 表示最早寿终的生物寿终时间，求 $T_m$ 的分布。
+\end{description}
+
+\section{260422：连续时间 Markov 链}
+
+\begin{description}
+	\item[\textbf{P220/1，练习 5.4(1)}] 短信按强度为 $\lambda$ 的 Poisson 流到达一部手机。每个短信是公事的概率为 $p$，是私事的概率为 $q=1-p$。引入
+	\[
+	X(t)=
+	\begin{cases}
+	0,&(0,t]\text{ 中的最后一个短信是公事},\\
+	1,&(0,t]\text{ 中的最后一个短信是私事}.
+	\end{cases}
+	\]
+	验证 $\{X(t)\}$ 是 Markov 链，写出转移速率矩阵 $Q$ 和嵌入链转移概率矩阵 $K$。
+	\item[\textbf{P220/3，练习 5.4(3)}] 人群中共有 $m$ 人，其中若干人带菌。在任意长为 $h$ 的时间内群体中恰有两个人相遇的概率是 $\lambda h+o(h)$，有更多人相遇的概率为 $o(h)$。默认每次相遇的两人全体可能组合等可能；不带菌者遇到带菌者后以概率 $p$ 被感染，感染者将永远带菌。用 $X(t)$ 表示 $t$ 时带菌人数，回答：
+	\begin{enumerate}[label=(\arabic*)]
+		\item $\{X(t)\}$ 是否为 Markov 链。
+		\item 若是 Markov 链，写出转移速率矩阵 $Q$。
+		\item 从 $1$ 人带菌开始，新传染上 $n$ 个人平均需要多少时间。
+	\end{enumerate}
+	\item[\textbf{P236/1，练习 5.6(1)}] 线性生灭过程的嵌入链是离散时间分支过程，且
+	\[
+	p_0=k_{10}=\frac{\mu}{\lambda+\mu},\qquad
+	p_2=k_{12}=\frac{\lambda}{\lambda+\mu}.
+	\]
+	计算
+	\[
+	\rho_0=\Pp(\text{群体灭绝}\mid X_0=1).
+	\]
+	\item[\textbf{P239/2，练习 5.7(2)}] 跳蚤捕食，昆虫在位置 $0,1$ 之间跳来跳去，其转移矩阵为
+	\[
+	P=
+	\begin{pmatrix}
+	1/5&4/5\\
+	2/5&3/5
+	\end{pmatrix}.
+	\]
+	构造以该矩阵为嵌入链的离散 Markov 链。每次到达 $i=0,1$ 后，在 $i$ 的停留时间服从指数分布 $\Exp(\lambda_i)$，且与其他停留时间独立。用 $\{X(t)\}$ 表示 $t$ 时昆虫位置。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 验证 $\{X(t)\}$ 是 Markov 链。
+		\item 计算嵌入链转移矩阵 $K$。
+		\item 计算转移速率矩阵 $Q$。
+		\item 当 $\lambda_1=2\lambda_0$ 时，计算转移概率矩阵 $P(t)$。
+	\end{enumerate}
+	\item[\textbf{P250/3，练习 5.8(3)}] 顾客按强度为 $\lambda$ 的 Poisson 流到达 $m$ 台自动取款机，服务时间独立服从 $\Exp(\mu)$。若所有取款机被占用，新到者排队等候。用 $X(t)$ 表示服务系统中的总人数。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 说明这是一个状态互通的 Markov 链。
+		\item 求转移速率矩阵 $Q$ 和嵌入链转移矩阵 $K$。
+		\item 求平稳不变分布存在条件，并验证平稳分布为
+		\[
+		\pi_i=
+		\begin{cases}
+		\dfrac{c}{i!}\left(\dfrac{\lambda}{\mu}\right)^i,&0\le i\le m,\\[2ex]
+		\dfrac{c}{m!}\left(\dfrac{\lambda}{\mu}\right)^i m^{m-i},&i>m,
+		\end{cases}
+		\]
+		其中 $c$ 为归一化常数。
+	\end{enumerate}
+\end{description}
+
+\section{260508：补充作业}
+
+\begin{description}
+	\item[\textbf{7.11.1 Poisson 过程补充}] 年龄与剩余寿命。设 $\{N(t),t\ge0\}$ 是强度为 $\lambda$ 的 Poisson 过程，$S_n$ 为第 $n$ 次呼叫时刻。当 $N(t)=n$ 时，$S_{N(t)}$ 表示 $t$ 时刻前的最后一次呼叫时刻，$S_{N(t)+1}$ 表示 $t$ 时刻后的第一次呼叫时刻。定义
+	\[
+	A(t)=t-S_{N(t)},\qquad R(t)=S_{N(t)+1}-t.
+	\]
+	求 $A(t)$ 和 $R(t)$ 的分布函数，并判断 $A(t)$ 与 $R(t)$ 是否相互独立。
+	\item[\textbf{第 $n$ 次到达时间}] 在某高速公路上超速车流形成平均每小时 $3$ 辆的 Poisson 过程，用 $T$ 表示监测雷达记录 $n$ 辆超速汽车所用时间，计算 $\Pp(T>t)$。
+	\item[\textbf{7.11.2 分支过程，P191/2}] 对于 Galton--Watson 分支过程，计算从一个粒子出发时的群体灭绝概率 $\rho_0$：
+	\begin{enumerate}[label=(\arabic*)]
+		\item $p_0=0.2,\ p_2=0.8$；
+		\item $p_0=0.2,\ p_1=0.3,\ p_2=0.5$。
+	\end{enumerate}
+\end{description}
+
+\section{课后作业参考解答}
+
+\subsection*{260303}
+
+\begin{description}
+	\item[\textbf{P23/1.1}]
+	在概率空间 $A$ 下，
+	\[
+	P_A(C\mid B)=\frac{P_A(CB)}{P_A(B)}
+	=\frac{\Pp(ABC)/\Pp(A)}{\Pp(AB)/\Pp(A)}
+	=\frac{\Pp(ABC)}{\Pp(AB)}
+	=\Pp(C\mid AB).
+	\]
+	\item[\textbf{P23/1.2}]
+	由条件概率定义连续展开：
+	\[
+	\Pp(B_1\cdots B_n\mid A)
+	=
+	\frac{\Pp(AB_1\cdots B_n)}{\Pp(A)}.
+	\]
+	又
+	\[
+	\Pp(AB_1\cdots B_n)
+	=
+	\Pp(A)\Pp(B_1\mid A)\Pp(B_2\mid AB_1)\cdots
+	\Pp(B_n\mid AB_1\cdots B_{n-1}),
+	\]
+	代入即得乘法公式。
+	\item[\textbf{P23/1.5}]
+	令
+	\[
+	S_N=X_1+\cdots+X_N.
+	\]
+	条件于 $N$：
+	\[
+	\E(S_N\mid N)=N\mu,\qquad
+	\Var(S_N\mid N)=N\sigma^2.
+	\]
+	所以
+	\[
+	\E S_N=\mu\E N,
+	\]
+	\[
+	\Var(S_N)=\E[N\sigma^2]+\Var(N\mu)
+	=\sigma^2\E N+\mu^2\Var(N).
+	\]
+	\item[\textbf{P23/1.6}]
+	由样本的对称性，
+	\[
+	\E(X_1+\cdots+X_k\mid X_1+\cdots+X_n=t)
+	=\frac{k}{n}t.
+	\]
+	若 $U\sim U(0,t)$，则在给定 $X_1+X_2=t$ 后，
+	\[
+	\Pp(U<X_1\mid X_1+X_2=t)
+	=
+	\E\left(\frac{X_1}{t}\mid X_1+X_2=t\right)
+	=\frac12.
+	\]
+\end{description}
+
+\subsection*{260310}
+
+\begin{description}
+	\item[\textbf{P32/2.1(2)}]
+	在条件 $N(t)=n$ 下，$n$ 个到达时刻在 $(0,t)$ 上条件均匀。因此落入 $(0,s)$ 的个数
+	\[
+	N(s)\mid N(t)=n\sim B\left(n,\frac{s}{t}\right).
+	\]
+	\item[\textbf{P32/2.1(3)}]
+	写
+	\[
+	N(t+s)=N(t)+[N(t+s)-N(t)].
+	\]
+	其中增量与 $N(t)$ 独立，且服从 $\Pois(\lambda s)$。于是
+	\[
+	\E[N(t+s)\mid N(t)]=N(t)+\lambda s.
+	\]
+	又
+	\[
+	\E[N(t)N(t+s)]
+	=
+	\E[N^2(t)]+\E N(t)\,\lambda s.
+	\]
+	因为
+	\[
+	\E[N^2(t)]=\Var(N(t))+[\E N(t)]^2=\lambda t+\lambda^2t^2,
+	\]
+	所以
+	\[
+	\E[N(t)N(t+s)]
+	=
+	\lambda t+\lambda^2t(t+s).
+	\]
+	\item[\textbf{P32/2.1(4)}]
+	记录 $n$ 辆车所需时间 $T=S_n$，其中强度为 $3$。因此
+	\[
+	\Pp(T>t)=\Pp(N(t)<n)
+	=
+	\sum_{k=0}^{n-1}\e^{-3t}\frac{(3t)^k}{k!}.
+	\]
+\end{description}
+
+\subsection*{260313}
+
+\begin{description}
+	\item[\textbf{独立 Poisson 过程之差}]
+	\[
+	\E N_0(t)=(\lambda_1-\lambda_2)t.
+	\]
+	当 $0\le s\le t$，
+	\[
+	\Cov(N_0(s),N_0(t))=(\lambda_1+\lambda_2)s.
+	\]
+	因此相关函数
+	\[
+	R_{N_0}(s,t)=\E[N_0(s)N_0(t)]
+	=(\lambda_1+\lambda_2)s+(\lambda_1-\lambda_2)^2st.
+	\]
+	$N_0(t)$ 可能取负值，且不是计数过程，所以一般不是 Poisson 过程。
+	\item[\textbf{到达时刻}]
+	令 $S_{N(t)}$ 为 $t$ 前最后一次到达时刻。对 $0\le x<t$，
+	\[
+	\Pp(S_{N(t)}\le x)=\Pp(N(t)-N(x)=0)=\e^{-\lambda(t-x)}.
+	\]
+	特别地，$S_{N(t)}$ 在 $0$ 处有质量
+	\[
+	\Pp(S_{N(t)}=0)=\e^{-\lambda t}.
+	\]
+	而
+	\[
+	S_{N(t)+1}=t+R(t),\qquad R(t)\sim\Exp(\lambda),
+	\]
+	故对 $x\ge t$，
+	\[
+	\Pp(S_{N(t)+1}\le x)=1-\e^{-\lambda(x-t)}.
+	\]
+\end{description}
+
+\subsection*{260317}
+
+\begin{description}
+	\item[\textbf{随堂练习 1}]
+	因为 $B,W$ 独立标准布朗运动，
+	\[
+	\E X(t)=0,\qquad
+	\Cov(X(s),X(t))=(a^2+b^2)\min\{s,t\}.
+	\]
+	所以 $X(t)=aB(t)+bW(t)$ 为标准布朗运动的条件是
+	\[
+	a^2+b^2=1.
+	\]
+	对于
+	\[
+	Y(t)=B(2t)-B(t),
+	\]
+	有 $\Var(Y(t))=t$，但协方差不等于 $\min\{s,t\}$。例如 $t\ge2s$ 时，
+	\[
+	\Cov(Y(s),Y(t))=0\ne s.
+	\]
+	故 $Y(t)$ 不是标准布朗运动。
+	\item[\textbf{随堂练习 2}]
+	\[
+	\E[B(t^2)]=0,
+	\]
+	\[
+	\Cov(B(s^2),B(t^2))=\min\{s^2,t^2\}=[\min\{s,t\}]^2.
+	\]
+	特别地
+	\[
+	\Var(B(t^2))=t^2\ne t,
+	\]
+	所以 $B(t^2)$ 不是标准布朗运动。
+	\item[\textbf{P279/6.1}]
+	$W(t)$ 是中心 Gauss 过程，且
+	\[
+	\Cov(W(s),W(t))
+	=
+	(\cos^2\theta+\sin^2\theta)\min\{s,t\}
+	=
+	\min\{s,t\}.
+	\]
+	由标准布朗运动的 Gauss 判别法，$W(t)$ 是标准布朗运动。
+	\item[\textbf{P279/6.6}]
+	布朗桥协方差为
+	\[
+	\Cov(X(u),X(v))=\min\{u,v\}-uv.
+	\]
+	设 $0\le s\le t$，令
+	\[
+	u=\frac{s}{1+s},\qquad v=\frac{t}{1+t}.
+	\]
+	则
+	\[
+	\Cov(W(s),W(t))
+	=(1+s)(1+t)(u-uv)=s.
+	\]
+	$W(t)$ 为中心 Gauss 过程且协方差为 $\min\{s,t\}$，故为标准布朗运动。
+\end{description}
+
+\subsection*{260324}
+
+\begin{description}
+	\item[\textbf{洗发水购买模型}]
+	半年为 $3$ 个两月周期。初始分布
+	\[
+	\bm p^{(0)}=(0.25,0.30,0.35,0.10).
+	\]
+	所求为
+	\[
+	\bm p^{(3)}=\bm p^{(0)}P^3.
+	\]
+	计算得
+	\[
+	\bm p^{(3)}
+	=(0.62214875,\ 0.1581575,\ 0.183588,\ 0.03610575).
+	\]
+	因此半年后买甲洗发水的概率为
+	\[
+	0.62214875.
+	\]
+	\item[\textbf{两人得分随机游动}]
+	状态空间
+	\[
+	S=\{-2,-1,0,1,2\},
+	\]
+	其中 $-2,2$ 为吸收状态。对内部状态 $i=-1,0,1$，
+	\[
+	p_{i,i+1}=p,\qquad p_{i,i-1}=q,\qquad p_{ii}=r.
+	\]
+	且
+	\[
+	p_{2,2}=1,\qquad p_{-2,-2}=1.
+	\]
+	若当前 $A$ 得 $1$ 分，则两局内结束的概率为
+	\[
+	p+rp=p(1+r).
+	\]
+	\item[\textbf{两端吸收壁随机游动}]
+	状态空间 $S=\{0,1,\dots,n\}$。转移概率：
+	\[
+	p_{i,i+1}=p,\quad p_{i,i-1}=q,\qquad 1\le i\le n-1,
+	\]
+	\[
+	p_{00}=1,\qquad p_{nn}=1.
+	\]
+	\item[\textbf{两端反射壁随机游动}]
+	内部转移同上。边界反射为
+	\[
+	p_{0,1}=1,\qquad p_{n,n-1}=1.
+	\]
+\end{description}
+
+\subsection*{260331}
+
+\begin{description}
+	\item[\textbf{两端吸收壁随机游动}]
+	$\{0\}$ 与 $\{n\}$ 是闭类且为正常返类。内部状态
+	\[
+	\{1,2,\dots,n-1\}
+	\]
+	彼此互通，但不是闭类；从内部最终可能进入吸收壁，因此内部状态为非常返状态。
+	\item[\textbf{课堂例题 6}]
+	由转移图可得：
+	\[
+	1\leftrightarrow 2,
+	\]
+	且 $\{1,2\}$ 为闭类，所以 $1,2$ 正常返。状态 $3$ 可到达 $2$，但 $2$ 不可回到 $3$，故 $\{3\}$ 为非闭类；状态 $4$ 无状态可回到它。状态空间分解为
+	\[
+	S=\{1,2\}\cup\{3\}\cup\{4\},
+	\]
+	其中 $\{1,2\}$ 为正常返闭类，$3,4$ 为非常返状态。
+	\item[\textbf{课堂例题 7}]
+	由矩阵可见
+	\[
+	0\leftrightarrow1\leftrightarrow2,
+	\]
+	故三个状态互通。有限不可约 Markov 链所有状态均正常返，因此 $0,1,2$ 都是正常返状态。
+\end{description}
+
+\subsection*{260410}
+
+\begin{description}
+	\item[\textbf{P184/4}]
+	转移规律为
+	\[
+	p_{i,i+1}=p,\qquad p_{i,i-1}=q
+	\]
+	（下标按 $12$ 取模）。平稳分布为均匀分布：
+	\[
+	\pi_i=\frac1{12},\qquad i=1,\dots,12.
+	\]
+	详细平衡要求
+	\[
+	\pi_i p=\pi_{i+1}q.
+	\]
+	因 $\pi_i=\pi_{i+1}$，可逆分布存在的条件为
+	\[
+	p=q=\frac12.
+	\]
+	此时可逆分布仍为 $\pi_i=1/12$。
+	\item[\textbf{半线随机游动}]
+	令 $q_i=1-p_i$。取
+	\[
+	\eta_0=1,\qquad
+	\eta_i=\frac{p_0p_1\cdots p_{i-1}}{q_1q_2\cdots q_i},\quad i\ge1.
+	\]
+	则
+	\[
+	\eta_i p_i=\eta_{i+1}q_{i+1},
+	\]
+	故 $\{\eta_i\}$ 是对称化序列。可逆分布存在当且仅当
+	\[
+	\sum_{i=0}^{\infty}\eta_i<\infty,
+	\]
+	此时
+	\[
+	\pi_i=\frac{\eta_i}{\sum_j\eta_j}.
+	\]
+	对该不可约生灭链，不变分布存在的充要条件同样为 $\sum_i\eta_i<\infty$。
+	\item[\textbf{P191/2(b)}]
+	母函数
+	\[
+	f(s)=0.2+0.3s+0.5s^2.
+	\]
+	灭绝概率为 $s=f(s)$ 在 $[0,1]$ 中的最小根：
+	\[
+	s=0.2+0.3s+0.5s^2
+	\Longleftrightarrow
+	5s^2-7s+2=0.
+	\]
+	根为 $1$ 与 $0.4$，故
+	\[
+	\rho_0=0.4.
+	\]
+	\item[\textbf{P191/3}]
+	设 $q=1-p$，母函数
+	\[
+	f(s)=(q+ps)^2.
+	\]
+	若 $p\le1/2$，则灭绝概率 $\rho=1$；若 $p>1/2$，则
+	\[
+	\rho=\left(\frac{q}{p}\right)^2.
+	\]
+	恰在第 $2$ 代灭亡的概率为
+	\[
+	\Pp(X_2=0)-\Pp(X_1=0)
+	=f(f(0))-f(0)
+	=(q+pq^2)^2-q^2.
+	\]
+	若 $X_0\sim\Pois(\mu)$ 且 $p>1/2$，各初始粒子独立灭绝，所以最终灭绝概率为
+	\[
+	\E(\rho^{X_0})=\exp\{\mu(\rho-1)\}
+	=
+	\exp\left\{\mu\left[\left(\frac{q}{p}\right)^2-1\right]\right\}.
+	\]
+	\item[\textbf{P209/2}]
+	由小时间寿终概率 $\lambda h+o(h)$，寿命 $T\sim\Exp(\lambda)$，故生存函数
+	\[
+	\Pp(T>t)=\e^{-\lambda t}.
+	\]
+	\item[\textbf{P209/3}]
+	$m$ 个个体寿命独立且均为 $\Exp(\lambda)$。最早寿终时间
+	\[
+	T_m=\min(T_1,\dots,T_m)\sim\Exp(m\lambda),
+	\]
+	故
+	\[
+	\Pp(T_m>t)=\e^{-m\lambda t}.
+	\]
+\end{description}
+
+\subsection*{260422}
+
+\begin{description}
+	\item[\textbf{P220/1}]
+	状态 $0$ 表示最后一条短信为公事，状态 $1$ 表示最后一条短信为私事。公事短信流强度 $\lambda p$，私事短信流强度 $\lambda q$。因此
+	\[
+	Q=
+	\begin{pmatrix}
+	-\lambda q&\lambda q\\
+	\lambda p&-\lambda p
+	\end{pmatrix}.
+	\]
+	若 $p,q>0$，嵌入链转移矩阵为
+	\[
+	K=
+	\begin{pmatrix}
+	0&1\\
+	1&0
+	\end{pmatrix}.
+	\]
+	\item[\textbf{P220/3}]
+	状态 $i$ 表示带菌人数。一次相遇中，带菌者--不带菌者配对概率为
+	\[
+	\frac{i(m-i)}{\binom m2}.
+	\]
+	相遇率为 $\lambda$，感染概率为 $p$，故
+	\[
+	q_{i,i+1}=
+	\lambda p\,\frac{i(m-i)}{\binom m2},\qquad i=0,1,\dots,m.
+	\]
+	\[
+	q_{ii}=-q_{i,i+1},
+	\]
+	其他转移速率为 $0$。从 $1$ 人带菌开始，新传染 $n$ 人即依次从 $i=1$ 到 $i=n$，平均时间
+	\[
+	\E T=
+	\sum_{i=1}^{n}\frac1{q_{i,i+1}}
+	=
+	\frac{\binom m2}{\lambda p}
+	\sum_{i=1}^{n}\frac1{i(m-i)}.
+	\]
+	\item[\textbf{P236/1}]
+	嵌入链是后代数只取 $0$ 或 $2$ 的分支过程，母函数
+	\[
+	f(s)=\frac{\mu}{\lambda+\mu}+
+	\frac{\lambda}{\lambda+\mu}s^2.
+	\]
+	灭绝概率为 $s=f(s)$ 的最小根：
+	\[
+	\rho_0=
+	\begin{cases}
+	1,&\lambda\le\mu,\\[1ex]
+	\dfrac{\mu}{\lambda},&\lambda>\mu.
+	\end{cases}
+	\]
+	\item[\textbf{P239/2}]
+	构造中的离散转移矩阵为
+	\[
+	P=
+	\begin{pmatrix}
+	1/5&4/5\\
+	2/5&3/5
+	\end{pmatrix}.
+	\]
+	实际状态改变的嵌入链为
+	\[
+	K=
+	\begin{pmatrix}
+	0&1\\
+	1&0
+	\end{pmatrix}.
+	\]
+	转移速率矩阵为
+	\[
+	Q=
+	\begin{pmatrix}
+	-\frac45\lambda_0&\frac45\lambda_0\\[0.5ex]
+	\frac25\lambda_1&-\frac25\lambda_1
+	\end{pmatrix}.
+	\]
+	当 $\lambda_1=2\lambda_0$ 时，记
+	\[
+	a=\frac45\lambda_0=\frac25\lambda_1.
+	\]
+	则
+	\[
+	P(t)=
+	\frac12
+	\begin{pmatrix}
+	1+\e^{-2at}&1-\e^{-2at}\\
+	1-\e^{-2at}&1+\e^{-2at}
+	\end{pmatrix}
+	=
+	\frac12
+	\begin{pmatrix}
+	1+\e^{-\frac85\lambda_0t}&1-\e^{-\frac85\lambda_0t}\\
+	1-\e^{-\frac85\lambda_0t}&1+\e^{-\frac85\lambda_0t}
+	\end{pmatrix}.
+	\]
+	\item[\textbf{P250/3}]
+	这就是 $M/M/m$ 生灭过程：
+	\[
+	q_{i,i+1}=\lambda,\qquad
+	q_{i,i-1}=\min\{i,m\}\mu,
+	\]
+	\[
+	q_{ii}=-(\lambda+\min\{i,m\}\mu).
+	\]
+	嵌入链：
+	\[
+	k_{0,1}=1,
+	\]
+	\[
+	k_{i,i+1}=\frac{\lambda}{\lambda+\min\{i,m\}\mu},\qquad
+	k_{i,i-1}=\frac{\min\{i,m\}\mu}{\lambda+\min\{i,m\}\mu}.
+	\]
+	平稳分布存在条件为
+	\[
+	\lambda<m\mu.
+	\]
+	由详细平衡
+	\[
+	\pi_i\lambda=\pi_{i+1}\min\{i+1,m\}\mu
+	\]
+	递推得
+	\[
+	\pi_i=
+	\begin{cases}
+	\dfrac{c}{i!}\left(\dfrac{\lambda}{\mu}\right)^i,&0\le i\le m,\\[2ex]
+	\dfrac{c}{m!}\left(\dfrac{\lambda}{\mu}\right)^i m^{m-i},&i>m,
+	\end{cases}
+	\]
+	其中 $c$ 由 $\sum_i\pi_i=1$ 决定。
+\end{description}
+
+\subsection*{260508}
+
+\begin{description}
+	\item[\textbf{7.11.1}]
+	年龄
+	\[
+	A(t)=t-S_{N(t)}.
+	\]
+	当 $0\le x<t$，
+	\[
+	\Pp(A(t)\le x)=1-\e^{-\lambda x}.
+	\]
+	且
+	\[
+	\Pp(A(t)=t)=\Pp(N(t)=0)=\e^{-\lambda t}.
+	\]
+	剩余寿命
+	\[
+	R(t)=S_{N(t)+1}-t\sim\Exp(\lambda),
+	\]
+	所以
+	\[
+	\Pp(R(t)\le x)=1-\e^{-\lambda x},\qquad x\ge0.
+	\]
+	由 Poisson 过程独立增量性，$R(t)$ 与 $t$ 时刻以前的历史独立，因此 $A(t)$ 与 $R(t)$ 独立。
+	\item[\textbf{第 $n$ 次到达时间}]
+	同 P32/2.1(4)，强度为 $3$，故
+	\[
+	\Pp(T>t)=\sum_{k=0}^{n-1}\e^{-3t}\frac{(3t)^k}{k!}.
+	\]
+	\item[\textbf{7.11.2}]
+	若 $p_0=0.2,p_2=0.8$，母函数
+	\[
+	f(s)=0.2+0.8s^2.
+	\]
+	由 $s=f(s)$ 得根 $1$ 与 $1/4$，故
+	\[
+	\rho_0=\frac14.
+	\]
+	若 $p_0=0.2,p_1=0.3,p_2=0.5$，由前面 P191/2(b) 得
+	\[
+	\rho_0=0.4.
+	\]
+\end{description}
+
+\chapter{2025 年期末参考题与解答}
+
+\section{题目整理}
+
+\begin{enumerate}[label=\textbf{题 \arabic*:}]
+	\item 汽车按强度 $\lambda$ 的 Poisson 流通过广场，车型比例为卧车 $3/5$、公交车 $1/5$、货车 $1/5$。三类车污染分别来自总体 $D_1,D_2,D_3$，经过时间 $s$ 后衰减为 $D_i h(s)$。求 $[0,t]$ 内通过车辆在 $t$ 时刻造成的平均污染。
+	\item 若 $X(t)$ 为标准布朗运动，定义
+	\[
+	Y(t)=\e^{X(t)}.
+	\]
+	求 $Y(t)$ 的分布函数、均值函数和方差函数。
+	\item 离散时间 Markov 链转移矩阵
+	\[
+	P=
+	\begin{pmatrix}
+	1/3&2/3&0&0&0\\
+	2/3&1/3&0&0&0\\
+	0&0&1/2&1/2&0\\
+	0&0&1/2&1/2&0\\
+	1/3&1/3&0&0&1/3
+	\end{pmatrix}.
+	\]
+	判断每个状态是正常返、零常返还是非常返。
+	\item 默写正交增量过程与独立增量过程定义。
+	\item 出租车按平均每分钟 $1$ 辆的 Poisson 流到达站台，乘客按平均每分钟 $2$ 人的 Poisson 流到达站台，二者独立。每辆车只能搭乘一名乘客。站台上有乘客时出租车自动接客离开；无乘客时出租车等候；无出租车时乘客自动离开。建立生灭过程模型，写 $Q,K$，求有出租车等候的概率和出租车数量期望。
+	\item 连续时间分支过程中，后代分布为
+	\[
+	p_0=\frac14,\qquad p_1=\frac12,\qquad p_2=\frac3{16},\qquad p_3=\frac1{16}.
+	\]
+	原卷扫描/OCR 中个别下标较模糊，这里按概率和为 $1$ 的后代分布整理。
+	求 $X_0=1$ 时物种灭绝概率。
+	\item 有限无向图邻接矩阵为 $a_{ij}$，定义随机游走
+	\[
+	p_{ij}=\frac{a_{ij}}{\sum_k a_{ik}}.
+	\]
+	证明该链时间可逆，并求平稳分布。
+\end{enumerate}
+
+\section{参考解答}
+
+\begin{enumerate}[label=\textbf{题 \arabic*:}]
+	\item 由 Poisson 分流，三类车流独立，强度分别为
+	\[
+	\lambda_1=\frac35\lambda,\qquad
+	\lambda_2=\frac15\lambda,\qquad
+	\lambda_3=\frac15\lambda.
+	\]
+	第 $i$ 类车辆在 $t$ 时刻的平均污染为
+	\[
+	\lambda_i\E D_i\int_0^t h(s)\dd s.
+	\]
+	故总平均污染
+	\[
+	\E Y(t)
+	=
+	\lambda\left(
+	\frac35\E D_1+\frac15\E D_2+\frac15\E D_3
+	\right)\int_0^t h(s)\dd s.
+	\]
+	\item 因为 $X(t)\sim N(0,t)$，所以 $Y(t)$ 为对数正态分布。对 $y>0$，
+	\[
+	F_{Y(t)}(y)=\Pp(\e^{X(t)}\le y)
+	=
+	\Phi\left(\frac{\ln y}{\sqrt t}\right),
+	\]
+	而 $F_{Y(t)}(y)=0$，$y\le0$。由正态矩母函数，
+	\[
+	\E Y(t)=\e^{t/2},
+	\]
+	\[
+	\Var(Y(t))=\e^{2t}-\e^t=\e^t(\e^t-1).
+	\]
+	\item 状态 $1,2$ 构成有限闭互通类，故 $1,2$ 正常返。状态 $3,4$ 也构成有限闭互通类，故 $3,4$ 正常返。状态 $5$ 可以以概率 $1/3$ 留在 $5$，也可进入 $\{1,2\}$，一旦离开就不能回到 $5$，故
+	\[
+	f_{55}^*=\frac13<1,
+	\]
+	状态 $5$ 为非常返。有限链中无零常返状态。
+	\item 独立增量过程：对任意 $t_1<t_2<\cdots<t_n$，增量
+	\[
+	X(t_2)-X(t_1),\ X(t_3)-X(t_2),\dots,
+	X(t_n)-X(t_{n-1})
+	\]
+	相互独立。
+
+	正交增量过程：若 $\{X(t)\}$ 为二阶矩过程，且对任意 $0\le t_1<t_2\le t_3<t_4$，
+	\[
+	\E[(X(t_2)-X(t_1))(X(t_4)-X(t_3))]=0,
+	\]
+	则称为正交增量过程。
+	\item 令 $X(t)$ 为站台上等待的出租车数。出租车到达使 $X$ 增加 $1$，速率 $\lambda=1$；乘客到达时若 $X>0$ 则乘车离开，使 $X$ 减少 $1$，速率 $\mu=2$；若 $X=0$，乘客离开，状态不变。因此
+	\[
+	q_{i,i+1}=1,\qquad i\ge0,
+	\]
+	\[
+	q_{i,i-1}=2,\qquad i\ge1,
+	\]
+	\[
+	q_{00}=-1,\qquad q_{ii}=-3,\ i\ge1.
+	\]
+	嵌入链
+	\[
+	k_{0,1}=1,
+	\]
+	\[
+	k_{i,i+1}=\frac13,\qquad k_{i,i-1}=\frac23,\quad i\ge1.
+	\]
+	这是 $M/M/1$ 生灭过程，$\rho=\lambda/\mu=1/2$。平稳分布
+	\[
+	\pi_i=(1-\rho)\rho^i=\frac12\left(\frac12\right)^i.
+	\]
+	站台上有出租车等候的概率
+	\[
+	\Pp(X>0)=1-\pi_0=\frac12.
+	\]
+	出租车数量期望
+	\[
+	\E X=\frac{\rho}{1-\rho}=1.
+	\]
+	\item 后代母函数
+	\[
+	f(s)=\frac14+\frac12s+\frac3{16}s^2+\frac1{16}s^3.
+	\]
+	灭绝概率为 $s=f(s)$ 在 $[0,1]$ 中的最小根：
+	\[
+	s=\frac14+\frac12s+\frac3{16}s^2+\frac1{16}s^3.
+	\]
+	化简为
+	\[
+	s^3+3s^2-8s+4=0=(s-1)(s^2+4s-4).
+	\]
+	故 $[0,1]$ 中最小根为
+	\[
+	\rho=2\sqrt2-2.
+	\]
+	\item 记
+	\[
+	d_i=\sum_k a_{ik}.
+	\]
+	由于无向图有 $a_{ij}=a_{ji}$。取
+	\[
+	\pi_i=\frac{d_i}{\sum_jd_j}.
+	\]
+	则
+	\[
+	\pi_ip_{ij}
+	=
+	\frac{d_i}{\sum_\ell d_\ell}\frac{a_{ij}}{d_i}
+	=
+	\frac{a_{ij}}{\sum_\ell d_\ell}
+	=
+	\frac{a_{ji}}{\sum_\ell d_\ell}
+	=
+	\pi_jp_{ji}.
+	\]
+	所以该链时间可逆，且平稳不变分布为
+	\[
+	\boxed{\pi_i=\frac{d_i}{\sum_jd_j}}.
+	\]
+\end{enumerate}
+
+\chapter{2024 年期末参考题与解答}
+
+本节根据 2024 往年题截图整理，原帖链接为
+\href{https://zhuanlan.zhihu.com/p/2010142988702078198}{知乎专栏原帖}。
+知乎原文需要登录/验证，下面以截图中可辨认内容为准；第 4 题截图未显示转移矩阵和小问，先保留补题位置，避免误写原题。
+
+\section{题目与参考解答}
+
+\begin{enumerate}[label=\textbf{题 \arabic*:}]
+	\item \textbf{Poisson 过程间隔内的事件数。}
+	设有两个相互独立的 Poisson 过程 $X(t)$ 和 $Y(t)$，参数均为 $\lambda$。计算在 $X(t)$ 的两个相邻事件间隔内，$Y(t)$ 出现 $k$ 个事件的概率。
+
+	设 $T$ 为 $X(t)$ 的相邻事件间隔，则
+	\[
+	T\sim \Exp(\lambda).
+	\]
+	在给定 $T=t$ 时，$Y(t)$ 在该段长度为 $t$ 的区间内出现的事件数服从 $\Pois(\lambda t)$，故
+	\[
+	\Pp\{N_Y(T)=k\mid T=t\}
+	=\e^{-\lambda t}\frac{(\lambda t)^k}{k!}.
+	\]
+	于是
+	\[
+	\Pp\{N_Y(T)=k\}
+	=\int_0^\infty \e^{-\lambda t}\frac{(\lambda t)^k}{k!}\lambda\e^{-\lambda t}\dd t
+	=\frac{\lambda^{k+1}}{k!}\int_0^\infty t^k\e^{-2\lambda t}\dd t.
+	\]
+	利用
+	\[
+	\int_0^\infty t^k\e^{-at}\dd t=\frac{k!}{a^{k+1}},
+	\]
+	得到
+	\[
+	\boxed{\Pp\{N_Y(T)=k\}=\frac1{2^{k+1}},\qquad k=0,1,2,\ldots.}
+	\]
+	若两过程强度分别为 $\lambda_X,\lambda_Y$，则同理为
+	\[
+	\frac{\lambda_X}{\lambda_X+\lambda_Y}
+	\left(\frac{\lambda_Y}{\lambda_X+\lambda_Y}\right)^k.
+	\]
+
+	\item \textbf{Poisson 过程到达时刻联合事件。}
+	$S_i$ 代表参数为 $\lambda$ 的 Poisson 过程中第 $i$ 个事件的发生时间。对于 $n=2k$，计算
+	\[
+	\Pp(S_1>s_1,S_2\le s_2,S_3>s_3,\ldots,S_{n-1}>s_{n-1},S_n\le s_n).
+	\]
+
+	默认 $0<s_1<s_2<\cdots<s_n$。记 $N(t)$ 为对应计数过程。由
+	\[
+	S_m\le t\iff N(t)\ge m,\qquad
+	S_m>t\iff N(t)\le m-1,
+	\]
+	原事件等价于
+	\[
+	N(s_{2r-1})=2r-2,\qquad N(s_{2r})=2r,\qquad r=1,\ldots,k.
+	\]
+	也就是每个区间 $(s_{2r-1},s_{2r}]$ 内恰有 $2$ 个事件，而区间
+	\[
+	(0,s_1],\ (s_2,s_3],\ldots,(s_{2k-2},s_{2k-1}]
+	\]
+	内均无事件。由 Poisson 过程独立增量性，
+	\[
+	\boxed{
+	\Pp
+	=
+	\e^{-\lambda s_{2k}}
+	\prod_{r=1}^{k}
+	\frac{\bigl[\lambda(s_{2r}-s_{2r-1})\bigr]^2}{2!}
+	}.
+	\]
+
+	\item \textbf{六状态离散时间 Markov 链。}
+	状态空间为 $\{0,1,2,3,4,5\}$，一步转移矩阵为
+	\[
+	P=
+	\begin{pmatrix}
+	0&1&0&0&0&0\\
+	1&0&0&0&0&0\\
+	0&0&1&0&0&0\\
+	0&0&0&1&0&0\\
+	0&0&1/2&1/2&0&0\\
+	0&0&1/3&1/3&0&1/3
+	\end{pmatrix}.
+	\]
+	\begin{enumerate}[label=(\arabic*)]
+		\item 分析各个状态的性质，该链是否可约？是否存在闭集，若有，请列出；是否存在周期状态，若有，请列出。
+		\item 截图中该小问符号较模糊，这里按本章常用问法整理为：求从 $i$ 出发最终回到 $i$ 的概率
+		\[
+		\Pp_i(T_i<\infty),\qquad i=0,1,2,3,4,5,
+		\]
+		其中 $T_i=\inf\{n\ge1:X_n=i\}$。
+		\item 计算
+		\[
+		\lim_{n\to\infty}p^{(n)}_{53},\qquad
+		\lim_{n\to\infty}p^{(n)}_{52}.
+		\]
+	\end{enumerate}
+
+	\textbf{解：}
+	由转移图可见，
+	\[
+	0\leftrightarrow1,\qquad 2\to2,\qquad 3\to3,
+	\]
+	且
+	\[
+	4\to2,3,\qquad 5\to2,3,5.
+	\]
+	所以互通类为
+	\[
+	\{0,1\},\quad \{2\},\quad \{3\},\quad \{4\},\quad \{5\}.
+	\]
+	其中 $\{0,1\},\{2\},\{3\}$ 是闭类，且为有限闭互通类，因此其中状态均为正常返。状态 $4$ 一步后进入 $\{2,3\}$，不能回到 $4$，故为非常返。状态 $5$ 每步以概率 $1/3$ 留在 $5$，以概率 $2/3$ 离开到 $\{2,3\}$，离开后不能回到 $5$，故也为非常返。
+
+	该链有多个互不相通的闭类，所以是可约链。最小闭集为
+	\[
+	\{0,1\},\qquad \{2\},\qquad \{3\}.
+	\]
+	它们的并集也都是闭集。
+
+	周期方面，$0,1$ 只能偶数步回到自身，故
+	\[
+	d(0)=d(1)=2.
+	\]
+	状态 $2,3$ 有自环，周期为 $1$；状态 $5$ 也有自环，周期为 $1$；状态 $4$ 不能回到自身，通常不列周期状态。因此周期状态为
+	\[
+	\boxed{0,1}.
+	\]
+
+	返达概率为
+	\[
+	\Pp_0(T_0<\infty)=\Pp_1(T_1<\infty)=1,
+	\]
+	\[
+	\Pp_2(T_2<\infty)=\Pp_3(T_3<\infty)=1,
+	\]
+	\[
+	\Pp_4(T_4<\infty)=0,
+	\]
+	\[
+	\Pp_5(T_5<\infty)=p_{55}=\frac13.
+	\]
+
+	从状态 $5$ 出发，若尚未离开 $5$，下一步以概率 $1/3$ 到 $2$、以概率 $1/3$ 到 $3$、以概率 $1/3$ 仍在 $5$。最终一定离开 $5$，并且离开时到 $2$ 与到 $3$ 的条件概率相等，故
+	\[
+	\boxed{\lim_{n\to\infty}p^{(n)}_{52}=\frac12,\qquad
+	\lim_{n\to\infty}p^{(n)}_{53}=\frac12.}
+	\]
+
+	\item \textbf{三状态离散时间 Markov 链。}
+	原截图第 4 题只显示“状态空间为 $\{0,1,2\}$，一步概率转移矩阵为”，没有显示矩阵和具体小问。请以后用原题截图补齐此处。
+
+	\textbf{可直接套用的解题模板：}若
+	\[
+	P=(p_{ij})_{0\le i,j\le2},
+	\]
+	则先由转移图判断互通类与闭类；有限闭互通类中的状态为正常返，能离开且不能返回的状态为非常返。若要求平稳分布，则解
+	\[
+	\pi P=\pi,\qquad \pi_0+\pi_1+\pi_2=1.
+	\]
+	若要求极限分布，先看是否不可约、正常返、非周期；若有闭类，则先算进入各闭类的概率，再在闭类内求极限。
+
+	\item \textbf{分支过程灭绝概率。}
+	对分支过程，计算初代个体为 $1$ 时的灭绝概率 $\rho$。
+	\[
+	\text{(a) }p_0=\frac14,\quad p_2=\frac34;
+	\]
+	\[
+	\text{(b) }p_0=\frac14,\quad p_1=\frac12,\quad p_2=\frac14;
+	\]
+	\[
+	\text{(c) }p_0=\frac16,\quad p_1=\frac12,\quad p_2=\frac13.
+	\]
+
+	灭绝概率是后代母函数
+	\[
+	f(s)=\sum_{i\ge0}p_is^i
+	\]
+	的不动点方程
+	\[
+	s=f(s)
+	\]
+	在 $[0,1]$ 中的最小根。
+
+	(a) 有
+	\[
+	f(s)=\frac14+\frac34s^2.
+	\]
+	解
+	\[
+	s=\frac14+\frac34s^2
+	\iff
+	3s^2-4s+1=0
+	\iff
+	(3s-1)(s-1)=0.
+	\]
+	故
+	\[
+	\boxed{\rho=\frac13.}
+	\]
+
+	(b) 有
+	\[
+	f(s)=\frac14+\frac12s+\frac14s^2.
+	\]
+	解
+	\[
+	s=\frac14+\frac12s+\frac14s^2
+	\iff
+	(s-1)^2=0.
+	\]
+	故
+	\[
+	\boxed{\rho=1.}
+	\]
+
+	(c) 有
+	\[
+	f(s)=\frac16+\frac12s+\frac13s^2.
+	\]
+	解
+	\[
+	s=\frac16+\frac12s+\frac13s^2
+	\iff
+	2s^2-3s+1=0
+	\iff
+	(2s-1)(s-1)=0.
+	\]
+	故
+	\[
+	\boxed{\rho=\frac12.}
+	\]
+
+	\item \textbf{教授--助教答疑模型。}
+	教授和助教两人在办公室为同学进行答疑。对每一位前来的学生，教授先对课程内容答疑，答疑时间服从 $\Exp(\mu)$；然后助教对作业内容答疑，答疑时间也服从 $\Exp(\mu)$。任何时候到达的学生发现办公室有学生时马上离开。用 $0,1,2$ 表示办公室无学生、教授在答疑、助教在答疑，用 $X(t)$ 表示 $t$ 时刻的答疑状态。学生按照强度为 $\lambda$ 的 Poisson 过程来到办公室。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 说明 $\{X(t)\}$ 是 Markov 链；
+		\item 写出转移速率矩阵 $Q$；
+		\item 写出向前和向后方程；
+		\item 写出嵌入链的一步转移矩阵，计算该链在各状态的平均停留时间。
+	\end{enumerate}
+
+	\textbf{解：}
+	(1) 到达过程为 Poisson 过程，具有独立增量和无后效性；教授、助教的答疑时间均为指数分布，也具有无记忆性。给定当前状态后，下一次状态变化只依赖当前状态，与过去历史无关，所以 $\{X(t)\}$ 是连续时间 Markov 链。
+
+	(2) 状态空间为
+	\[
+	S=\{0,1,2\}.
+	\]
+	状态 $0$ 时，若有学生到达，则进入教授答疑状态 $1$，速率为 $\lambda$；状态 $1$ 时，教授答疑结束后进入助教答疑状态 $2$，速率为 $\mu$；状态 $2$ 时，助教答疑结束后办公室变空，回到状态 $0$，速率为 $\mu$。学生在状态 $1,2$ 到达会直接离开，不改变状态，因此不作为非对角转移。于是
+	\[
+	q_{01}=\lambda,\qquad q_{12}=\mu,\qquad q_{20}=\mu.
+	\]
+	转移速率矩阵为
+	\[
+	Q=
+	\begin{pmatrix}
+	-\lambda&\lambda&0\\
+	0&-\mu&\mu\\
+	\mu&0&-\mu
+	\end{pmatrix}.
+	\]
+
+	(3) 记
+	\[
+	P(t)=(p_{ij}(t))_{i,j=0,1,2}.
+	\]
+	向后方程为
+	\[
+	\boxed{P'(t)=QP(t),\qquad P(0)=I.}
+	\]
+	向前方程为
+	\[
+	\boxed{P'(t)=P(t)Q,\qquad P(0)=I.}
+	\]
+	写成分量形式，向前方程为
+	\[
+	\begin{aligned}
+	p'_{i0}(t)&=-\lambda p_{i0}(t)+\mu p_{i2}(t),\\
+	p'_{i1}(t)&=\lambda p_{i0}(t)-\mu p_{i1}(t),\\
+	p'_{i2}(t)&=\mu p_{i1}(t)-\mu p_{i2}(t).
+	\end{aligned}
+	\]
+	或直接用矩阵式代入 $Q$。
+
+	(4) 嵌入链只记录状态真正变化后的状态，因此
+	\[
+	0\to1,\qquad 1\to2,\qquad 2\to0
+	\]
+	均以概率 $1$ 发生。嵌入链一步转移矩阵为
+	\[
+	K=
+	\begin{pmatrix}
+	0&1&0\\
+	0&0&1\\
+	1&0&0
+	\end{pmatrix}.
+	\]
+	各状态平均停留时间为
+	\[
+	\E T_0=\frac1{\lambda},\qquad
+	\E T_1=\frac1{\mu},\qquad
+	\E T_2=\frac1{\mu}.
+	\]
+
+	\item \textbf{方差参数为 $\sigma^2$ 的布朗运动。}
+	给定方差参数为 $\sigma^2$ 的布朗运动 $W(t)$。
+	\begin{enumerate}[label=(\arabic*)]
+		\item 写出 $(W(s),W(t))$ 的联合分布函数，其中 $s\le t$；
+		\item 构造过程 $X(t)=W(t^2)$，计算 $X(t)$ 的自相关函数。
+	\end{enumerate}
+
+	\textbf{解：}
+	(1) 方差参数为 $\sigma^2$ 表示
+	\[
+	W(t)-W(s)\sim N(0,\sigma^2(t-s)),\qquad 0\le s\le t,
+	\]
+	且 $W(s)$ 与 $W(t)-W(s)$ 独立。因此
+	\[
+	(W(s),W(t))
+	\sim
+	N\left(
+	\begin{pmatrix}0\\0\end{pmatrix},
+	\begin{pmatrix}
+	\sigma^2s&\sigma^2s\\
+	\sigma^2s&\sigma^2t
+	\end{pmatrix}
+	\right).
+	\]
+	若写成联合分布函数，对 $s<t$，
+	\[
+	F_{s,t}(x,y)
+	=
+	\Pp(W(s)\le x,W(t)\le y)
+	=
+	\int_{-\infty}^{x}
+	\frac1{\sqrt{2\pi\sigma^2s}}
+	\e^{-u^2/(2\sigma^2s)}
+	\Phi\left(\frac{y-u}{\sigma\sqrt{t-s}}\right)
+	\dd u.
+	\]
+	这就是二维正态分布函数。若 $s=t$，则退化为
+	\[
+	F_{t,t}(x,y)=\Phi\left(\frac{\min\{x,y\}}{\sigma\sqrt t}\right).
+	\]
+
+	(2) 因为
+	\[
+	X(t)=W(t^2),
+	\]
+	所以
+	\[
+	R_X(s,t)=\E[X(s)X(t)]
+	=\E[W(s^2)W(t^2)]
+	=\sigma^2\min\{s^2,t^2\}.
+	\]
+	若 $s,t\ge0$，则
+	\[
+	\boxed{R_X(s,t)=\sigma^2(\min\{s,t\})^2.}
+	\]
+	对应的相关系数为
+	\[
+	\rho_X(s,t)=\frac{R_X(s,t)}{\sqrt{R_X(s,s)R_X(t,t)}}
+	=\frac{\min\{s,t\}}{\max\{s,t\}},\qquad s,t>0.
+	\]
+\end{enumerate}
+
+\chapter{0522 最后一节重点题型}
+
+\section{0522 复习题目答案版（单列）}
+
+本节按照“题目--答案”的形式单独整理 0522 复习课重点题。题目只保留考试计算所需条件，答案使用 PPT 中的记号与方法。
+
+\begin{exercise}[习题 2.4：Poisson 过程叠加]
+\textbf{题目：}
+实验室共有 $m$ 台计算机，每台计算机等待被病毒感染的时间相互独立，且服从均值为 $1/\lambda$ 的指数分布。假设计算机一旦被感染可以很快被修复，修复时间忽略不计。
+\begin{enumerate}[label=(\alph*)]
+	\item 给出一个计数过程记录 $[0,t]$ 内被病毒感染的计算机总次数；
+	\item 求 $[0,t]$ 内平均有几台次计算机被病毒感染。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+设第 $i$ 台计算机被感染的过程为 $N_i(t)$，$i=1,\dots,m$。由于等待时间服从均值为 $1/\lambda$ 的指数分布，并且修复时间忽略不计，所以每个 $N_i(t)$ 都是强度为 $\lambda$ 的 Poisson 过程，且这些过程相互独立。
+
+记录总次数的计数过程为
+\[
+N(t)=\sum_{i=1}^mN_i(t).
+\]
+由独立 Poisson 过程的叠加性质，$N(t)$ 是强度为 $m\lambda$ 的 Poisson 过程。因此
+\[
+N(t)\sim\Pois(m\lambda t),\qquad
+\E N(t)=\Var(N(t))=m\lambda t.
+\]
+所以 $[0,t]$ 内平均有 $m\lambda t$ 台次计算机被病毒感染。
+\end{solution}
+
+\begin{exercise}[习题 2.12：公交下车人数]
+\textbf{题目：}
+公交车从停车场开出后，第 $k$ 站上车人数 $N_k\sim\Pois(\lambda_k)$。第 $k$ 站上车的乘客以概率 $p_{kj}$ 在第 $j$ 站下车。求第 $j$ 站下车人数 $M_j$ 的分布，并判断不同站下车人数是否独立。
+\begin{enumerate}[label=(\alph*)]
+	\item 求第 $j$ 站下车人数的数学期望；
+	\item 求第 $j$ 站下车人数的概率分布；
+	\item 求第 $i$ 站下车人数和第 $j$ 站下车人数的联合分布。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+把第 $k$ 站上车、第 $j$ 站下车的人数记为 $N_{kj}$。由 Poisson 拆分定理，
+\[
+N_{kj}\sim\Pois(\lambda_kp_{kj}),
+\]
+且所有格子变量 $N_{kj}$ 相互独立。第 $j$ 站下车人数为
+\[
+M_j=\sum_{k<j}N_{kj}\sim \Pois\left(\sum_{k<j}\lambda_kp_{kj}\right).
+\]
+记
+\[
+\mu_j=\E M_j=\sum_{k<j}\lambda_kp_{kj}.
+\]
+则
+\[
+\Pp(M_j=y)=\frac{\mu_j^y\e^{-\mu_j}}{y!}.
+\]
+不同站的下车人数由互不重叠的独立 Poisson 格子叠加而成，所以相互独立。若 $i\ne j$，则
+\[
+\Pp(M_i=x,M_j=y)=\Pp(M_i=x)\Pp(M_j=y)
+=\frac{\mu_i^x\e^{-\mu_i}}{x!}\frac{\mu_j^y\e^{-\mu_j}}{y!}.
+\]
+\end{solution}
+
+\begin{exercise}[习题 2.21：复合/过滤 Poisson 过程]
+\textbf{题目：}
+汽车按照强度为 $\lambda$ 的泊松流通过广场，车流中有 $3/5$ 是小车，$1/5$ 是公交车，$1/5$ 是货车。小车通过时造成的空气污染为 $D_1$，公交车为 $D_2$，货车为 $D_3$。所有 $D_i$ 随时间推移而减弱，经过时间 $s$ 污染减弱为 $D_i h(s)$。假设所有车辆造成的污染相互独立，也与汽车流独立。计算 $[0,t]$ 内通过的车辆对广场造成的平均污染。
+\end{exercise}
+\begin{solution}
+根据泊松流的拆分，三类车的到达分别构成独立的泊松流，强度分别为
+\[
+\lambda_1=\frac35\lambda,\qquad
+\lambda_2=\frac15\lambda,\qquad
+\lambda_3=\frac15\lambda.
+\]
+设第 $k$ 类车在 $\tau$ 时刻到达时产生的初始污染为 $D_{kj}$，则在 $t$ 时刻 $(t>\tau)$ 留下的污染为
+\[
+D_{kj}h(t-\tau).
+\]
+根据泊松过程的分解定理，$t$ 时刻第 $k$ 类车造成的总污染期望为
+\[
+\E Y_k(t)
+=
+\lambda_k \E D_k \int_0^t h(t-s)\dd s
+=
+\lambda_k \E D_k \int_0^t h(s)\dd s.
+\]
+根据独立性，总污染的期望为三者之和：
+\[
+\E Y(t)
+=
+\sum_{k=1}^3\E Y_k(t)
+=
+\lambda\left(\frac35\E D_1+\frac15\E D_2+\frac15\E D_3\right)
+\int_0^t h(s)\dd s.
+\]
+\end{solution}
+
+\begin{exercise}[习题 4.9：岗位平均比例]
+\textbf{题目：}
+公司有 $A,B,C$ 三种岗位，职员岗位变更转移矩阵为
+\[
+P=
+\begin{pmatrix}
+0.3&0.2&0.5\\
+0.3&0&0.7\\
+0.5&0.5&0
+\end{pmatrix}.
+\]
+若职员很多，估算三个岗位的长期平均人数比例。
+\end{exercise}
+\begin{solution}
+长期平均比例即平稳分布。设 $\pi=(\pi_1,\pi_2,\pi_3)$，解
+\[
+\pi P=\pi,\qquad \pi_1+\pi_2+\pi_3=1.
+\]
+整理方程组：
+\[
+-0.7\pi_1+0.3\pi_2+0.5\pi_3=0,
+\]
+\[
+0.2\pi_1-\pi_2+0.5\pi_3=0,
+\]
+\[
+0.5\pi_1+0.7\pi_2-\pi_3=0.
+\]
+进行归一化，得到
+\[
+\pi_1=\frac{65}{174},\qquad
+\pi_2=\frac{45}{174}=\frac{15}{58},\qquad
+\pi_3=\frac{64}{174}=\frac{32}{87}.
+\]
+所以 $A,B,C$ 岗位长期平均人数比例为
+\[
+65:45:64.
+\]
+\end{solution}
+
+\begin{exercise}[习题 4.10：离散时间单服务台]
+\textbf{题目：}
+第 $n$ 小时有 $Z_n$ 个顾客到达服务台，其中 $Z_0,Z_1,\dots$ 独立同分布，$\Pp(Z_0=i)=p_i$。每小时最多完成一位顾客的服务。令 $X_n$ 表示 $n$ 时服务台顾客数。
+\begin{enumerate}[label=(\alph*)]
+	\item 用 $\{Z_n\}$ 表示 $\{X_n\}$，说明 $\{X_n\}$ 是 Markov 链；
+	\item 写出转移概率 $p_{ij}$；
+	\item 给出平稳不变分布存在条件；
+	\item 稳态下求服务台空闲概率。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\textbf{(a)} 如果 $n$ 时有顾客 $(X_n>0)$，服务 $1$ 人后剩 $X_n-1$ 人；若没人 $(X_n=0)$，则剩 $0$ 人。加上新到顾客，状态演化方程为
+\[
+X_{n+1}=\max(X_n-1,0)+Z_{n+1}.
+\]
+由于 $Z_{n+1}$ 与过去独立，$X_{n+1}$ 只由 $X_n$ 和新到人数决定，所以 $\{X_n\}$ 是 Markov 链。
+
+\textbf{(b)} 转移概率 $p_{ij}=\Pp(X_{n+1}=j\mid X_n=i)$：
+
+当 $i=0$ 时，$X_{n+1}=Z_{n+1}$，故
+\[
+p_{0j}=p_j,
+\]
+当 $i>0$ 时，$X_{n+1}=i-1+Z_{n+1}$。要使得 $X_{n+1}=j$，需
+\[
+Z_{n+1}=j-i+1.
+\]
+故当 $j\ge i-1$ 时，$p_{ij}=p_{j-i+1}$；当 $j<i-1$ 时，$p_{ij}=0$。即
+\[
+p_{ij}=
+\begin{cases}
+p_{j-i+1},&i>0,\ j\ge i-1,\\
+0,&i>0,\ j<i-1.
+\end{cases}
+\]
+\textbf{(c)} 该模型是典型的离散时间单服务台排队系统。要使得平稳不变分布存在，即系统稳态不至于崩溃，必须满足到达率小于服务率：
+\[
+\E Z_0<1.
+\]
+
+\textbf{(d)} 假设平稳分布存在，设服务台空闲的概率为
+\[
+\pi_0=\Pp(X=0).
+\]
+对状态方程
+\[
+X_{n+1}=\max(X_n-1,0)+Z_{n+1}
+\]
+两边取期望。注意
+\[
+\max(X_n-1,0)=X_n-I(X_n>0),
+\]
+于是
+\[
+\E X_{n+1}=\E X_n-\Pp(X_n>0)+\E Z_{n+1}.
+\]
+在稳态下 $\E X_{n+1}=\E X_n$，于是
+\[
+\Pp(X>0)=\E Z_0.
+\]
+所以
+\[
+\pi_0=\Pp(X=0)=1-\E Z_0.
+\]
+\end{solution}
+
+\begin{exercise}[习题 4.13：平稳比例与平均返回时间]
+\textbf{题目：}
+上市公司年经济效益按每股收益分成三类：减少 $50\%$ 记为 $-1$，增加 $50\%$ 记为 $1$，其他记为 $0$。状态顺序为 $(-1,0,1)$，转移矩阵为
+\[
+P=
+\begin{pmatrix}
+0.8&0.2&0\\
+0.3&0.3&0.4\\
+0&0.5&0.5
+\end{pmatrix}.
+\]
+计算各状态长期平均比例和每个状态的平均返回时间。
+\end{exercise}
+\begin{solution}
+设状态空间为 $\{-1,0,1\}$，对应分布为
+\[
+\pi=(\pi_{-1},\pi_0,\pi_1).
+\]
+解方程 $\pi P=\pi$，并代入归一化条件
+\[
+\pi_{-1}+\pi_0+\pi_1=1.
+\]
+由方程可得
+\[
+\pi_{-1}=1.5\pi_0,\qquad \pi_1=0.8\pi_0.
+\]
+因此
+\[
+1.5\pi_0+\pi_0+0.8\pi_0=3.3\pi_0=1,
+\]
+从而
+\[
+\pi_0=\frac{10}{33}.
+\]
+于是各状态所占平均比例为
+\[
+\pi_{-1}=\frac5{11},\qquad
+\pi_0=\frac{10}{33},\qquad
+\pi_1=\frac8{33}.
+\]
+平均返回时间
+\[
+\mu_i=\frac1{\pi_i}.
+\]
+故
+\[
+\mu_{-1}=\frac{33}{15}=2.2\text{ 年},\qquad
+\mu_0=\frac{33}{10}=3.3\text{ 年},\qquad
+\mu_1=\frac{33}{8}=4.125\text{ 年}.
+\]
+\end{solution}
+
+\begin{exercise}[习题 5.4：生物群体动态模型]
+\textbf{题目：}
+设 $T_1,T_2,T_3$ 相互独立，且 $T_i\sim\Exp(\lambda_i)$。从任何时间开始，群体中每个个体等待 $T_1$ 后分裂成两个个体，等待 $T_2$ 后离开群体，外部个体等待 $T_3$ 后进入群体。用 $X(t)$ 表示 $t$ 时群体中个体数。
+\begin{enumerate}[label=(\alph*)]
+	\item 写出转移速率矩阵；
+	\item 若个体总数达到 $m$ 后停止新的迁入，写出转移速率矩阵。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\textbf{(a)} 这是一个连续时间生灭过程。对于状态 $n$，即有 $n$ 个个体：
+
+增加 $1$ 个的来源有两类：某个个体分裂，单个速率为 $\lambda_1$，总速率为 $n\lambda_1$；或者外部个体进入，速率为 $\lambda_3$。故出生率为
+\[
+q_{n,n+1}=\lambda_n=n\lambda_1+\lambda_3,\qquad n\ge0.
+\]
+减少 $1$ 个来自某个个体离开，单个速率为 $\lambda_2$，总速率为 $n\lambda_2$。故死亡率为
+\[
+q_{n,n-1}=\mu_n=n\lambda_2,\qquad n\ge1.
+\]
+对角元为
+\[
+q_{nn}=-(\lambda_n+\mu_n)=-(n\lambda_1+\lambda_3+n\lambda_2),
+\]
+其余 $q_{ij}=0$。
+
+\textbf{(b)} 达到 $m$ 后停止迁入，意味着 $n\ge m$ 时 $\lambda_3$ 项消失：
+
+当 $n<m$ 时，
+\[
+q_{n,n+1}=n\lambda_1+\lambda_3,\qquad q_{n,n-1}=n\lambda_2;
+\]
+当 $n\ge m$ 时
+\[
+q_{n,n+1}=n\lambda_1,\qquad q_{n,n-1}=n\lambda_2.
+\]
+对角元 $q_{nn}$ 对应等于上述所在行非对角元之和的相反数。
+\end{solution}
+
+\begin{exercise}[习题 5.7：M/M/1/1 诊室损失制]
+\textbf{题目：}
+病人到达率为 $\lambda$，医生服务率为 $\mu$。若到达病人发现诊室有人就离开。用 $X(t)$ 表示诊室总人数，求稳态平均人数、医生可用度和能看病人数占到达人数比例。
+\end{exercise}
+\begin{solution}
+状态空间 $S=\{0,1\}$，转移速率矩阵为
+\[
+Q=
+\begin{pmatrix}
+-\lambda&\lambda\\
+\mu&-\mu
+\end{pmatrix}.
+\]
+平稳方程为 $\pi_0\lambda=\pi_1\mu$，结合 $\pi_0+\pi_1=1$，得
+\[
+\pi_0=\frac{\mu}{\lambda+\mu},\qquad
+\pi_1=\frac{\lambda}{\lambda+\mu}.
+\]
+稳态平均人数为
+\[
+L=\pi_1=\frac{\lambda}{\lambda+\mu}.
+\]
+医生可用度即空闲概率：
+\[
+\pi_0=\frac{\mu}{\lambda+\mu}.
+\]
+由 Poisson 到达的 PASTA 性质，能看病人数占到达人数比例也是
+\[
+\frac{\mu}{\lambda+\mu}.
+\]
+\end{solution}
+
+\begin{exercise}[习题 5.12：M/M/1/2 加油站]
+\textbf{题目：}
+加油站只有一个油泵和一个候车位。汽车按强度 $\lambda$ 的 Poisson 过程到达，服务时间服从 $\Exp(\mu)$。若没有车位则离去。令 $X(t)$ 表示 $t$ 时加油站车辆数。
+\begin{enumerate}[label=(\alph*)]
+	\item 求转移速率矩阵 $Q$；
+	\item 求嵌入链转移矩阵 $K$；
+	\item 稳态下求平均车辆数。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\textbf{(a) \& (b)} 系统容量为 $2$，状态空间为 $\{0,1,2\}$。
+
+\textbf{(a)} 转移速率矩阵 $Q$：
+\[
+Q=
+\begin{pmatrix}
+-\lambda&\lambda&0\\
+\mu&-(\lambda+\mu)&\lambda\\
+0&\mu&-\mu
+\end{pmatrix}.
+\]
+
+\textbf{(b)} 嵌入链的转移概率矩阵 $K$，其中 $k_{ij}=q_{ij}/(-q_{ii})$：
+\[
+K=
+\begin{pmatrix}
+0&1&0\\
+\dfrac{\mu}{\lambda+\mu}&0&\dfrac{\lambda}{\lambda+\mu}\\
+0&1&0
+\end{pmatrix}.
+\]
+
+\textbf{(c)} 稳定状态下加油站的平均车辆数：
+
+设 $\rho=\lambda/\mu$。由细致平稳条件
+\[
+\pi_{n-1}\lambda=\pi_n\mu
+\]
+可得
+\[
+\pi_1=\rho\pi_0,\qquad \pi_2=\rho\pi_1=\rho^2\pi_0.
+\]
+由 $\pi_0+\pi_1+\pi_2=1$，解得
+\[
+\pi_0=\frac1{1+\rho+\rho^2}.
+\]
+各状态概率为
+\[
+\pi_1=\frac{\rho}{1+\rho+\rho^2},\quad
+\pi_2=\frac{\rho^2}{1+\rho+\rho^2}.
+\]
+平均车辆数为
+\[
+L=\pi_1+2\pi_2=\frac{\rho+2\rho^2}{1+\rho+\rho^2}.
+\]
+\end{solution}
+
+\begin{exercise}[习题 5.18：生灭过程分类]
+\textbf{题目：}
+判断以下三个生灭过程哪个非常返、哪个零常返、哪个正常返。对于正常返过程，求平稳分布。
+\[
+\text{(a) }\lambda_n=n+2,\ \mu_n=n;
+\]
+\[
+\text{(b) }\lambda_n=n+1,\ \mu_n=n;
+\]
+\[
+\text{(c) }\mu_n=n,\quad \lambda_0=\lambda_1=1,\quad \lambda_n=n-1\ (n\ge2).
+\]
+\end{exercise}
+\begin{solution}
+记势函数
+\[
+\rho_0=1,\qquad
+\rho_n=\frac{\lambda_0\lambda_1\cdots\lambda_{n-1}}
+{\mu_1\mu_2\cdots\mu_n}.
+\]
+判别准则：
+\begin{itemize}
+	\item 若 $\sum_{n=0}^{\infty}\rho_n<\infty$，则是正常返。
+	\item 若 $\sum_{n=0}^{\infty}\rho_n=\infty$ 且 $\sum_{n=0}^{\infty}\dfrac1{\lambda_n\rho_n}=\infty$，则是零常返。
+	\item 若 $\sum_{n=0}^{\infty}\rho_n=\infty$ 且 $\sum_{n=0}^{\infty}\dfrac1{\lambda_n\rho_n}<\infty$，则是非常返。
+\end{itemize}
+
+\textbf{(a)} $\lambda_n=n+2,\mu_n=n$：
+\[
+\rho_n=\frac{2\cdot3\cdots(n+1)}{1\cdot2\cdots n}=n+1.
+\]
+此时 $\sum\rho_n=\infty$。检验第二项：
+\[
+\sum\frac1{\lambda_n\rho_n}
+=\sum\frac1{(n+2)(n+1)}<\infty.
+\]
+故 (a) 非常返。
+
+\textbf{(b)} $\lambda_n=n+1,\mu_n=n$：
+\[
+\rho_n=\frac{1\cdot2\cdots n}{1\cdot2\cdots n}=1.
+\]
+此时
+\[
+\sum\rho_n=\sum1=\infty.
+\]
+检验第二项：
+\[
+\sum\frac1{\lambda_n\rho_n}
+=\sum\frac1{n+1}=\infty.
+\]
+故 (b) 零常返。
+
+\textbf{(c)} $\mu_n=n,\lambda_0=\lambda_1=1,\lambda_n=n-1\ (n\ge2)$：
+
+当 $n\ge2$ 时，
+\[
+\rho_n=\frac{1\cdot1\cdot2\cdots(n-2)}{1\cdot2\cdot3\cdots n}
+=\frac{(n-2)!}{n!}
+=\frac1{n(n-1)}.
+\]
+并且 $\rho_0=1,\rho_1=1$。总和
+\[
+\sum_{n=0}^{\infty}\rho_n
+=1+1+\sum_{n=2}^{\infty}\left(\frac1{n-1}-\frac1n\right)
+=3<\infty.
+\]
+故 (c) 正常返。平稳分布为
+\[
+\pi_n=\frac{\rho_n}{\sum\rho_k},
+\]
+即
+\[
+\pi_0=\frac13,\qquad
+\pi_1=\frac13,\qquad
+\pi_n=\frac1{3n(n-1)}\quad(n\ge2).
+\]
+\end{solution}
+
+\begin{exercise}[例 2.3：M/M/m 排队]
+\textbf{题目：}
+顾客按强度 $\lambda$ 的 Poisson 流到达有 $m$ 个相同服务台的服务系统。每个顾客服务时间服从 $\Exp(\mu)$。令 $X(t)$ 表示系统中的顾客总数。
+\begin{enumerate}[label=(\arabic*)]
+	\item 说明 $\{X(t)\}$ 是连续时间 Markov 链；
+	\item 计算嵌入链转移概率；
+	\item 写出转移速率矩阵。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\textbf{(1)} 顾客到达为泊松流，服务时间服从指数分布，两者都具有“无记忆性”。系统在将来任何时刻的状态仅取决于当前系统内顾客数，与历史状态无关，因此 $\{X(t)\}$ 是连续时间 Markov 链。
+
+\textbf{(3)} 转移速率矩阵 $Q$ 先求较直观。出生率为
+\[
+\lambda_n=\lambda,\qquad n\ge0,
+\]
+死亡率为
+\[
+\mu_n=
+\begin{cases}
+n\mu,&n<m,\\
+m\mu,&n\ge m.
+\end{cases}
+\]
+于是
+\[
+q_{n,n+1}=\lambda,\qquad
+q_{n,n-1}=\mu_n,\qquad
+q_{nn}=-(\lambda+\mu_n).
+\]
+
+\textbf{(2)} 嵌入链的转移概率 $P=(p_{ij})$，其中 $p_{ij}=q_{ij}/(-q_{ii})$：
+\[
+p_{01}=1,
+\]
+\[
+1\le n<m\text{ 时},\qquad
+p_{n,n+1}=\frac{\lambda}{\lambda+n\mu},\qquad
+p_{n,n-1}=\frac{n\mu}{\lambda+n\mu},
+\]
+\[
+n\ge m\text{ 时},\qquad
+p_{n,n+1}=\frac{\lambda}{\lambda+m\mu},\qquad
+p_{n,n-1}=\frac{m\mu}{\lambda+m\mu}.
+\]
+\end{solution}
+
+\begin{exercise}[习题 6.4：几何布朗运动]
+\textbf{题目：}
+设 $\{B(t),t\ge0\}$ 是标准布朗运动，定义
+\[
+Y(t)=\exp(B(t)),\qquad t\ge0.
+\]
+计算 $\E Y(t)$ 与 $\Var(Y(t))$。
+\end{exercise}
+\begin{solution}
+因为 $B(t)\sim N(0,t)$，由正态随机变量矩母函数
+\[
+\E \e^{sB(t)}=\exp\left(\frac12s^2t\right).
+\]
+取 $s=1$ 得
+\[
+\E Y(t)=\E \e^{B(t)}=\e^{t/2}.
+\]
+取 $s=2$ 得
+\[
+\E Y^2(t)=\E \e^{2B(t)}=\e^{2t}.
+\]
+所以
+\[
+\Var(Y(t))=\E Y^2(t)-[\E Y(t)]^2
+=\e^{2t}-\e^t=\e^t(\e^t-1).
+\]
+\end{solution}
+
+\begin{exercise}[习题 6.11：最后一次过零]
+\textbf{题目：}
+设 $\{B(t),t\ge0\}$ 是标准布朗运动，
+\[
+\tau=\sup\{t:t\le1,\ B(t)=0\}.
+\]
+求 $\tau$ 的分布函数。
+\end{exercise}
+\begin{solution}
+由布朗运动最后一次过零时刻的反正弦律，对 $[0,t]$ 内最后一次过零时刻 $\tau_t$ 有
+\[
+\Pp(\tau_t\le x)=\frac2\pi\arcsin\sqrt{\frac{x}{t}},
+\qquad 0\le x\le t.
+\]
+本题 $t=1$，所以
+\[
+F_\tau(x)=\Pp(\tau\le x)=\frac2\pi\arcsin\sqrt{x},
+\qquad 0\le x\le1.
+\]
+并且
+\[
+F_\tau(x)=0\quad (x<0),\qquad F_\tau(x)=1\quad (x>1).
+\]
+这说明布朗运动“最后一次回到 $0$ 的时间”往往集中在区间两端，而不是中间。
+\end{solution}
+
+\section{考前速记表}
+
+\begin{center}
+\begin{tabular}{p{4.2cm}p{9.2cm}}
+\toprule
+题型 & 一句话套路 \\
+\midrule
+Poisson 叠加 & 独立 Poisson 流相加，强度相加。\\
+Poisson 拆分 & 以概率 $p_i$ 分类，强度变为 $\lambda p_i$，各类独立。\\
+下车人数 & 先按“上车站-下车站”拆成独立 Poisson，再按下车站叠加。\\
+污染/收益累计 & 用 $\lambda\E Y\int_0^t h(s)\dd s$。\\
+离散平稳分布 & 解 $\pi P=\pi$，再归一化。\\
+平均返回时间 & $\mu_i=1/\pi_i$。\\
+离散排队 & 写递推 $X_{n+1}=\max(X_n-1,0)+Z_{n+1}$。\\
+连续生灭建模 & 出生率写 $q_{n,n+1}$，死亡率写 $q_{n,n-1}$，对角元补负行和。\\
+嵌入链 & $k_{ij}=q_{ij}/(-q_{ii})$。\\
+生灭分类 & 看 $\sum\rho_n$ 和 $\sum1/(\lambda_n\rho_n)$。\\
+M/M/m & 离开率 $\min(n,m)\mu$，稳定条件 $\lambda<m\mu$。\\
+几何布朗 & $B(t)\sim N(0,t)$，用正态矩母函数。\\
+反正弦律 & $\Pp\{\tau\le x\}=2\pi^{-1}\arcsin\sqrt{x}$。\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{最后检查：定义/定理默写关键词}
+
+\begin{itemize}
+	\item 随机过程：概率空间、参数集、随机变量族、状态空间、样本函数。
+	\item Poisson 过程：$N(0)=0$、独立增量、平稳增量、Poisson 分布、小时间概率。
+	\item Markov 链：给定现在，未来与过去无关。
+	\item C-K 方程：离散 $P^{m+n}=P^mP^n$；连续 $P(t+s)=P(t)P(s)$。
+	\item 平稳分布：离散 $\pi P=\pi$；连续 $\pi Q=0$。
+	\item 可逆分布：离散 $\pi_ip_{ij}=\pi_jp_{ji}$；连续 $\pi_iq_{ij}=\pi_jq_{ji}$。
+	\item 连续时间 $Q$ 矩阵：非对角非负、行和为零、停留时间指数分布。
+	\item 布朗运动：初值 $0$、独立增量、平稳正态增量、轨道连续。
+\end{itemize}
+
+\end{document}

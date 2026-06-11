@@ -1,0 +1,4216 @@
+\documentclass[UTF8,12pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb,amsthm,geometry,booktabs,longtable,array,enumitem}
+\usepackage{graphicx,pdfpages}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\geometry{margin=2.15cm}
+\setlist{nosep,leftmargin=2em}
+\hypersetup{
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  pdfstartview=FitH,
+  pdftitle={微分几何期末复习资料},
+  pdfauthor={傲宇}
+}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\A}{\mathcal A}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\pd}{\partial}
+\newcommand{\vct}[1]{\boldsymbol{#1}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\inner}[2]{\left(#1,#2\right)}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\homeworkweek}[1]{%
+  \item[]\vspace{0.35em}\noindent\textbf{\large #1}\vspace{0.15em}
+}
+\newcommand{\homeworkrawweek}[1]{%
+  \par\medskip\noindent\textbf{\large #1}\par\smallskip
+}
+\newcommand{\homeworkraw}[1]{%
+  \begin{minipage}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth,height=0.30\textheight,keepaspectratio]{review_assets/homework_cropped/#1}
+  \end{minipage}
+}
+\newcommand{\homeworkimage}[2]{%
+  \begin{center}
+    \textbf{作业截图 #1}\par\medskip
+    \includegraphics[width=\linewidth,height=0.78\textheight,keepaspectratio]{review_assets/homework/#2}
+  \end{center}
+  \clearpage
+}
+\newcommand{\homeworkpacked}[2]{%
+  \begin{center}
+    \textbf{作业原图拼页 #1}\par\medskip
+    \includegraphics[width=\linewidth,height=0.90\textheight,keepaspectratio]{review_assets/homework_packed/#2}
+  \end{center}
+  \clearpage
+}
+\newcommand{\homeworkpackedfirst}[1]{%
+  \begin{center}
+    \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{review_assets/homework_packed/#1}
+  \end{center}
+  \clearpage
+}
+
+\title{微分几何期末复习资料}
+\author{傲宇}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section*{考试范围与记号}
+\addcontentsline{toc}{section}{考试范围与记号}
+记号约定：欧氏空间写作 $\E^3$，仿射空间写作 $\A^n$；曲线 Frenet 标架写作 $\{\alpha,\beta,\gamma\}$；曲面局部参数标架写作 $\{\partial_1,\partial_2\}$；第一、第二基本形式分量写作 $g_{ab},\Pi_{ab}$；Riemann 联络和 Christoffel 记号写作 $\nabla,\Gamma^c_{ab}$。
+
+复习重点：判断、选择、填空重在概念辨析；计算题重在曲率、挠率、Frenet 标架、第一基本形式、Christoffel 记号和测地线方程；证明题重在教材中的短命题、定义等价性、自然标架运动公式、测地线性质。
+
+题型参考：判断 $2\times 10$，填空 $2\times 10$，计算约 $40$ 分，证明约 $20$ 分。
+
+\newpage
+
+\section{知识点}
+
+\subsection{选择、判断、填空核心速记}
+判断顺序：先判断对象属于哪一类几何，再判断它是否依赖坐标、是否内蕴、是否外蕴。
+
+\paragraph{一眼判断表}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.66\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}@{}}
+\toprule
+命题 & 结论\\
+\midrule
+$\vct a\cdot\vct b=\vct b\cdot\vct a$ & 对\\
+$\vct a\times\vct b=\vct b\times\vct a$ & 错\\
+$(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct c\times\vct a)$ & 对\\
+$(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct a\times\vct c)$ & 错\\
+正则曲线任一点附近可选某个坐标作参数 & 对\\
+正则曲线的弧长、曲率、挠率不依赖标准正交坐标系选取 & 对\\
+挠率依赖坐标系选取 & 错\\
+曲线切向量方向不变，则曲线为直线 & 对\\
+曲率为 $0$ 的孤立点一定不存在 Frenet 标架 & 错，看 $\dot\alpha$ 极限\\
+仿射坐标变换可能把开集变成闭集 & 错\\
+广义坐标变换保持连续性与光滑性 & 对\\
+一点的导算子集合构成线性空间，并与该点向量空间同构 & 对\\
+曲面上一点切空间与余切空间互为对偶 & 对\\
+局部参数化中 $\partial_1,\partial_2$ 线性无关 & 对\\
+曲面的第一基本形式是外蕴几何量 & 错，作为度量是内蕴量\\
+曲面的第二基本形式是内蕴几何量 & 错，通常是外蕴量\\
+第一、第二基本形式在满足相容条件时决定曲面局部存在唯一 & 对\\
+测地线距离是外蕴几何量 & 错，是内蕴量\\
+欧氏空间直线距离限制到曲面后是曲面内蕴距离 & 错\\
+曲面上给定初始点和初始方向，测地线局部唯一 & 对\\
+只受曲面约束力的自由质点速率不变 & 对\\
+只受曲面约束力的自由质点在 $\E^3$ 中速度方向不变 & 错\\
+标准圆柱面局部平坦 & 对\\
+圆柱面与平面局部等距 & 对\\
+圆柱面与平面作为 $\E^3$ 中曲面局部合同 & 错\\
+球面与柱面局部等距 & 错\\
+大圆是球面的测地线，球面测地线是大圆的一段 & 对\\
+直线段是平面的测地线，平面测地线是直线段 & 对\\
+\bottomrule
+\end{longtable}
+
+\paragraph{常用填空公式}
+\begin{enumerate}
+\item Einstein 求和：
+\[
+A_1B^1C^2+A_2B^2C^2+A_3B^3C^2=A_iB^iC^2.
+\]
+\item 混合积：
+\[
+\vct a\cdot(\vct b\times\vct c)=\det(\vct a,\vct b,\vct c).
+\]
+\item 一般参数曲线：
+\[
+\kappa=\frac{\norm{r'\times r''}_2}{\norm{r'}_2^3},\qquad
+\tau=\frac{\det(r',r'',r''')}{\norm{r'\times r''}_2^2}.
+\]
+\item Frenet 公式：
+\[
+\dot\alpha=\kappa\beta,\qquad
+\dot\beta=-\kappa\alpha+\tau\gamma,\qquad
+\dot\gamma=-\tau\beta.
+\]
+\item 曲率物理意义：单位速度运动时加速度大小；几何意义：切向方向变化快慢。
+\item 挠率几何意义：次法向量变化快慢，刻画曲线偏离密切平面的程度。
+\item 曲率为 $0$ 的孤立点处，Frenet 标架能否延拓看 $\dot\alpha(s)$ 的极限是否存在。
+\item 第一基本形式：
+\[
+I=g_{ab}\dd y^a\dd y^b,\qquad g_{ab}=(\partial_a,\partial_b).
+\]
+\item 第二基本形式：
+\[
+II=\Pi_{ab}\dd y^a\dd y^b,\qquad \Pi_{ab}=(\partial_a\partial_b,n).
+\]
+\item Christoffel 记号：
+\[
+\Gamma^c_{ab}=\frac12g^{cd}(\partial_ag_{bd}+\partial_bg_{ad}-\partial_dg_{ab}).
+\]
+\item 测地线方程：
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0.
+\]
+\item 测地线物理意义：自由质点只受曲面约束力；几何意义：切向量沿自身平行，局部最短。
+\item 球面测地圆周长比平面同半径圆周长短；双曲面则长。
+\item 二维 Riemann 曲率可能非零分量：
+\[
+R_{1212},\quad R_{1221},\quad R_{2112},\quad R_{2121}.
+\]
+\item 正则曲面四种定义：局部参数化、局部图像、正则等值面、广义坐标展平。
+\item 决定曲面局部存在唯一的几何量：第一基本形式与第二基本形式，并满足 Gauss-Codazzi 相容条件。
+\end{enumerate}
+
+\paragraph{选择题易混点}
+\begin{enumerate}
+\item \textbf{局部等距}只要求第一基本形式相同；\textbf{局部合同}作为 $\E^3$ 中刚体运动意义下的重合，还涉及第二基本形式。
+\item 圆柱面与平面第一基本形式可相同，所以局部等距；但第二基本形式不同，所以不局部合同。
+\item 测地线距离、Riemann 曲率、高斯曲率是内蕴量；第二基本形式、法向量、普通空间加速度的法向分量是外蕴量。
+\item 仿射几何不讨论欧氏长度、角度、曲率、挠率；欧氏几何才讨论这些量。
+\item ``坐标表达改变''不等于``几何对象改变''。判断坐标无关性时，看定义是否由对象本身或可逆坐标变换给出。
+\end{enumerate}
+
+\subsection{向量代数}
+\paragraph{基本恒等式}
+\[
+\vct a\cdot\vct b=\vct b\cdot\vct a,\qquad
+\vct a\times\vct b=-\vct b\times\vct a.
+\]
+\[
+\vct a\cdot(\vct b\times\vct c)
+=\vct b\cdot(\vct c\times\vct a)
+=\vct c\cdot(\vct a\times\vct b)
+=\det(\vct a,\vct b,\vct c).
+\]
+\[
+(\vct a\times\vct b)\cdot(\vct c\times\vct d)
+=\inner{\vct a}{\vct c}\inner{\vct b}{\vct d}
+-\inner{\vct b}{\vct c}\inner{\vct a}{\vct d}.
+\]
+\[
+\vct a\times(\vct b\times\vct c)
+\;+\;\vct b\times(\vct c\times\vct a)
+\;+\;\vct c\times(\vct a\times\vct b)=0.
+\]
+\[
+(\vct a\times\vct b)\cdot\bigl((\vct b\times\vct c)\times(\vct c\times\vct a)\bigr)
+=\bigl(\vct a\cdot(\vct b\times\vct c)\bigr)^2.
+\]
+
+\paragraph{Einstein 求和约定}
+重复指标默认求和。例如
+\[
+A_iB^iC^2=A_1B^1C^2+A_2B^2C^2+A_3B^3C^2.
+\]
+不重复的指标保留，不写求和号。
+
+\subsection{三维欧氏空间中的曲线}
+\paragraph{正则曲线与弧长参数}
+曲线 $r:(a,b)\to\E^3$ 正则，是指 $r'(t)\ne0$。若
+\[
+s(t)=\int_{t_0}^{t}\norm{r'(u)}_2\dd u,
+\]
+则 $s$ 为弧长参数，并且 $\norm{\dot r(s)}_2=1$。正则曲线在任一点附近至少可取 $x^1,x^2,x^3$ 中某一个坐标为参数。
+
+\paragraph{Frenet 标架}
+教材记号为
+\[
+\alpha(s)=\dot r(s),\qquad
+\kappa(s)=\norm{\dot\alpha(s)}_2.
+\]
+当 $\kappa>0$ 时
+\[
+\beta(s)=\frac{\dot\alpha(s)}{\kappa(s)},\qquad
+\gamma(s)=\alpha(s)\times\beta(s).
+\]
+Frenet 运动公式：
+\[
+\dot\alpha=\kappa\beta,\qquad
+\dot\beta=-\kappa\alpha+\tau\gamma,\qquad
+\dot\gamma=-\tau\beta.
+\]
+矩阵形式：
+\[
+\frac{\dd}{\dd s}(\alpha,\beta,\gamma)
+=(\alpha,\beta,\gamma)
+\begin{pmatrix}
+0&-\kappa&0\\
+\kappa&0&-\tau\\
+0&\tau&0
+\end{pmatrix}.
+\]
+
+\paragraph{一般参数计算公式}
+若 $r=r(t)$，则
+\[
+\kappa(t)=\frac{\norm{r'(t)\times r''(t)}_2}{\norm{r'(t)}_2^3},
+\qquad
+\tau(t)=\frac{\det(r'(t),r''(t),r'''(t))}
+{\norm{r'(t)\times r''(t)}_2^2}.
+\]
+标架可按
+\[
+\alpha=\frac{r'}{\norm{r'}_2},\qquad
+\gamma=\frac{r'\times r''}{\norm{r'\times r''}_2},\qquad
+\beta=\gamma\times\alpha
+\]
+计算。
+
+\paragraph{常见曲线}
+平面圆周半径 $r$ 的曲率为 $1/r$。螺线
+\[
+r(t)=(a\cos\omega t,a\sin\omega t,bt)
+\]
+满足
+\[
+\kappa=\frac{a\omega^2}{a^2\omega^2+b^2},\qquad
+\tau=\frac{b\omega}{a^2\omega^2+b^2}.
+\]
+若写成 $(a\sin\omega t,a\cos\omega t,bt)$，则挠率符号随取向改变。
+
+\paragraph{几何意义}
+曲率是单位速度运动时加速度大小，也是切向量方向变化快慢。挠率刻画曲线偏离密切平面的快慢。若曲线切向量方向不变，则曲线是直线。若平面曲线挠率恒为 $0$ 且曲率为非零常数，则曲线为圆弧。
+
+\subsection{仿射空间与广义坐标}
+\paragraph{仿射空间基本事实}
+在 $\A^3$ 中，过不同两点有且只有一条直线。若在仿射坐标系 $\{O,e_i\}$ 下，$A$ 坐标为 $(a^1,a^2,a^3)$，方向为 $v=v^ie_i$，则直线方程为
+\[
+x^i=a^i+kv^i,\qquad k\in\R.
+\]
+平面若由一点 $A$ 和两个方向 $v,w$ 决定，则
+\[
+x^i=a^i+kv^i+\rho w^i,\qquad k,\rho\in\R.
+\]
+仿射坐标变换是可逆光滑映射，所以开集、闭集、连续性不因仿射坐标系改变而改变。
+
+\paragraph{广义坐标}
+教材定义 3.7：$U\subset\A^n$ 为开区域，若一族 $C^\infty$ 函数 $\{y^i\}$ 使得
+\[
+\varphi_U:U\to\R^n,\qquad A\mapsto(y^1(A),\ldots,y^n(A))
+\]
+与仿射坐标读数之间的 Jacobi 矩阵处处可逆，则称 $\{U,\varphi_U\}$ 为广义坐标系。这个条件不依赖仿射坐标系选取。
+
+\paragraph{点上的向量空间与导算子}
+教材定义
+\[
+T_A=\{(A,B)\mid B\in\A^n\}.
+\]
+若 $v\in T_A$，在坐标下写成 $v=v^i\partial_i$。导算子是对 $A$ 附近函数的方向导数。若 $f$ 在 $A$ 的某邻域上为常数，则对任何导算子 $D$，
+\[
+Df=0.
+\]
+一点的向量空间与导算子空间同构；曲面上一点的切空间与余切空间互为对偶。
+
+\subsection{仿射空间中的曲面}
+\paragraph{局部光滑参数化}
+教材定义 4.6：设 $S\subset\A^3$ 非空。若对任意 $A\in S$，存在 $A$ 在 $\A^3$ 中的开邻域 $U$ 和映射
+\[
+\varphi:(-\epsilon,\epsilon)\times(-\epsilon,\epsilon)\to U\cap S
+\]
+满足：
+\begin{enumerate}
+\item $\varphi$ 是参数域到 $U\cap S$ 的双射；
+\item 在任意仿射坐标系下，$\varphi_A\circ\varphi$ 为光滑映射；
+\item 记 $x^i(u,v)=[\varphi_A\circ\varphi(u,v)]^i$，则
+\[
+(\partial_u x^1,\partial_u x^2,\partial_u x^3),\quad
+(\partial_v x^1,\partial_v x^2,\partial_v x^3)
+\]
+逐点线性无关。
+\end{enumerate}
+则称 $S$ 为光滑曲面。
+
+\paragraph{四个等价定义}
+正则曲面可等价写作：
+\begin{enumerate}
+\item 局部光滑参数化；
+\item 局部为函数图像，例如 $x^3=f(x^1,x^2)$；
+\item 局部为正则等值面 $F=0$，且 $\dd F\ne0$；
+\item 在某个广义坐标系下局部展平为 $y^3=0$。
+\end{enumerate}
+互推工具是反函数定理与隐函数定理。
+
+\paragraph{切空间}
+若局部参数为 $y^1,y^2$，参数标架写作
+\[
+\partial_a=\frac{\partial x^i}{\partial y^a}e_i,\qquad a=1,2.
+\]
+则
+\[
+T_A(S)=\spn\{\partial_1,\partial_2\}.
+\]
+
+\subsection{曲面的局部内蕴几何}
+\paragraph{度量与第一基本形式}
+曲面度量来自 $\E^3$ 标准内积：
+\[
+g_{ab}=\inner{\partial_a}{\partial_b}.
+\]
+第一基本形式为
+\[
+I=g_{ab}\dd y^a\dd y^b.
+\]
+标准圆柱面
+\[
+x^1=\cos\theta,\qquad x^2=\sin\theta,\qquad x^3=z
+\]
+满足 $g=\begin{pmatrix}1&0\\0&1\end{pmatrix}$。
+单位球面在 $(1,0,0)$ 附近参数化
+\[
+x^1=\cos\theta\sin(\pi/2+\varphi),\quad
+x^2=\sin\theta\sin(\pi/2+\varphi),\quad
+x^3=\cos(\pi/2+\varphi)
+\]
+满足
+\[
+g=\begin{pmatrix}\cos^2\varphi&0\\0&1\end{pmatrix}.
+\]
+
+\paragraph{Riemann 联络与 Christoffel 记号}
+教材定义：对曲面上切向量场 $X$，$\nabla_YX$ 是欧氏空间中沿 $Y$ 求导后在 $T_A(S)$ 上的正交投影。在局部参数标架下
+\[
+\nabla_{\partial_a}\partial_b=\Gamma^c_{ab}\partial_c.
+\]
+Levi-Civita 公式：
+\[
+\Gamma^c_{ab}
+=\frac12g^{cd}
+\bigl(\partial_ag_{bd}+\partial_bg_{ad}-\partial_dg_{ab}\bigr).
+\]
+
+\paragraph{测地线}
+曲线 $\gamma(t)=\varphi(y^1(t),y^2(t))$ 是测地线，当且仅当
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0,\qquad k=1,2.
+\]
+物理意义：自由质点只受曲面约束力时的运动轨迹。几何意义：切向量沿自身平行；局部也是两点间弧长最短曲线。测地线速率守恒：
+\[
+\frac{\dd}{\dd t}\norm{\dot\gamma(t)}^2
+=2\inner{\nabla_{\dot\gamma}\dot\gamma}{\dot\gamma}=0.
+\]
+
+\paragraph{平行移动}
+沿曲线 $\gamma$ 的向量场 $X=X^a\partial_a$ 平行，是指
+\[
+\nabla_{\dot\gamma}X=0.
+\]
+坐标方程为
+\[
+\dot X^c+\Gamma^c_{ab}\dot y^aX^b=0.
+\]
+平行移动是线性映射，并保持内积。
+
+\paragraph{二维 Riemann 曲率}
+二维曲面中，由对称性，可能非零的曲率分量可归结为
+\[
+R_{1212},\quad R_{2112},\quad R_{1221},\quad R_{2121}.
+\]
+它们绝对值相同，二维曲面的 Riemann 曲率只有一个自由度。局部平坦只需判断这些分量是否为 $0$。标准圆柱面和圆锥面除顶点外局部平坦。
+
+\subsection{曲面的局部外蕴几何}
+\paragraph{第二基本形式}
+单位法向量
+\[
+n=\frac{\partial_1\times\partial_2}{|\partial_1\times\partial_2|}.
+\]
+第二基本形式分量
+\[
+\Pi_{ab}=\inner{\partial_a\partial_b}{n}.
+\]
+第二基本形式与曲面在 $\E^3$ 中的弯曲有关，是外蕴几何量。
+
+\paragraph{自然标架运动公式}
+教材 6.3.1 中的自然标架为 $\{\partial_1,\partial_2,n\}$。公式为
+\[
+\partial_a(\partial_b)=\Gamma^c_{ab}\partial_c+\Pi_{ab}n,
+\]
+\[
+\partial_an=-g^{cb}\Pi_{ab}\partial_c.
+\]
+推导关键：
+\[
+\partial_a(\partial_b)=\hbox{切向部分}+\hbox{法向部分},
+\qquad
+\inner{\partial_a\partial_b}{n}=\Pi_{ab}.
+\]
+又由 $\inner{n}{\partial_b}=0$，
+\[
+0=\partial_a\inner{n}{\partial_b}
+=\inner{\partial_an}{\partial_b}+\inner{n}{\partial_a\partial_b}
+=\inner{\partial_an}{\partial_b}+\Pi_{ab},
+\]
+故 $\partial_an=-g^{cb}\Pi_{ab}\partial_c$。
+
+\paragraph{曲面存在唯一性}
+局部光滑曲面由第一基本形式 $g_{ab}$ 和第二基本形式 $\Pi_{ab}$，在满足 Gauss-Codazzi 相容方程时决定其局部存在性与唯一性。
+
+\paragraph{Gauss 绝妙定理}
+Gauss 绝妙定理说明：虽然高斯曲率最初可由第二基本形式计算，但它实际上只由第一基本形式决定，因而是内蕴几何量。
+
+\section{课本学习讲义}
+
+按教材顺序组织：概念用于判断，公式用于填空，计算题按固定流程处理，证明题掌握短命题和常用推导。
+
+\subsection{总体学习路线}
+
+微分几何的对象从简单到复杂依次是：向量代数、曲线、仿射空间与坐标、曲面、曲面内蕴几何、曲面外蕴几何。
+
+\begin{enumerate}
+\item 曲线是一维对象。核心计算是弧长、曲率、挠率和 Frenet 标架。
+\item 曲面是二维对象。核心计算是切平面、第一基本形式、第二基本形式、Christoffel 记号、测地线方程。
+\item 内蕴几何只使用曲面上能量出来的量，例如长度、角度、面积、测地线距离、Gaussian 曲率。
+\item 外蕴几何关心曲面怎样放在 $\E^3$ 中，例如法向量、第二基本形式、法曲率。
+\item 考试计算几乎都可以归结为：求导、内积、叉积、行列式、代公式。
+\end{enumerate}
+
+\paragraph{记号对照}
+若参数写作 $(u,v)$，教材也常写作 $(y^1,y^2)$：
+\[
+\partial_1=x_u,\qquad \partial_2=x_v,\qquad
+g_{11}=E,\quad g_{12}=F,\quad g_{22}=G.
+\]
+第二基本形式对应
+\[
+\Pi_{11}=L,\qquad \Pi_{12}=M,\qquad \Pi_{22}=N.
+\]
+所以
+\[
+I=E\dd u^2+2F\dd u\dd v+G\dd v^2
+=g_{ab}\dd y^a\dd y^b,
+\]
+\[
+II=L\dd u^2+2M\dd u\dd v+N\dd v^2
+=\Pi_{ab}\dd y^a\dd y^b.
+\]
+
+\subsection{向量代数与指标运算}
+
+向量代数是所有后续计算的底层工具。曲线用叉积和混合积算曲率、挠率；曲面用叉积算法向量和面积元，用内积算基本形式。
+
+\paragraph{点积}
+\[
+\norm{\vct a}=\sqrt{\vct a\cdot\vct a},\qquad
+\cos\theta=\frac{\vct a\cdot\vct b}{\norm{\vct a}\norm{\vct b}}.
+\]
+若 $\vct a\cdot\vct b=0$，则 $\vct a,\vct b$ 正交。点积满足交换律：
+\[
+\vct a\cdot\vct b=\vct b\cdot\vct a.
+\]
+
+\paragraph{叉积}
+\[
+\vct a\times\vct b=
+\begin{vmatrix}
+e_1&e_2&e_3\\
+a^1&a^2&a^3\\
+b^1&b^2&b^3
+\end{vmatrix},
+\qquad
+\norm{\vct a\times\vct b}=\norm{\vct a}\norm{\vct b}\sin\theta.
+\]
+叉积反交换：
+\[
+\vct a\times\vct b=-(\vct b\times\vct a).
+\]
+几何意义是：方向垂直于 $\vct a,\vct b$ 张成的平面，长度等于平行四边形面积。
+
+\paragraph{混合积}
+\[
+\vct a\cdot(\vct b\times\vct c)=
+\det(\vct a,\vct b,\vct c).
+\]
+循环置换不变，交换两个向量变号：
+\[
+\vct a\cdot(\vct b\times\vct c)
+=\vct b\cdot(\vct c\times\vct a)
+=\vct c\cdot(\vct a\times\vct b),
+\]
+\[
+\vct a\cdot(\vct c\times\vct b)
+=-\vct a\cdot(\vct b\times\vct c).
+\]
+混合积为 $0$ 等价于三向量线性相关，即它们共面。
+
+\paragraph{指标求和}
+重复出现的一上一下指标默认求和：
+\[
+A_iB^i=\sum_iA_iB^i,\qquad
+A_iB^iC^2=\sum_iA_iB^iC^2.
+\]
+自由指标必须左右一致。例如 $g_{ab}v^av^b$ 没有自由指标，是一个数；$g_{ab}v^b$ 剩下自由指标 $a$，是协变向量的分量。
+
+\paragraph{例题}
+设
+\[
+\vct a=(1,0,1),\quad \vct b=(0,2,1),\quad \vct c=(1,1,0).
+\]
+则
+\[
+\vct b\times\vct c=(-1,1,-2),
+\qquad
+\vct a\cdot(\vct b\times\vct c)=-3.
+\]
+所以三向量线性无关。考试里看到“共面”“体积”“是否线性相关”，优先想到混合积。
+
+\subsection{曲线：从参数方程到 Frenet 标架}
+
+曲线是映射 $r:I\to\E^3$。若 $r'(t)\ne0$，称为正则曲线。正则性保证曲线有明确切线。
+
+\subsubsection*{弧长}
+
+一般参数下，弧长函数为
+\[
+s(t)=\int_{t_0}^{t}\norm{r'(u)}\dd u.
+\]
+如果 $\norm{r'(t)}=1$，则 $t$ 就是弧长参数。理论公式常默认弧长参数，考试计算常给一般参数，所以要会直接使用一般参数公式。
+
+\subsubsection*{弧长参数下的 Frenet 标架}
+
+若 $r=r(s)$ 且 $\norm{\dot r}=1$，定义
+\[
+\alpha=\dot r,\qquad \kappa=\norm{\dot\alpha}.
+\]
+当 $\kappa>0$ 时，
+\[
+\beta=\frac{\dot\alpha}{\kappa},\qquad
+\gamma=\alpha\times\beta.
+\]
+Frenet 公式为
+\[
+\dot\alpha=\kappa\beta,\qquad
+\dot\beta=-\kappa\alpha+\tau\gamma,\qquad
+\dot\gamma=-\tau\beta.
+\]
+
+\subsubsection*{一般参数下的直接公式}
+
+若 $r=r(t)$，则
+\[
+\kappa=\frac{\norm{r'\times r''}}{\norm{r'}^3},\qquad
+\tau=\frac{\det(r',r'',r''')}{\norm{r'\times r''}^2}.
+\]
+标架可按
+\[
+\alpha=\frac{r'}{\norm{r'}},\qquad
+\gamma=\frac{r'\times r''}{\norm{r'\times r''}},\qquad
+\beta=\gamma\times\alpha
+\]
+计算。
+
+\paragraph{曲线计算流程}
+给 $r(t)$，按下面顺序写：
+\begin{enumerate}
+\item 求 $r',r'',r'''$。
+\item 求速度 $v=\norm{r'}$。
+\item 求叉积 $r'\times r''$ 及其长度。
+\item 代入 $\kappa=\norm{r'\times r''}/v^3$。
+\item 求混合积 $\det(r',r'',r''')$，代入挠率公式。
+\item 若要标架，按 $\alpha,\gamma,\beta$ 的顺序算。
+\end{enumerate}
+
+\paragraph{例 1：圆螺线}
+设
+\[
+r(t)=(a\cos t,a\sin t,bt),\qquad a>0.
+\]
+则
+\[
+r'=(-a\sin t,a\cos t,b),\quad
+r''=(-a\cos t,-a\sin t,0),\quad
+r'''=(a\sin t,-a\cos t,0).
+\]
+\[
+\norm{r'}=\sqrt{a^2+b^2},
+\]
+\[
+r'\times r''=(ab\sin t,-ab\cos t,a^2),
+\quad
+\norm{r'\times r''}=a\sqrt{a^2+b^2}.
+\]
+所以
+\[
+\kappa=\frac{a}{a^2+b^2}.
+\]
+又
+\[
+\det(r',r'',r''')=a^2b,
+\]
+故
+\[
+\tau=\frac{b}{a^2+b^2}.
+\]
+
+\paragraph{例 2：幂曲线}
+设
+\[
+r(t)=(t,t^2,t^3).
+\]
+则
+\[
+r'=(1,2t,3t^2),\quad r''=(0,2,6t),\quad r'''=(0,0,6).
+\]
+\[
+r'\times r''=(6t^2,-6t,2),
+\quad
+\norm{r'\times r''}=2\sqrt{9t^4+9t^2+1}.
+\]
+于是
+\[
+\kappa(t)=
+\frac{2\sqrt{9t^4+9t^2+1}}
+{(1+4t^2+9t^4)^{3/2}}.
+\]
+混合积为
+\[
+\det(r',r'',r''')=12,
+\]
+所以
+\[
+\tau(t)=
+\frac{3}{9t^4+9t^2+1}.
+\]
+
+\paragraph{几何意义}
+曲率描述切向量方向变化快慢。若 $\kappa\equiv0$，则 $\dot\alpha=0$，所以切向量恒定，曲线是直线。
+
+挠率描述曲线离开密切平面的快慢。若在连通区间上 $\tau=0$，则 $\dot\gamma=0$，次法向量恒定，曲线落在固定平面内。
+
+\subsection{仿射空间、广义坐标和导算子}
+
+仿射空间中，两个点可以相减得到向量，点加向量仍是点，但两个点不能直接相加。过点 $A$、方向为 $v\ne0$ 的直线为
+\[
+x^i=a^i+tv^i.
+\]
+过点 $A$、方向由线性无关向量 $v,w$ 张成的平面为
+\[
+x^i=a^i+sv^i+tw^i.
+\]
+
+\paragraph{广义坐标}
+广义坐标就是用局部参数描述点：
+\[
+x=x(y^1,\cdots,y^n).
+\]
+要求坐标变换光滑且 Jacobi 矩阵非退化。这里的“非退化”就是局部可反解：在一点附近，$y$ 能作为合法坐标，且换坐标时不会把不同方向压成同一个方向。
+
+判断题中常用结论：广义坐标变换保持局部开集、连续性和光滑性。它改变的是坐标表达，不改变点、曲线、切向量这些几何对象本身。
+
+\paragraph{切向量作为导算子}
+点 $p$ 处切向量可写作
+\[
+v=v^i\frac{\partial}{\partial x^i}\bigg|_p.
+\]
+它作用在函数 $f$ 上：
+\[
+v(f)=v^i\frac{\partial f}{\partial x^i}(p).
+\]
+直观地说，切向量不是“从点出发的一根箭头”这么简单；在课本中它等价于“沿某个方向对函数求导的规则”。这个规则满足线性性和 Leibniz 法则：
+\[
+D(af+bg)=aDf+bDg,\qquad D(fg)=f(p)Dg+g(p)Df.
+\]
+因此切向量与点上的导算子同构。证明题只需说明：向量给出导算子；反过来，导算子由其在坐标函数 $x^i$ 上的取值决定，即
+\[
+D=D(x^i)\frac{\partial}{\partial x^i}\bigg|_p.
+\]
+
+\paragraph{自然标架场}
+在一个广义坐标邻域中，每个坐标函数 $y^i$ 都给出一个坐标方向。固定一点 $p$ 时，沿第 $i$ 个坐标方向求导得到点 $p$ 处的导算子
+\[
+\partial_i|_p=\frac{\partial}{\partial y^i}\bigg|_p.
+\]
+把所有点上的这些导算子合在一起，就得到局部向量场
+\[
+\partial_i:p\longmapsto \partial_i|_p,\qquad i=1,\dots,n.
+\]
+这组局部向量场称为该坐标系下的自然标架场。它的意思是：在每一点，$\{\partial_1|_p,\dots,\partial_n|_p\}$ 都是一组切空间基；并且这组基随点光滑变化。
+
+若 $X$ 是局部向量场，则可唯一写成
+\[
+X=X^i\partial_i.
+\]
+其中 $X^i$ 是函数；$X$ 光滑当且仅当这些分量函数 $X^i$ 光滑。曲线 $c(t)$ 在坐标中写成 $y^i(t)$ 时，其切向量为
+\[
+\dot c(t)=\dot y^i(t)\partial_i|_{c(t)}.
+\]
+注意：自然标架一般不是单位正交标架。比如极坐标或球坐标下，$\partial_r,\partial_\theta,\partial_\varphi$ 只是坐标方向，不一定长度为 $1$，也不一定与欧氏标准基相同。
+
+\paragraph{自然余标架场和余向量场}
+切空间的对偶空间称为余切空间。自然标架场 $\{\partial_i\}$ 的对偶基记为
+\[
+\dd y^1,\dots,\dd y^n,
+\]
+由
+\[
+\dd y^i(\partial_j)=\delta^i_j
+\]
+定义。这组局部余向量场称为自然余标架场。它和自然标架场的关系完全类似于线性代数中“基”和“对偶基”的关系。
+
+一个余向量场可以写成
+\[
+\omega=\omega_i\dd y^i.
+\]
+它吃进一个向量场 $X=X^j\partial_j$ 后输出函数：
+\[
+\omega(X)=\omega_iX^i.
+\]
+特别地，光滑函数 $f$ 的微分是余向量场：
+\[
+\dd f=\frac{\partial f}{\partial y^i}\dd y^i,
+\qquad
+\dd f(X)=X(f).
+\]
+记忆方法：向量场负责“对函数求方向导数”，余向量场负责“测量向量的分量”；$\dd f$ 测量的正是 $f$ 沿该向量的变化率。
+
+\subsection{曲面：参数化、正则性和切平面}
+
+曲面局部由
+\[
+x=x(u,v)
+\]
+给出。正则条件是
+\[
+x_u,x_v \text{ 线性无关},
+\]
+在 $\E^3$ 中等价于
+\[
+x_u\times x_v\ne0.
+\]
+
+\paragraph{曲面第一步}
+任何曲面计算题先求
+\[
+x_u,\quad x_v,\quad x_u\times x_v,\quad
+n=\frac{x_u\times x_v}{\norm{x_u\times x_v}}.
+\]
+若叉积为 $0$，该点不是正则参数点。
+
+\paragraph{切平面}
+在 $p=x(u_0,v_0)$ 处，
+\[
+X=p+\lambda x_u(u_0,v_0)+\mu x_v(u_0,v_0)
+\]
+是切平面参数式。若用法向量写：
+\[
+(X-p)\cdot n(u_0,v_0)=0.
+\]
+
+\paragraph{隐式曲面}
+若
+\[
+F(x,y,z)=0,\qquad \nabla F(p)\ne0,
+\]
+则法向量可取
+\[
+n=\frac{\nabla F}{\norm{\nabla F}},
+\]
+切平面为
+\[
+\nabla F(p)\cdot(X-p)=0.
+\]
+
+\paragraph{图形曲面}
+若
+\[
+x(u,v)=(u,v,f(u,v)),
+\]
+则
+\[
+x_u=(1,0,f_u),\quad x_v=(0,1,f_v),
+\]
+\[
+x_u\times x_v=(-f_u,-f_v,1),
+\quad
+n=\frac{(-f_u,-f_v,1)}{\sqrt{1+f_u^2+f_v^2}}.
+\]
+
+\subsection{第一基本形式：长度、角度、面积}
+
+第一基本形式来自切向量内积：
+\[
+g_{ab}=(\partial_a,\partial_b).
+\]
+在 $(u,v)$ 记号下，
+\[
+E=x_u\cdot x_u,\qquad F=x_u\cdot x_v,\qquad G=x_v\cdot x_v,
+\]
+\[
+I=E\dd u^2+2F\dd u\dd v+G\dd v^2.
+\]
+
+\paragraph{长度}
+曲面曲线 $u=u(t),v=v(t)$ 的长度为
+\[
+L=\int\sqrt{E\dot u^2+2F\dot u\dot v+G\dot v^2}\,\dd t.
+\]
+
+\paragraph{角度}
+两个方向 $\xi=\xi^a\partial_a,\eta=\eta^b\partial_b$ 的夹角满足
+\[
+\cos\theta=
+\frac{g_{ab}\xi^a\eta^b}
+{\sqrt{g_{ab}\xi^a\xi^b}\sqrt{g_{ab}\eta^a\eta^b}}.
+\]
+坐标曲线正交当且仅当 $F=0$。
+
+\paragraph{面积元}
+\[
+\dd A=\sqrt{\det(g_{ab})}\dd u\dd v
+=\sqrt{EG-F^2}\dd u\dd v
+=\norm{x_u\times x_v}\dd u\dd v.
+\]
+
+\paragraph{例 1：圆柱面}
+\[
+x(u,v)=(a\cos u,a\sin u,v).
+\]
+\[
+x_u=(-a\sin u,a\cos u,0),\quad x_v=(0,0,1).
+\]
+所以
+\[
+E=a^2,\quad F=0,\quad G=1,
+\]
+\[
+I=a^2\dd u^2+\dd v^2.
+\]
+令 $U=au,V=v$，则 $I=\dd U^2+\dd V^2$，说明圆柱面和平面局部等距。
+
+\paragraph{例 2：球面}
+\[
+x(\theta,\varphi)=
+(R\sin\theta\cos\varphi,R\sin\theta\sin\varphi,R\cos\theta).
+\]
+计算得
+\[
+E=R^2,\quad F=0,\quad G=R^2\sin^2\theta,
+\]
+\[
+I=R^2\dd\theta^2+R^2\sin^2\theta\,\dd\varphi^2,
+\qquad
+\dd A=R^2\sin\theta\,\dd\theta\dd\varphi.
+\]
+
+\paragraph{例 3：图形曲面}
+对 $x(u,v)=(u,v,f(u,v))$，
+\[
+E=1+f_u^2,\quad F=f_uf_v,\quad G=1+f_v^2,
+\]
+\[
+\dd A=\sqrt{1+f_u^2+f_v^2}\dd u\dd v.
+\]
+
+\subsection{Christoffel 记号和测地线}
+
+Riemann 联络把普通导数的切向部分取出来：
+\[
+\nabla_{\partial_a}\partial_b=\Gamma^c_{ab}\partial_c.
+\]
+Christoffel 记号由第一基本形式决定：
+\[
+\Gamma^c_{ab}=
+\frac12g^{cd}
+\left(
+\partial_ag_{bd}+\partial_bg_{ad}-\partial_dg_{ab}
+\right).
+\]
+
+\paragraph{Christoffel 计算流程}
+\begin{enumerate}
+\item 写度量矩阵 $g=(g_{ab})$。
+\item 求逆矩阵 $g^{-1}=(g^{ab})$。
+\item 求所有非零偏导 $\partial_cg_{ab}$。
+\item 代入公式。若 $F=0$ 且 $E,G$ 简单，优先使用对角度量快捷公式。
+\end{enumerate}
+
+\paragraph{对角度量快捷公式}
+若
+\[
+I=E(u,v)\dd u^2+G(u,v)\dd v^2,
+\]
+则
+\[
+\Gamma^1_{11}=\frac{E_u}{2E},\quad
+\Gamma^1_{12}=\Gamma^1_{21}=\frac{E_v}{2E},\quad
+\Gamma^1_{22}=-\frac{G_u}{2E},
+\]
+\[
+\Gamma^2_{11}=-\frac{E_v}{2G},\quad
+\Gamma^2_{12}=\Gamma^2_{21}=\frac{G_u}{2G},\quad
+\Gamma^2_{22}=\frac{G_v}{2G}.
+\]
+
+\paragraph{球面例子}
+球面
+\[
+I=R^2\dd\theta^2+R^2\sin^2\theta\,\dd\varphi^2.
+\]
+非零 Christoffel 记号为
+\[
+\Gamma^\theta_{\varphi\varphi}=-\sin\theta\cos\theta,
+\qquad
+\Gamma^\varphi_{\theta\varphi}
+=\Gamma^\varphi_{\varphi\theta}
+=\cot\theta.
+\]
+
+\paragraph{测地线的课本版定义}
+曲面上的曲线 $c(t)$ 称为测地线，最核心的定义是速度向量沿自身平行：
+\[
+\nabla_{\dot c}\dot c=0.
+\]
+若 $c(t)=x(y^1(t),y^2(t))$，则
+\[
+\dot c=\dot y^a\partial_a.
+\]
+把 $\nabla_{\dot c}\dot c$ 展开，就得到后面的测地线坐标方程。
+
+\paragraph{等价理解}
+测地线有三种常用理解，考试中经常混着问：
+\begin{enumerate}
+\item \textbf{联络定义}：$\nabla_{\dot c}\dot c=0$，即切向量沿曲线自身平行。
+\item \textbf{物理意义}：自由质点只受曲面约束力，切向加速度为 $0$。
+\item \textbf{欧氏空间判断}：若 $c$ 是 $\E^3$ 中曲面上的弧长参数曲线，则 $c$ 是测地线当且仅当 $\ddot c$ 垂直于曲面切平面，也就是说 $\ddot c$ 只有法向分量。
+\end{enumerate}
+第三条常用于判断球面大圆。大圆作为空间曲线的加速度指向球心，正好是球面法向，因此是球面测地线。
+
+\paragraph{速率守恒}
+若 $c$ 是测地线，则
+\[
+\frac{\dd}{\dd t}g(\dot c,\dot c)
+=2g(\nabla_{\dot c}\dot c,\dot c)=0.
+\]
+所以测地线的速率为常数。反过来，速率为常数并不一定是测地线；还必须满足切向加速度为 $0$。
+
+\paragraph{参数的注意点}
+测地线方程通常要求参数是仿射参数。若把测地线任意重新参数化，一般不再满足
+\[
+\nabla_{\dot c}\dot c=0,
+\]
+而只满足加速度切向部分与速度方向平行。考试里若题目说“弧长参数”或“自由质点运动”，就直接使用标准测地线方程。
+
+\paragraph{局部存在唯一性}
+给定曲面上一点 $A$ 和一个初始切向量 $v\in T_AS$，测地线方程作为二阶常微分方程有局部唯一解：
+\[
+c(0)=A,\qquad \dot c(0)=v.
+\]
+因此“曲面上沿一个确定初始点和初始方向局部存在多条测地线”是错的。
+
+\paragraph{测地线方程}
+曲线 $y^k=y^k(t)$ 是测地线，当且仅当
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0,\qquad k=1,2.
+\]
+展开为
+\[
+\ddot y^1+\Gamma^1_{11}(\dot y^1)^2
++2\Gamma^1_{12}\dot y^1\dot y^2
++\Gamma^1_{22}(\dot y^2)^2=0,
+\]
+\[
+\ddot y^2+\Gamma^2_{11}(\dot y^1)^2
++2\Gamma^2_{12}\dot y^1\dot y^2
++\Gamma^2_{22}(\dot y^2)^2=0.
+\]
+
+\paragraph{常见测地线}
+\begin{enumerate}
+\item 平面：所有 Christoffel 记号为 $0$，测地线是直线。
+\item 圆柱面：$I=a^2\dd u^2+\dd v^2$，Christoffel 记号为 $0$，展开后为直线，卷回圆柱后是螺线、母线或圆周。
+\item 球面：测地线是大圆弧。赤道 $\theta=\pi/2$ 代入球面测地线方程即可验证。
+\end{enumerate}
+
+\paragraph{测地线判断}
+测地线不一定是 $\E^3$ 中直线。球面大圆在空间中是圆，但在球面上是测地线。测地线局部最短，但不一定全局最短。测地线距离是内蕴量。
+
+\paragraph{判断给定曲线是否为测地线}
+常用两种方法：
+\begin{enumerate}
+\item \textbf{坐标代入法}：把 $y^1(t),y^2(t)$ 代入
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0.
+\]
+若两个方程都成立，则为测地线。
+\item \textbf{法向加速度法}：在 $\E^3$ 中直接算 $\ddot c$。若弧长参数下 $\ddot c$ 与切平面正交，即
+\[
+(\ddot c,\partial_1)=0,\qquad (\ddot c,\partial_2)=0,
+\]
+则 $c$ 是测地线。
+\end{enumerate}
+平面和圆柱面在标准展开参数下 $\Gamma=0$，所以坐标中直线给出测地线；球面上过球心的平面截出的圆，即大圆，满足法向加速度法。
+
+\paragraph{给定初位置、初速度的运动方程}
+若题目说“质点只受曲面约束力”，就是要求写测地线初值问题。设局部坐标为 $y^1,y^2$，初始位置
+\[
+y^1(0)=a,\qquad y^2(0)=b,
+\]
+初始速度
+\[
+\dot y^1(0)=u,\qquad \dot y^2(0)=v.
+\]
+落笔格式为
+\[
+\begin{cases}
+\ddot y^1+\Gamma^1_{11}(\dot y^1)^2+2\Gamma^1_{12}\dot y^1\dot y^2+\Gamma^1_{22}(\dot y^2)^2=0,\\
+\ddot y^2+\Gamma^2_{11}(\dot y^1)^2+2\Gamma^2_{12}\dot y^1\dot y^2+\Gamma^2_{22}(\dot y^2)^2=0,\\
+y^1(0)=a,\quad y^2(0)=b,\quad \dot y^1(0)=u,\quad \dot y^2(0)=v.
+\end{cases}
+\]
+若度量系数为常数，则所有 $\Gamma^k_{ij}=0$，方程退化为
+\[
+\ddot y^1=0,\qquad \ddot y^2=0,
+\]
+解为
+\[
+y^1(t)=a+ut,\qquad y^2(t)=b+vt.
+\]
+圆柱面展开为平面后常用这个结论；球面题通常只要求写出方程，不一定要求显式解。
+
+\subsection{第二基本形式和曲面弯曲}
+
+第一基本形式量长度，第二基本形式量弯曲。取单位法向
+\[
+n=\frac{x_u\times x_v}{\norm{x_u\times x_v}}.
+\]
+定义
+\[
+L=x_{uu}\cdot n,\qquad M=x_{uv}\cdot n,\qquad N=x_{vv}\cdot n.
+\]
+即教材记号
+\[
+\Pi_{ab}=(\partial_a\partial_b,n).
+\]
+第二基本形式为
+\[
+II=L\dd u^2+2M\dd u\dd v+N\dd v^2.
+\]
+
+\paragraph{法曲率}
+方向 $\xi=\xi^1\partial_1+\xi^2\partial_2$ 上的法曲率为
+\[
+k_n(\xi)=\frac{\Pi_{ab}\xi^a\xi^b}{g_{ab}\xi^a\xi^b}.
+\]
+
+\paragraph{Gaussian 曲率和平均曲率}
+\[
+K=\frac{LN-M^2}{EG-F^2},
+\]
+\[
+H=\frac{EN-2FM+GL}{2(EG-F^2)}.
+\]
+其中 $K$ 是 Gaussian 曲率；$H$ 是平均曲率。期末更重要的是 $K$。
+
+\paragraph{第二基本形式计算流程}
+\begin{enumerate}
+\item 求 $x_u,x_v$ 和 $n$。
+\item 求 $x_{uu},x_{uv},x_{vv}$。
+\item 内积得到 $L,M,N$。
+\item 代入 $K=(LN-M^2)/(EG-F^2)$。
+\end{enumerate}
+
+\paragraph{例 1：圆柱面}
+圆柱面
+\[
+x(u,v)=(a\cos u,a\sin u,v).
+\]
+取
+\[
+n=(\cos u,\sin u,0).
+\]
+有
+\[
+x_{uu}=(-a\cos u,-a\sin u,0),\quad
+x_{uv}=0,\quad x_{vv}=0.
+\]
+所以
+\[
+L=-a,\quad M=0,\quad N=0.
+\]
+又 $E=a^2,F=0,G=1$，故
+\[
+K=0.
+\]
+
+\paragraph{例 2：球面}
+半径 $R$ 球面取外法向 $n=x/R$。其第一基本形式为
+\[
+E=R^2,\quad F=0,\quad G=R^2\sin^2\theta.
+\]
+可算得
+\[
+L=-R,\quad M=0,\quad N=-R\sin^2\theta
+\]
+或取反法向时整体变号。无论取向如何，
+\[
+K=\frac{1}{R^2}.
+\]
+
+\paragraph{例 3：图形曲面}
+对 $x(u,v)=(u,v,f(u,v))$，取上法向，则
+\[
+L=\frac{f_{uu}}{\sqrt{1+f_u^2+f_v^2}},\quad
+M=\frac{f_{uv}}{\sqrt{1+f_u^2+f_v^2}},\quad
+N=\frac{f_{vv}}{\sqrt{1+f_u^2+f_v^2}}.
+\]
+因此
+\[
+K=\frac{f_{uu}f_{vv}-f_{uv}^2}
+{(1+f_u^2+f_v^2)^2}.
+\]
+
+\subsection{自然标架运动公式}
+
+自然标架为
+\[
+\partial_1,\partial_2,n.
+\]
+其运动公式是
+\[
+\partial_a\partial_b
+=\Gamma^c_{ab}\partial_c+\Pi_{ab}n,
+\]
+\[
+\partial_a n=-g^{cb}\Pi_{ab}\partial_c.
+\]
+第一条把二阶导数分成切向部分和法向部分；第二条说明法向量的导数是切向量。
+
+\paragraph{短证明公式}
+由 $(n,n)=1$ 得
+\[
+(\partial_an,n)=0,
+\]
+所以 $\partial_an$ 是切向量，设
+\[
+\partial_an=A_a^c\partial_c.
+\]
+再由 $(n,\partial_b)=0$ 求导：
+\[
+0=\partial_a(n,\partial_b)
+=(\partial_an,\partial_b)+(n,\partial_a\partial_b).
+\]
+即
+\[
+A_a^cg_{cb}+\Pi_{ab}=0.
+\]
+两边乘 $g^{bd}$，得
+\[
+A_a^d=-g^{bd}\Pi_{ab},
+\]
+所以
+\[
+\partial_an=-g^{cb}\Pi_{ab}\partial_c.
+\]
+
+\subsection{Riemann 曲率和 Gauss 绝妙定理}
+
+Riemann 曲率描述协变导数交换时产生的差异。二维曲面中，常用关系为
+\[
+K=\frac{R_{1212}}{\det(g_{ab})}
+\]
+或按教材指标约定出现等价符号形式。填空题常问二维可能非零分量，可列为
+\[
+R_{1212},\quad R_{1221},\quad R_{2112},\quad R_{2121}.
+\]
+
+Gauss 绝妙定理说明：Gaussian 曲率虽然可由
+\[
+K=\frac{LN-M^2}{EG-F^2}
+\]
+计算，但它实际上只由第一基本形式决定，因此是内蕴几何量。
+
+\paragraph{常见判断}
+\begin{enumerate}
+\item 平面 $K=0$。
+\item 圆柱面 $K=0$，所以圆柱面与平面局部等距。
+\item 半径 $R$ 球面 $K=1/R^2$，所以球面不可能与平面或圆柱面局部等距。
+\item 局部等距保持第一基本形式，因此保持 Gaussian 曲率。
+\end{enumerate}
+
+\subsection{曲面基本定理}
+
+曲面局部由第一基本形式 $g_{ab}$ 与第二基本形式 $\Pi_{ab}$ 决定，但二者必须满足 Gauss-Codazzi 相容条件。
+
+\paragraph{考试短版}
+若给定 $g_{ab}$ 与 $\Pi_{ab}$，且满足 Gauss-Codazzi 相容条件，则局部存在曲面实现它们；并且在 $\E^3$ 的刚体运动意义下局部唯一。
+
+\paragraph{证明题写法}
+\begin{enumerate}
+\item 由 $g_{ab}$ 求 $\Gamma^c_{ab}$。
+\item 用自然标架运动公式建立 $\partial_1,\partial_2,n$ 的一阶方程组。
+\item Gauss-Codazzi 条件正是该方程组可积的相容条件。
+\item 初始点和初始正交标架确定后，方程组局部解唯一。
+\item 改变初始点和初始标架只差一个欧氏刚体运动。
+\end{enumerate}
+
+\subsection{计算题总流程表}
+
+\paragraph{曲线题}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.66\textwidth}}
+\toprule
+题目要求 & 落笔顺序\\
+\midrule
+弧长 & 求 $\norm{r'}$，积分 $s=\int\norm{r'}\dd t$\\
+曲率 & 求 $r',r''$，用 $\kappa=\norm{r'\times r''}/\norm{r'}^3$\\
+挠率 & 再求 $r'''$，用 $\tau=\det(r',r'',r''')/\norm{r'\times r''}^2$\\
+Frenet 标架 & $\alpha=r'/\norm{r'}$，$\gamma=(r'\times r'')/\norm{r'\times r''}$，$\beta=\gamma\times\alpha$\\
+判断平面曲线 & 看 $\tau=0$，或看是否存在固定法向量垂直于曲线所在平面\\
+判断直线 & 看 $\kappa=0$ 或切向量方向是否恒定\\
+\bottomrule
+\end{longtable}
+
+\paragraph{曲面题}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.66\textwidth}}
+\toprule
+题目要求 & 落笔顺序\\
+\midrule
+正则性 & 求 $x_u\times x_v$，判断是否非零\\
+切平面 & 用 $X=x_0+\lambda x_u+\mu x_v$ 或 $(X-x_0)\cdot n=0$\\
+第一基本形式 & 算 $E=x_u^2,F=x_u\cdot x_v,G=x_v^2$\\
+面积元 & $\sqrt{EG-F^2}\dd u\dd v$\\
+第二基本形式 & 求 $n$ 与 $x_{uu},x_{uv},x_{vv}$，算 $L,M,N$\\
+Gaussian 曲率 & $K=(LN-M^2)/(EG-F^2)$\\
+Christoffel 记号 & 先写 $g,g^{-1}$，再代 $\Gamma^c_{ab}$ 公式\\
+测地线 & 先求 $\Gamma$，再写 $\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0$\\
+\bottomrule
+\end{longtable}
+
+\subsection{高频模型速查}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}@{}}
+\toprule
+模型 & 参数化 & 第一基本形式 & $K$\\
+\midrule
+平面 & $(u,v,0)$ & $\dd u^2+\dd v^2$ & $0$\\
+圆柱面 & $(a\cos u,a\sin u,v)$ & $a^2\dd u^2+\dd v^2$ & $0$\\
+球面 & $\begin{gathered}(R\sin\theta\cos\varphi,\\ R\sin\theta\sin\varphi,R\cos\theta)\end{gathered}$ & $\begin{gathered}R^2\dd\theta^2+R^2\sin^2\theta\\ {}\cdot\dd\varphi^2\end{gathered}$ & $1/R^2$\\
+图形曲面 & $(u,v,f(u,v))$ & 见图形公式 & 见图形公式\\
+\bottomrule
+\end{longtable}
+
+\subsection{证明题最小准备}
+
+证明题按“短证明”准备即可。
+
+\begin{enumerate}
+\item 正则曲线可局部选某个坐标作参数：因为 $r'(t_0)\ne0$，至少一个分量导数非零，由反函数定理局部反解。
+\item 曲率为零推出直线：弧长参数下 $\kappa=\norm{\dot\alpha}=0$，所以 $\alpha$ 恒定，积分得 $r(s)=p+s\alpha_0$。
+\item 挠率为零推出平面曲线：$\tau=0$ 时 $\dot\gamma=0$，所以 $\gamma$ 恒定；又 $\frac{\dd}{\dd s}(r\cdot\gamma)=\alpha\cdot\gamma=0$，故曲线在固定平面内。
+\item 第一基本形式决定长度角度面积：长度、角度、面积元全部由 $g_{ab}$ 的公式给出。
+\item 测地线速度恒定：若 $\nabla_{\dot c}\dot c=0$，则
+\[
+\frac{\dd}{\dd t}g(\dot c,\dot c)=2g(\nabla_{\dot c}\dot c,\dot c)=0.
+\]
+\item 自然标架运动公式：二阶导分解为切向和法向，分别由 $\Gamma^c_{ab}$ 与 $\Pi_{ab}$ 给出；法向导数公式由 $(n,n)=1$ 和 $(n,\partial_b)=0$ 推出。
+\item Gauss 绝妙定理意义：Gaussian 曲率只由第一基本形式决定，所以局部等距保持 $K$。
+\end{enumerate}
+
+\subsection{Taylor 展开估阶：弧长与弦长之差}
+
+用 Taylor 展开估计曲线弧长与两点直线距离之差的阶。
+
+\paragraph{标准结论}
+设 $r(s)$ 是弧长参数化曲线，$r(0)$ 附近曲率存在。则
+\[
+s-\norm{r(s)-r(0)}=O(s^3).
+\]
+若 $\kappa(0)\ne0$，更精确地有
+\[
+s-\norm{r(s)-r(0)}
+=\frac{\kappa(0)^2}{24}s^3+O(s^4).
+\]
+因此若题目写
+\[
+s-\norm{r(s)-r(0)}\sim O(s^\alpha),
+\]
+通常应答 $\alpha=3$。
+
+\paragraph{推导流程}
+因为 $s$ 是弧长参数，
+\[
+\dot r(0)=\alpha(0),\qquad \norm{\alpha(0)}=1,\qquad
+\ddot r(0)=\dot\alpha(0)=\kappa(0)\beta(0).
+\]
+再由 Frenet 公式
+\[
+r'''(0)=\dot\kappa(0)\beta(0)+\kappa(0)(-\kappa(0)\alpha(0)+\tau(0)\gamma(0)).
+\]
+Taylor 展开：
+\[
+r(s)-r(0)=s\alpha+\frac{\kappa}{2}s^2\beta
+\frac{s^3}{6}\bigl(-\kappa^2\alpha+\dot\kappa\,\beta+\kappa\tau\,\gamma\bigr)+O(s^4),
+\]
+其中右边的 $\alpha,\beta,\gamma,\kappa,\tau,\dot\kappa$ 均取 $s=0$ 处的值。由于 $\alpha,\beta,\gamma$ 标准正交，
+\[
+\norm{r(s)-r(0)}^2
+=s^2-\frac{\kappa(0)^2}{12}s^4+O(s^5).
+\]
+开方得
+\[
+\norm{r(s)-r(0)}
+=s-\frac{\kappa(0)^2}{24}s^3+O(s^4),
+\]
+所以
+\[
+s-\norm{r(s)-r(0)}
+=\frac{\kappa(0)^2}{24}s^3+O(s^4).
+\]
+只问阶数时，写出 Taylor 展开到一阶项相同、二阶贡献在长度中抵消、首个非零差异为三阶即可。
+
+\subsection{补充知识点}
+
+以下内容常见于判断、填空、定义题和简短证明题。
+
+\paragraph{仿射组合、质心和重心}
+仿射空间中不能直接把点相加，但可以作系数和为 $1$ 的仿射组合：
+\[
+P=\lambda_1A_1+\cdots+\lambda_kA_k,\qquad
+\lambda_1+\cdots+\lambda_k=1.
+\]
+该表达与仿射坐标系选取无关。若 $A_i$ 的坐标为 $a_i$，则 $P$ 的坐标为
+\[
+p=\lambda_1a_1+\cdots+\lambda_ka_k.
+\]
+三角形重心为
+\[
+G=\frac{A+B+C}{3},
+\]
+四面体重心为
+\[
+G=\frac{A+B+C+D}{4}.
+\]
+判断题中要注意：一般线性组合不是仿射几何对象，系数和为 $1$ 的仿射组合才有坐标无关意义。
+
+\paragraph{仿射变换和广义坐标变换}
+仿射坐标变换形如
+\[
+x'=Ax+b,\qquad \det A\ne0.
+\]
+它保持直线、平面、平行性、开集性质和光滑性，但不保持欧氏长度、角度、曲率、挠率。
+
+广义坐标变换是局部光滑可逆变换，其 Jacobi 矩阵可逆。若一个性质只依赖“连续、可微、光滑、秩不变”，通常不依赖广义坐标；若依赖长度、角度、正交，则必须看是否有欧氏度量或 Riemann 度量。
+
+\paragraph{余切空间与函数微分}
+点 $A$ 处切空间 $T_A\A^n$ 的对偶空间称为余切空间，记为 $T_A^*\A^n$。若 $f$ 是光滑函数，则
+\[
+\dd f_A(v)=v(f).
+\]
+也就是说，$\dd f_A$ 本身不是一个数，而是一个线性函数：输入一个切向量 $v$，输出 $f$ 沿 $v$ 的方向导数。
+在坐标中
+\[
+\dd f=\frac{\partial f}{\partial x^i}\dd x^i.
+\]
+这里 $\dd x^i$ 是余切空间的一组基，与 $\partial_i$ 对偶：
+\[
+\dd x^i(\partial_j)=\delta^i_j.
+\]
+若 $\omega=\omega_i\dd x^i$，$v=v^j\partial_j$，则
+\[
+\omega(v)=\omega_iv^i.
+\]
+填空题常考：切空间和余切空间互为对偶；函数微分是余切向量；$\dd x^i$ 与 $\partial_i$ 是自然余标架和自然标架。
+
+\paragraph{切丛和向量场}
+曲面 $S$ 上所有切空间的并称为切丛：
+\[
+TS=\bigcup_{A\in S}T_AS.
+\]
+向量场是在每一点 $A\in S$ 选取一个切向量 $X(A)\in T_AS$。局部坐标中
+\[
+X=X^a\partial_a.
+\]
+这里的 $\partial_a$ 就是局部坐标诱导的自然标架场。向量场光滑，指分量 $X^a$ 在局部坐标中为光滑函数。协变导数 $\nabla_YX$ 仍是切向量场。
+
+\paragraph{曲面距离与内蕴性}
+曲面上两点间的内蕴距离定义为连接两点的曲面内曲线长度的下确界：
+\[
+d_S(P,Q)=\inf_\gamma L(\gamma).
+\]
+其中长度由第一基本形式计算。它不同于 $\E^3$ 中的欧氏直线距离
+\[
+\norm{P-Q}.
+\]
+因此“曲面上两点的欧氏距离是内蕴量”是错的；“由第一基本形式诱导的测地线距离是内蕴量”是对的。
+
+\paragraph{Gauss 引理与指数映射}
+给定 $A\in S$ 和初速度 $v\in T_AS$，测地线局部存在唯一。指数映射记作
+\[
+\exp_A(v)=\gamma_v(1),
+\]
+其中 $\gamma_v$ 是满足 $\gamma_v(0)=A,\dot\gamma_v(0)=v$ 的测地线。
+
+Gauss 引理的考试版理解：从一点沿测地线发出的径向方向，与测地圆的切向方向正交。它解释了法坐标中“径向测地线”和“小测地圆”正交，也支持“足够小邻域内测地线实现局部最短”。
+
+\paragraph{Riemann 曲率的对称性}
+曲率张量常用分量 $R_{abcd}$ 表示。二维曲面中常见对称性为
+\[
+R_{abcd}=-R_{bacd},\qquad
+R_{abcd}=-R_{abdc},\qquad
+R_{abcd}=R_{cdab}.
+\]
+因此二维时本质上只剩一个独立分量，例如 $R_{1212}$；其他可能非零项为
+\[
+R_{1212},\quad R_{1221},\quad R_{2112},\quad R_{2121}.
+\]
+若第一基本形式为常系数且 Christoffel 记号全为 $0$，则 Riemann 曲率分量全为 $0$。
+
+\paragraph{形算子、主曲率与法曲率}
+由法向量导数定义形算子 $S$：
+\[
+\partial_an=-S(\partial_a).
+\]
+在分量上，形算子由第一、第二基本形式共同给出：
+\[
+S^c{}_a=g^{cb}\Pi_{ab}.
+\]
+方向 $\xi$ 的法曲率为
+\[
+k_n(\xi)=\frac{II(\xi,\xi)}{I(\xi,\xi)}
+=\frac{\Pi_{ab}\xi^a\xi^b}{g_{ab}\xi^a\xi^b}.
+\]
+形算子的特征值是主曲率 $k_1,k_2$，并且
+\[
+K=k_1k_2,\qquad H=\frac{k_1+k_2}{2}.
+\]
+这与
+\[
+K=\frac{LN-M^2}{EG-F^2}
+\]
+一致。圆柱面主曲率为 $0$ 和 $\pm 1/a$；半径 $R$ 的球面两个主曲率同为 $\pm1/R$。
+
+\paragraph{Gauss-Codazzi 相容条件}
+自然标架运动公式
+\[
+\partial_a\partial_b=\Gamma^c_{ab}\partial_c+\Pi_{ab}n,\qquad
+\partial_an=-g^{cb}\Pi_{ab}\partial_c
+\]
+必须满足混合偏导可交换。由此得到 Gauss-Codazzi 相容条件。考试中通常不用展开所有指标，只需会说：
+\begin{enumerate}
+\item Gauss 方程把 Riemann 曲率与第二基本形式联系起来；
+\item Codazzi 方程描述第二基本形式的协变导数对称性；
+\item 给定 $g_{ab},\Pi_{ab}$ 且满足 Gauss-Codazzi，曲面局部存在且在刚体运动下唯一。
+\end{enumerate}
+
+\paragraph{常用补充结论}
+以下结论用于定义题、判断题和短证明题。
+
+\paragraph{曲线的自然方程与存在唯一性}
+教材第 2 章在 Frenet 标架后讨论曲线的存在唯一性。核心结论是：给定光滑函数
+\[
+\kappa(s)>0,\qquad \tau(s),
+\]
+则在 $\E^3$ 中局部存在一条弧长参数曲线，其曲率和挠率分别为 $\kappa,\tau$；并且在欧氏运动意义下唯一。
+
+换句话说，曲线的形状由自然方程
+\[
+\kappa=\kappa(s),\qquad \tau=\tau(s)
+\]
+决定。证明思路是把 Frenet 运动公式看成关于正交标架的常微分方程组：
+\[
+\frac{\dd}{\dd s}(\alpha,\beta,\gamma)
+=(\alpha,\beta,\gamma)
+\begin{pmatrix}
+0&-\kappa&0\\
+\kappa&0&-\tau\\
+0&\tau&0
+\end{pmatrix},
+\]
+先解标架，再由 $\dot r=\alpha$ 积分得到曲线。初始点和初始正交标架的不同只造成刚体运动。
+
+\paragraph{几何量}
+教材第 3 章把“几何量”作为仿射空间中的重要概念。考试判断版：
+\begin{enumerate}
+\item 仿射几何量：在仿射坐标变换下保持意义的量，如共线、共面、平行、仿射组合、重心。
+\item 欧氏几何量：在标准正交坐标变换下保持意义的量，如长度、角度、面积、曲率、挠率。
+\item 坐标表达式可以改变，但几何对象本身不变。判断题中看到“依赖坐标系选取”，要先问是仿射坐标、广义坐标还是标准正交坐标。
+\end{enumerate}
+
+曲率、挠率不是一般仿射几何量，因为仿射变换不保持长度和角度；它们是欧氏几何量。
+
+\paragraph{张量场的最小版本}
+张量可以理解为多重线性函数。点 $A$ 处 $(r,s)$ 型张量以 $r$ 个余向量和 $s$ 个向量为输入，线性输出实数。考试只需掌握：
+\[
+g=g_{ab}\dd y^a\otimes\dd y^b
+\]
+是 $(0,2)$ 型张量场，第二基本形式
+\[
+\Pi=\Pi_{ab}\dd y^a\otimes\dd y^b
+\]
+也是对称 $(0,2)$ 型张量场。向量场是 $(1,0)$ 型，余向量场是 $(0,1)$ 型。
+
+坐标变换时，张量分量会变，但张量本身不变。第一基本形式、第二基本形式常以分量出现，判断其是否定义良好时，要看分量变换是否符合张量变换规律。
+
+\paragraph{曲面之间的映射与切映射}
+设 $F:S_1\to S_2$ 是曲面之间的光滑映射，$A\in S_1$。切映射
+\[
+F_{*A}:T_AS_1\to T_{F(A)}S_2
+\]
+定义为：若 $v=\dot\gamma(0)$，则
+\[
+F_{*A}(v)=\frac{\dd}{\dd t}\bigg|_{t=0}F(\gamma(t)).
+\]
+它是线性映射，并满足链式法则：
+\[
+(G\circ F)_{*A}=G_{*F(A)}\circ F_{*A}.
+\]
+在局部坐标下，切映射就是 Jacobi 矩阵乘以速度分量。这是作业题中“证明复合映射光滑且切映射满足链式法则”的标准答案。
+
+\paragraph{Lie 括号与交换子}
+教材第 5 章补充了向量场交换子。若
+\[
+X=X^i\partial_i,\qquad Y=Y^j\partial_j,
+\]
+则 Lie 括号定义为
+\[
+[X,Y](f)=X(Y(f))-Y(X(f)).
+\]
+坐标表达为
+\[
+[X,Y]=\left(X^i\partial_iY^k-Y^i\partial_iX^k\right)\partial_k.
+\]
+坐标基满足
+\[
+[\partial_i,\partial_j]=0.
+\]
+判断题中若说“任意两个向量场交换子为零”是错的；只有坐标自然基之间交换子为零。无挠联络满足
+\[
+\nabla_XY-\nabla_YX=[X,Y].
+\]
+
+\paragraph{联络的性质}
+Riemann 联络 $\nabla$ 满足线性、Leibniz 法则和与度量相容：
+\[
+\nabla_X(fY)=X(f)Y+f\nabla_XY,
+\]
+\[
+X\bigl(g(Y,Z)\bigr)=g(\nabla_XY,Z)+g(Y,\nabla_XZ).
+\]
+无挠条件为
+\[
+\nabla_XY-\nabla_YX=[X,Y].
+\]
+在自然坐标基下，$\nabla_{\partial_a}\partial_b=\Gamma^c_{ab}\partial_c$，且因无挠性有
+\[
+\Gamma^c_{ab}=\Gamma^c_{ba}.
+\]
+
+\paragraph{第一变分公式与测地线}
+教材第 5 章“弧长变分”解释了测地线为何是局部最短曲线。考试通常不要求完整变分证明，但要知道结论：
+\begin{enumerate}
+\item 长度泛函一阶变分为零的曲线，在适当参数下满足测地线方程。
+\item 测地线方程是局部最短的必要条件，不是任意长区间上的全局最短保证。
+\item 若曲线以弧长参数表示，测地线条件就是 $\nabla_{\dot c}\dot c=0$。
+\end{enumerate}
+
+能量泛函
+\[
+E(c)=\frac12\int g(\dot c,\dot c)\dd t
+\]
+的一阶变分给出同样的测地线方程。实际考试中写出
+\[
+\nabla_{\dot c}\dot c=0
+\]
+或坐标形式即可。
+
+\paragraph{Jacobi 方程只作了解}
+目录中带星号的 Jacobi 方程属于较深内容。若出现判断或填空，只需知道：Jacobi 场描述一族测地线之间的无穷小偏离，满足二阶线性方程
+\[
+\nabla_{\dot\gamma}\nabla_{\dot\gamma}J
++R(J,\dot\gamma)\dot\gamma=0
+\]
+或符号相反的等价约定。它和测地线变分、共轭点、局部法坐标有关。
+
+\paragraph{常 Gauss 曲率曲面}
+教材带星号章节讨论常 Gauss 曲率曲面。复习时记住典型模型：
+\[
+K=0:\ \text{平面、圆柱面、圆锥面去顶点局部平坦};
+\]
+\[
+K=\frac1{R^2}:\ \text{半径 }R\text{ 的球面};
+\]
+\[
+K<0:\ \text{双曲型曲面，测地圆周长比平面更长}.
+\]
+局部等距保持 $K$，所以不同常曲率的曲面不能局部等距。
+
+\paragraph{局部合同与局部等距}
+局部等距只要求第一基本形式相同；局部合同要求作为 $\E^3$ 中曲面可由刚体运动重合，通常还要第二基本形式相同。
+
+因此：
+\[
+\text{圆柱面与平面局部等距，但不局部合同}.
+\]
+曲面基本定理说：若 $I,II$ 满足 Gauss-Codazzi，则曲面在刚体运动下局部唯一。这是“局部合同”的判断依据。
+
+\paragraph{逆映射定理和隐函数定理的使用场景}
+附录中的两个定理在正文中反复出现：
+\begin{enumerate}
+\item 逆映射定理：Jacobi 矩阵可逆时，局部存在光滑逆映射。用于广义坐标变换、弧长参数反解。
+\item 隐函数定理：某个偏导或 Jacobi 子矩阵非零时，可把方程局部解成函数图像。用于正则曲面四个定义的互推。
+\end{enumerate}
+
+曲线正则性 $r'(t_0)\ne0$ 保证至少一个坐标分量导数非零，因此可局部选该坐标作参数；曲面正则性 $x_u\times x_v\ne0$ 保证某个 $2\times2$ Jacobi 子式非零，因此可局部写成函数图像。
+
+\section{作业题}
+
+\subsection{作业题题解}
+按 QQ 发布时间顺序排列，并补入聊天记录中的周次标签。
+
+\begin{enumerate}
+\homeworkweek{第1周作业}
+\item \textbf{题目}：证明向量恒等式
+\[
+(\vct a\times\vct b)\cdot(\vct c\times\vct d)
+=(\vct a\cdot\vct c)(\vct b\cdot\vct d)-(\vct b\cdot\vct c)(\vct a\cdot\vct d),
+\]
+\[
+\vct a\times(\vct b\times\vct c)+\vct b\times(\vct c\times\vct a)+\vct c\times(\vct a\times\vct b)=0,
+\]
+\[
+(\vct a\times\vct b)\cdot((\vct b\times\vct c)\times(\vct c\times\vct a))
+=\bigl(\vct a\cdot(\vct b\times\vct c)\bigr)^2.
+\]
+
+\textbf{解答}：第一式是 Lagrange 恒等式，可由行列式展开
+\[
+(\vct a\times\vct b)\cdot(\vct c\times\vct d)
+=\det\begin{pmatrix}\vct a\cdot\vct c&\vct a\cdot\vct d\\
+\vct b\cdot\vct c&\vct b\cdot\vct d\end{pmatrix}
+\]
+得到。第二式用三重积公式
+\[
+\vct a\times(\vct b\times\vct c)=
+(\vct a\cdot\vct c)\vct b-(\vct a\cdot\vct b)\vct c
+\]
+循环相加，各项两两抵消。第三式令 $[a,b,c]=\vct a\cdot(\vct b\times\vct c)$。由第一式和三重积性质，
+\[
+(\vct b\times\vct c)\times(\vct c\times\vct a)
+=[a,b,c]\,\vct c.
+\]
+于是左边为
+\[
+(\vct a\times\vct b)\cdot([a,b,c]\vct c)
+=[a,b,c]^2.
+\]
+
+\item \textbf{题目}：用向量方法证明三角形三条中线交于一点，且重心按 $1:2$ 分中线。
+
+\textbf{解答}：设三顶点位置向量为 $a,b,c$。定义
+\[
+g={a+b+c\over3}.
+\]
+边 $BC$ 中点为 $m_a=(b+c)/2$。则
+\[
+g-a={b+c-2a\over3}={2\over3}\left({b+c\over2}-a\right)={2\over3}(m_a-a).
+\]
+所以 $g$ 在从 $A$ 到 $BC$ 中点的中线上，且
+\[
+AG:GM_a=2:1.
+\]
+对另外两条中线同理，故三中线共点于 $g$。
+
+\item \textbf{题目}：用向量方法证明四面体顶点到对面重心的四条中线交于一点，且按 $1:3$ 分割。
+
+\textbf{解答}：设四顶点位置向量为 $a,b,c,d$，令
+\[
+g={a+b+c+d\over4}.
+\]
+面 $BCD$ 的重心为
+\[
+m_a={b+c+d\over3}.
+\]
+则
+\[
+g-a={b+c+d-3a\over4}
+={3\over4}\left({b+c+d\over3}-a\right)
+={3\over4}(m_a-a).
+\]
+故 $g$ 在从 $A$ 到对面重心的中线上，且
+\[
+AG:GM_a=3:1.
+\]
+其余顶点同理，四条中线共点。
+
+\item \textbf{题目}：求证本节映射 $\eta$ 定义合理，即 $\forall s\in(c,d)$，存在唯一
+$t=\eta(s)\in(a,b)$ 使得
+\[
+\int_a^{\eta(s)} \|r'(\tau)\|_2\,d\tau=s-c,
+\]
+并且该映射是 $C^1$ 正则参数变换，且
+\[
+\eta'(s)=\frac{1}{\|r'(t)\|_2},
+\]
+从而 $\|\widetilde r'(s)\|_2=1$。
+
+\textbf{解答}：设 $r(t)$ 是 $C^1$ 正则曲线，即
+\[
+\|r'(t)\|_2>0,\qquad t\in(a,b).
+\]
+定义弧长函数
+\[
+\varphi(t)=c+\int_a^t \|r'(\tau)\|_2\,d\tau.
+\]
+由于 $\|r'(t)\|_2$ 连续且恒正，所以
+\[
+\varphi'(t)=\|r'(t)\|_2>0.
+\]
+因此 $\varphi(t)$ 在 $(a,b)$ 上严格单调递增，从而是一一对应。又由定义可知
+\[
+\varphi((a,b))=(c,d).
+\]
+所以对任意 $s\in(c,d)$，存在唯一 $t\in(a,b)$，使得
+\[
+\varphi(t)=s.
+\]
+记这个唯一的 $t$ 为
+\[
+t=\eta(s).
+\]
+于是
+\[
+s=c+\int_a^{\eta(s)} \|r'(\tau)\|_2\,d\tau,
+\]
+即
+\[
+\int_a^{\eta(s)} \|r'(\tau)\|_2\,d\tau=s-c.
+\]
+这说明 $\eta$ 定义合理。
+
+又因为
+\[
+\varphi'(t)=\|r'(t)\|_2>0,
+\]
+由反函数定理可知，$\eta=\varphi^{-1}$ 是 $C^1$ 映射，并且
+\[
+\eta'(s)=\frac{1}{\varphi'(\eta(s))}
+=\frac{1}{\|r'(\eta(s))\|_2}.
+\]
+若记 $t=\eta(s)$，则
+\[
+\eta'(s)=\frac{1}{\|r'(t)\|_2}.
+\]
+
+令弧长参数化为
+\[
+\widetilde r(s)=r(\eta(s)).
+\]
+则由链式法则，
+\[
+\widetilde r'(s)=r'(\eta(s))\eta'(s).
+\]
+因此
+\[
+\|\widetilde r'(s)\|_2
+=
+\|r'(\eta(s))\|_2\cdot |\eta'(s)|
+=
+\|r'(\eta(s))\|_2\cdot
+\frac{1}{\|r'(\eta(s))\|_2}
+=1.
+\]
+故 $\widetilde r(s)$ 是弧长参数化。
+
+\item \textbf{题目}：设 $a,b,\omega>0$，求螺线
+\[
+r:(t_0,t_1)\to \mathbb R^3,\qquad
+t\mapsto (a\sin\omega t,\ a\cos\omega t,\ bt)
+\]
+的切向量，并给出一个弧长参数化。
+
+\textbf{解答}：对 $r(t)$ 求导，得切向量
+\[
+r'(t)=(a\omega\cos\omega t,\ -a\omega\sin\omega t,\ b).
+\]
+其速度为
+\[
+\|r'(t)\|
+=
+\sqrt{a^2\omega^2\cos^2\omega t+a^2\omega^2\sin^2\omega t+b^2}
+=
+\sqrt{a^2\omega^2+b^2}.
+\]
+因此单位切向量为
+\[
+T(t)=\frac{r'(t)}{\|r'(t)\|}
+=
+\frac{1}{\sqrt{a^2\omega^2+b^2}}
+(a\omega\cos\omega t,\ -a\omega\sin\omega t,\ b).
+\]
+
+令
+\[
+v=\sqrt{a^2\omega^2+b^2}.
+\]
+从 $t_0$ 开始的弧长参数为
+\[
+s=\int_{t_0}^{t}\|r'(u)\|\,du
+=v(t-t_0).
+\]
+于是
+\[
+t=t_0+\frac{s}{v}.
+\]
+代入原参数方程，得到一个弧长参数化
+\[
+\widetilde r(s)=
+\left(
+a\sin\omega\left(t_0+\frac{s}{v}\right),
+a\cos\omega\left(t_0+\frac{s}{v}\right),
+b\left(t_0+\frac{s}{v}\right)
+\right),
+\]
+其中
+\[
+0<s<v(t_1-t_0).
+\]
+由于
+\[
+\left\|\frac{d\widetilde r}{ds}\right\|=1,
+\]
+故 $\widetilde r(s)$ 是所求的弧长参数化。
+
+\homeworkweek{第2周作业}
+\item \textbf{题目}：求半径为 $r$ 的平面圆的曲率。
+
+\textbf{解答}：取弧长参数
+\[
+\gamma(s)=\left(r\cos{s\over r},r\sin{s\over r}\right).
+\]
+则
+\[
+\gamma'(s)=\left(-\sin{s\over r},\cos{s\over r}\right),\quad
+\gamma''(s)=\left(-{1\over r}\cos{s\over r},-{1\over r}\sin{s\over r}\right).
+\]
+因 $\norm{\gamma'}=1$，曲率为
+\[
+\boxed{\kappa=\norm{\gamma''}={1\over r}.}
+\]
+
+\item \textbf{题目}：螺线
+\[
+r(t)=(a\cos\omega t,a\sin\omega t,bt),\qquad a,\omega,b>0
+\]
+求曲率、挠率，并说明其为常数。
+
+\textbf{解答}：计算
+\[
+r'=(-a\omega\sin\omega t,a\omega\cos\omega t,b),\quad
+r''=(-a\omega^2\cos\omega t,-a\omega^2\sin\omega t,0),
+\]
+\[
+r'''=(a\omega^3\sin\omega t,-a\omega^3\cos\omega t,0).
+\]
+速度平方
+\[
+\norm{r'}^2=a^2\omega^2+b^2.
+\]
+又
+\[
+\norm{r'\times r''}^2=a^2\omega^4(a^2\omega^2+b^2).
+\]
+故
+\[
+\boxed{\kappa={a\omega^2\over a^2\omega^2+b^2}.}
+\]
+并且
+\[
+\det(r',r'',r''')=a^2b\omega^5,
+\]
+所以
+\[
+\boxed{\tau={b\omega\over a^2\omega^2+b^2}.}
+\]
+两式均不含 $t$，故曲率和挠率为常数。
+
+\item \textbf{题目}：证明：如果一条曲线的挠率恒为零，且曲率为常数 $(\neq 0)$，则该曲线是一段圆弧。
+
+\textbf{解答}：设曲线 $r(s)$ 以弧长 $s$ 为参数，Frenet 标架为
+\[
+\alpha(s),\quad \beta(s),\quad \gamma(s).
+\]
+由 Frenet 公式，
+\[
+\dot\alpha=\kappa\beta,\qquad
+\dot\beta=-\kappa\alpha+\tau\gamma,\qquad
+\dot\gamma=-\tau\beta.
+\]
+因为挠率恒为零，即
+\[
+\tau=0,
+\]
+所以
+\[
+\dot\gamma=0.
+\]
+因此 $\gamma$ 为常向量，曲线所在的密切平面方向不变，故曲线位于某一固定平面内。
+
+又因为曲率为非零常数，记
+\[
+\kappa>0.
+\]
+由 $\tau=0$ 可得
+\[
+\dot\beta=-\kappa\alpha.
+\]
+令
+\[
+C=r+\frac{1}{\kappa}\beta.
+\]
+则
+\[
+\dot C=\dot r+\frac{1}{\kappa}\dot\beta
+=\alpha+\frac{1}{\kappa}(-\kappa\alpha)
+=\alpha-\alpha=0.
+\]
+所以 $C$ 为定点。
+
+并且
+\[
+r-C=-\frac{1}{\kappa}\beta,
+\]
+于是
+\[
+\|r-C\|=\frac{1}{\kappa}.
+\]
+这说明曲线上的每一点都在以 $C$ 为圆心、$\frac{1}{\kappa}$ 为半径的圆上。
+
+因此该曲线是一段圆弧。
+
+\item \textbf{题目}：设曲线 $\kappa\ne0$，且每一点的密切平面都通过固定点 $P$，证明该曲线在一个平面内。
+
+\textbf{解答}：用弧长参数 $s$，Frenet 标架为 $\{\alpha,\beta,\gamma\}$。密切平面由 $\alpha,\beta$ 张成，其法向为 $\gamma$，故
+\[
+\inner{P-r(s)}{\gamma(s)}=0.
+\]
+所以 $P-r=a\alpha+b\beta$。对上式求导：
+\[
+0={d\over ds}\inner{P-r}{\gamma}
+=-\inner{\alpha}{\gamma}+\inner{P-r}{-\tau\beta}
+=-\tau b.
+\]
+若某处 $\tau\ne0$，则 $b=0$，即 $P-r=a\alpha$。再求导：
+\[
+-\alpha=a'\alpha+a\kappa\beta.
+\]
+比较 $\beta$ 分量得 $a\kappa=0$，因 $\kappa\ne0$，故 $a=0$，进而 $P=r(s)$，与正则曲线在区间内变化矛盾。因此 $\tau\equiv0$。挠率恒为零的空间曲线为平面曲线，结论成立。
+
+\item \textbf{题目}：设正交活动标架 $\{r(s),a_i(s)\}$ 满足
+\[
+\dot a_i=\sum_j \lambda_i^j a_j.
+\]
+证明 $\lambda_i^j+\lambda_j^i=0$。
+
+\textbf{解答}：因为 $\{a_i\}$ 是正交单位标架，
+\[
+\inner{a_i}{a_j}=\delta_{ij}.
+\]
+对 $s$ 求导得
+\[
+0=\inner{\dot a_i}{a_j}+\inner{a_i}{\dot a_j}
+=\lambda_i^j+\lambda_j^i.
+\]
+故系数矩阵 $(\lambda_i^j)$ 反对称。
+
+\item \textbf{题目}：曲线由
+\[
+x^2+y^2+z^2=1,\qquad x^2+y^2=x
+\]
+确定，求其在 $(0,0,1)$ 处的曲率和挠率。
+
+\textbf{解答}：由 $x^2+y^2=x$ 可取
+\[
+x=\cos^2t,\qquad y=\sin t\cos t.
+\]
+再由单位球面方程得 $z=\sin t$，且 $t=\pi/2$ 对应 $(0,0,1)$。令
+\[
+r(t)=(\cos^2t,\sin t\cos t,\sin t).
+\]
+计算
+\[
+r'(\pi/2)=(0,-1,0),\quad
+r''(\pi/2)=(2,0,-1),\quad
+r'''(\pi/2)=(0,4,0).
+\]
+由于 $\norm{r'(\pi/2)}=1$，
+\[
+r'\times r''=(1,0,2),\qquad \norm{r'\times r''}=\sqrt5.
+\]
+曲率公式给出
+\[
+\boxed{\kappa={\norm{r'\times r''}\over\norm{r'}^3}=\sqrt5.}
+\]
+挠率为
+\[
+\tau={\det(r',r'',r''')\over\norm{r'\times r''}^2}
+={(r'\times r'')\cdot r'''\over 5}=0.
+\]
+故
+\[
+\boxed{\kappa=\sqrt5,\qquad \tau=0.}
+\]
+
+\homeworkweek{第3周作业}
+\item \textbf{题目}：由仿射空间公理证明两不同点确定唯一一条直线。
+
+\textbf{解答}：设两点为 $A\ne B$。向量 $\overrightarrow{AB}$ 非零。过 $A,B$ 的直线可写为
+\[
+L=\{A+t\overrightarrow{AB}:t\in\R\}.
+\]
+若另一条直线 $L'$ 也过 $A,B$，其方向向量必须与 $\overrightarrow{AB}$ 平行，否则同过 $A$ 的两条不同方向直线不能同时包含 $B$。因此 $L'=L$。存在性和唯一性均得证。
+
+\item \textbf{题目}：仿射坐标系 $\{O,e_1,e_2,e_3\}$ 中，$P=(1,2,1)$，$O'=(2,1,-1)$。求 $O$ 在 $\{P,e_1+e_2,e_2,e_3\}$ 中的坐标，以及 $P$ 在 $\{O',e_1-e_2,e_2,e_3\}$ 中的坐标。
+
+\textbf{解答}：先求 $O$。设
+\[
+O=P+u(e_1+e_2)+v e_2+w e_3.
+\]
+比较原坐标：
+\[
+(0,0,0)=(1,2,1)+(u,u+v,w).
+\]
+得 $u=-1,w=-1,u+v=-2$，故 $v=-1$。所以
+\[
+\boxed{O=(-1,-1,-1).}
+\]
+再求 $P$。设
+\[
+P=O'+u(e_1-e_2)+v e_2+w e_3.
+\]
+比较
+\[
+(1,2,1)=(2,1,-1)+(u,-u+v,w).
+\]
+得 $u=-1,w=2,1-u+v=2$，即 $v=0$。故
+\[
+\boxed{P=(-1,0,2).}
+\]
+
+\item \textbf{题目}：四点在仿射三维空间中坐标为 $x_1,x_2,x_3,x_4$，定义
+\[
+\lambda={\sqrt{\sum_j|x_1^j-x_2^j|^2}\over
+\sqrt{\sum_j|x_3^j-x_4^j|^2}}.
+\]
+问 $\lambda$ 何时是仿射几何量？
+
+\textbf{解答}：一般仿射变换 $x\mapsto Ax+b$ 不保持欧氏长度，因此一般情形下长度比不是仿射不变量。若两条有向线段
+\[
+\overrightarrow{x_1x_2},\qquad \overrightarrow{x_3x_4}
+\]
+线性相关，即两线段平行，则设 $\overrightarrow{x_1x_2}=c\,\overrightarrow{x_3x_4}$。仿射变换后
+\[
+A\overrightarrow{x_1x_2}=c\,A\overrightarrow{x_3x_4},
+\]
+于是长度比仍为 $|c|$。因此在任意仿射变换下，$\lambda$ 成为仿射几何量的典型条件是两比较线段平行；若只讨论欧氏运动或相似变换，则任意两段的长度比都保持。
+
+\item \textbf{题目}：对映射 $f:X\to Y$，证明逆像保持交和并。
+
+\textbf{解答}：对任意族 $\{A_\lambda\}$，有
+\[
+x\in f^{-1}\left(\bigcap_\lambda A_\lambda\right)
+\Longleftrightarrow f(x)\in A_\lambda\ \text{对一切 }\lambda
+\Longleftrightarrow x\in \bigcap_\lambda f^{-1}(A_\lambda).
+\]
+故
+\[
+f^{-1}\left(\bigcap_\lambda A_\lambda\right)=\bigcap_\lambda f^{-1}(A_\lambda).
+\]
+并集同理：
+\[
+x\in f^{-1}\left(\bigcup_\lambda A_\lambda\right)
+\Longleftrightarrow f(x)\in A_\lambda\ \text{对某个 }\lambda
+\Longleftrightarrow x\in \bigcup_\lambda f^{-1}(A_\lambda).
+\]
+
+\item \textbf{题目}：利用上一题证明 Definition 3.4 中的开集构成拓扑。
+
+\textbf{解答}：按定义，集合在曲面上开当且仅当在每个局部坐标图下的坐标像或逆像满足欧氏开集条件。空集和全集显然满足。任意并时，由逆像保持并集且欧氏空间开集任意并仍开，所以并集仍开。有限交时，由逆像保持交集且欧氏开集有限交仍开，所以交集仍开。三条拓扑公理均满足。
+
+\item \textbf{题目}：证明 Definition 3.7 中 Jacobi 矩阵的可逆性不依赖仿射坐标系。
+
+\textbf{解答}：设原坐标与新坐标满足
+\[
+x'=Ax+b,\qquad y'=Cy+d,
+\]
+其中 $A,C$ 可逆。若映射坐标表示为 $y=F(x)$，则新坐标表示为
+\[
+y'=C F(A^{-1}(x'-b))+d.
+\]
+Jacobi 矩阵为
+\[
+{ \partial y'\over \partial x'}
+=C\,{ \partial y\over \partial x}\,A^{-1}.
+\]
+左右乘可逆矩阵不改变可逆性，因此 Jacobi 矩阵是否可逆与仿射坐标系无关。
+
+\item \textbf{题目}：给出 Proposition 3.2 的证明：仿射坐标变换不改变由光滑性、秩和线性无关性定义的几何性质，因此相关定义与仿射坐标系选取无关。
+
+\textbf{解答}：Proposition 3.2 主要说明坐标变换下几何对象的定义不依赖坐标。证明方法是取两个仿射坐标系，其坐标关系为
+\[
+x'=Ax+b,\qquad \det A\ne0.
+\]
+若某对象在 $x$ 坐标中由光滑函数、正则参数化或线性关系给出，则在 $x'$ 坐标中只多复合一个可逆仿射变换。仿射变换及其逆均光滑，且线性部分可逆，所以光滑性、秩、线性无关性均保持。故该命题成立。
+
+\homeworkweek{第4周作业}
+\item \textbf{题目}：柱坐标和球坐标中计算自然标架。柱坐标
+\[
+x_1=r\cos\theta,\quad x_2=r\sin\theta,\quad x_3=z.
+\]
+球坐标
+\[
+x_1=r\cos\theta\sin\varphi,\quad x_2=r\sin\theta\sin\varphi,\quad x_3=r\cos\varphi.
+\]
+
+\textbf{解答}：柱坐标：
+\[
+\boxed{\partial_r=(\cos\theta,\sin\theta,0),\quad
+\partial_\theta=(-r\sin\theta,r\cos\theta,0),\quad
+\partial_z=(0,0,1).}
+\]
+球坐标：
+\[
+\boxed{\partial_r=(\cos\theta\sin\varphi,\sin\theta\sin\varphi,\cos\varphi),}
+\]
+\[
+\boxed{\partial_\theta=(-r\sin\theta\sin\varphi,r\cos\theta\sin\varphi,0),}
+\]
+\[
+\boxed{\partial_\varphi=(r\cos\theta\cos\varphi,r\sin\theta\cos\varphi,-r\sin\varphi).}
+\]
+
+\item \textbf{题目}：证明 Lemma 3.7：若两个广义坐标变换的 Jacobi 矩阵均可逆，则它们的复合仍是允许的广义坐标变换；换言之，广义坐标变换满足相容性。
+
+\textbf{解答}：设两个坐标变换分别为
+\[
+y=y(x),\qquad z=z(y).
+\]
+题设说明下面两个 Jacobi 矩阵都可逆：
+\[
+\left({\partial y^i\over\partial x^j}\right),\qquad
+\left({\partial z^i\over\partial y^j}\right).
+\]
+复合变换 $z=z(y(x))$ 的 Jacobi 矩阵由链式法则给出
+\[
+\left({\partial z^i\over\partial x^j}\right)
+=
+\left({\partial z^i\over\partial y^k}\right)
+\left({\partial y^k\over\partial x^j}\right).
+\]
+两个可逆矩阵的乘积仍可逆，所以复合坐标变换仍满足定义中的非退化条件。反向变换同理由反函数定理得到，故命题成立。
+
+\item \textbf{题目}：设 $D$ 是点 $A$ 处的导算子，若函数 $f$ 在 $A$ 的某邻域内为常数，证明 $Df=0$。
+
+\textbf{解答}：设 $f\equiv c$ 于 $A$ 的某邻域。由导算子线性性，
+\[
+D f=D(c\cdot 1)=cD1.
+\]
+再由 Leibniz 法则，
+\[
+D(1)=D(1\cdot1)=D1+D1=2D1,
+\]
+故 $D1=0$，从而
+\[
+\boxed{Df=0.}
+\]
+
+\item \textbf{题目}：证明 Proposition 3.6 的逆命题：曲线的光滑性和正则性可在广义坐标图中检验。
+
+\textbf{解答}：设坐标图 $\phi$ 的 Jacobi 矩阵可逆。若坐标表示 $\phi\circ\gamma$ 光滑，则
+\[
+\gamma=\phi^{-1}\circ(\phi\circ\gamma)
+\]
+为光滑映射的复合，所以 $\gamma$ 光滑。若 $(\phi\circ\gamma)'(t)\ne0$，则
+\[
+\gamma'(t)=D\phi^{-1}\,(\phi\circ\gamma)'(t).
+\]
+由于 $D\phi^{-1}$ 可逆，非零向量不会变为零，故 $\gamma'(t)\ne0$。反向同理，因此可用任一广义坐标检验。
+
+\item \textbf{题目}：证明 Definition 3.14 中的关系 $\sim$ 是等价关系，并证明商空间上的向量运算良定义。
+
+\textbf{解答}：若 $\sim$ 表示在点 $A$ 处给出相同导数作用，则自反性显然成立；对称性来自等号对称；传递性来自等号传递。若 $u\sim u'$、$v\sim v'$，则对任意函数 $f$，
+\[
+(u+v)f=uf+vf=u'f+v'f=(u'+v')f,
+\]
+故 $u+v\sim u'+v'$。同理
+\[
+(\lambda u)f=\lambda uf=\lambda u'f=(\lambda u')f.
+\]
+因此加法和数乘不依赖代表元，商空间向量运算良定义。
+
+\item \textbf{题目}：证明 Lemma 3.8：点 $A$ 处任意导算子 $D$ 都能唯一写成坐标方向导数的线性组合
+\[
+D=\sum_i v^i\partial_i|_A.
+\]
+
+\textbf{解答}：Lemma 3.8 的内容可概括为点处导算子由坐标方向导数线性表示。设局部坐标为 $x^1,\dots,x^n$，令
+\[
+v^i=D(x^i).
+\]
+对任意光滑函数 $f$，在点 $A$ 附近写一阶展开
+\[
+f(x)=f(A)+\sum_i (x^i-x^i(A))\,h_i(x),
+\]
+其中 $h_i(A)=\partial_i f(A)$。作用 $D$ 并用常数项导数为零，得
+\[
+Df=\sum_i D(x^i)\,\partial_i f(A)=\sum_i v^i\partial_i f(A).
+\]
+所以
+\[
+\boxed{D=\sum_i v^i\partial_i|_A.}
+\]
+唯一性由 $D(x^i)=v^i$ 立即得到。
+
+```latex
+\item \textbf{题目}：柱坐标中写出自然余标架关于 $(dx_1,dx_2,dx_3)$ 的表达。
+
+\textbf{解答}：柱坐标为
+\[
+x_1=r\cos\theta,\qquad x_2=r\sin\theta,\qquad x_3=z.
+\]
+柱坐标对应的坐标函数为
+\[
+r=\sqrt{x_1^2+x_2^2},\qquad 
+\theta=\arctan {x_2\over x_1},\qquad 
+z=x_3.
+\]
+自然余标架就是柱坐标函数的微分：
+\[
+dr,\qquad d\theta,\qquad dz.
+\]
+下面分别计算它们关于 $(dx_1,dx_2,dx_3)$ 的表达。
+
+首先由
+\[
+r^2=x_1^2+x_2^2
+\]
+两边取微分，得到
+\[
+2r\,dr=2x_1\,dx_1+2x_2\,dx_2.
+\]
+因此
+\[
+dr={x_1\over r}\,dx_1+{x_2\over r}\,dx_2.
+\]
+又因为
+\[
+x_1=r\cos\theta,\qquad x_2=r\sin\theta,
+\]
+所以
+\[
+{x_1\over r}=\cos\theta,\qquad {x_2\over r}=\sin\theta.
+\]
+于是
+\[
+\boxed{
+	dr=\cos\theta\,dx_1+\sin\theta\,dx_2.
+}
+\]
+
+接下来计算 $d\theta$。由柱坐标关系
+\[
+x_1=r\cos\theta,\qquad x_2=r\sin\theta
+\]
+两边取微分：
+\[
+dx_1=d(r\cos\theta)=\cos\theta\,dr-r\sin\theta\,d\theta,
+\]
+\[
+dx_2=d(r\sin\theta)=\sin\theta\,dr+r\cos\theta\,d\theta.
+\]
+为了消去 $dr$，将第一式乘以 $-\sin\theta$，第二式乘以 $\cos\theta$，再相加，得到
+\[
+-\sin\theta\,dx_1+\cos\theta\,dx_2
+=
+-\sin\theta(\cos\theta\,dr-r\sin\theta\,d\theta)
++\cos\theta(\sin\theta\,dr+r\cos\theta\,d\theta).
+\]
+展开右边：
+\[
+-\sin\theta\cos\theta\,dr
++r\sin^2\theta\,d\theta
++\sin\theta\cos\theta\,dr
++r\cos^2\theta\,d\theta.
+\]
+其中含 $dr$ 的两项相消，因此
+\[
+-\sin\theta\,dx_1+\cos\theta\,dx_2
+=
+r(\sin^2\theta+\cos^2\theta)d\theta.
+\]
+由于
+\[
+\sin^2\theta+\cos^2\theta=1,
+\]
+所以
+\[
+-\sin\theta\,dx_1+\cos\theta\,dx_2=r\,d\theta.
+\]
+因此
+\[
+\boxed{
+	d\theta=-{\sin\theta\over r}\,dx_1+{\cos\theta\over r}\,dx_2.
+}
+\]
+
+最后由
+\[
+z=x_3
+\]
+直接取微分，得到
+\[
+\boxed{
+	dz=dx_3.
+}
+\]
+
+综上，柱坐标的自然余标架关于直角坐标余标架 $(dx_1,dx_2,dx_3)$ 的表达为
+\[
+\boxed{
+	dr=\cos\theta\,dx_1+\sin\theta\,dx_2,
+}
+\]
+\[
+\boxed{
+	d\theta=-{\sin\theta\over r}\,dx_1+{\cos\theta\over r}\,dx_2,
+}
+\]
+\[
+\boxed{
+	dz=dx_3.
+}
+\]
+其中要求 $r>0$，因为在 $r=0$ 处角坐标 $\theta$ 不再是良好的局部坐标。
+```
+
+\homeworkweek{第5周作业}
+\item \textbf{题目}：严格证明 Lemma 3.11：给出 $V$ 上对称双线性型空间的一组基和维数。
+
+\textbf{解答}：设 $\{e_1,\dots,e_n\}$ 是 $V$ 的基，对偶基为 $\{e^1,\dots,e^n\}$。定义
+\[
+e^i\odot e^j=\begin{cases}
+e^i\otimes e^i,&i=j,\\
+{1\over2}(e^i\otimes e^j+e^j\otimes e^i),&i<j.
+\end{cases}
+\]
+这些都是对称双线性型。任意对称双线性型 $B$ 由矩阵 $b_{ij}=B(e_i,e_j)$ 决定，且 $b_{ij}=b_{ji}$，故
+\[
+B=\sum_i b_{ii}e^i\odot e^i+\sum_{i<j}2b_{ij}e^i\odot e^j.
+\]
+说明它们张成。若上述线性组合为零，代入 $(e_i,e_j)$ 得所有系数为零，故线性无关。因此维数为
+\[
+\boxed{n+{n(n-1)\over2}={n(n+1)\over2}.}
+\]
+
+\item \textbf{题目}：三维球坐标
+\[
+x_1=r\sin\theta\cos\varphi,\quad
+x_2=r\sin\theta\sin\varphi,\quad
+x_3=r\cos\theta
+\]
+求自然余标架及欧氏度量表达式。
+
+\textbf{解答}：记球坐标参数化为
+\[
+x=x(r,\theta,\varphi)
+=
+(r\sin\theta\cos\varphi,\,
+r\sin\theta\sin\varphi,\,
+r\cos\theta).
+\]
+其中
+\[
+y^1=r,\qquad y^2=\theta,\qquad y^3=\varphi.
+\]
+所以自然余标架为
+\[
+dy^1=dr,\qquad dy^2=d\theta,\qquad dy^3=d\varphi.
+\]
+
+下面把它们具体写成关于 \(dx_1,dx_2,dx_3\) 的形式。由
+\[
+r=\sqrt{x_1^2+x_2^2+x_3^2}
+\]
+可得
+\[
+dr
+=
+\frac{x_1}{r}dx_1+\frac{x_2}{r}dx_2+\frac{x_3}{r}dx_3.
+\]
+代入
+\[
+x_1=r\sin\theta\cos\varphi,\quad
+x_2=r\sin\theta\sin\varphi,\quad
+x_3=r\cos\theta,
+\]
+得到
+\[
+\boxed{
+	dr
+	=
+	\sin\theta\cos\varphi\,dx_1
+	+\sin\theta\sin\varphi\,dx_2
+	+\cos\theta\,dx_3.
+}
+\]
+
+再由自然标架
+\[
+\partial_r
+=
+(\sin\theta\cos\varphi,\,
+\sin\theta\sin\varphi,\,
+\cos\theta),
+\]
+\[
+\partial_\theta
+=
+(r\cos\theta\cos\varphi,\,
+r\cos\theta\sin\varphi,\,
+-r\sin\theta),
+\]
+\[
+\partial_\varphi
+=
+(-r\sin\theta\sin\varphi,\,
+r\sin\theta\cos\varphi,\,
+0)
+\]
+可知三个方向两两正交，且
+\[
+|\partial_r|^2=1,\qquad
+|\partial_\theta|^2=r^2,\qquad
+|\partial_\varphi|^2=r^2\sin^2\theta.
+\]
+因此与 \(\partial_r,\partial_\theta,\partial_\varphi\) 对偶的自然余标架为
+\[
+\boxed{
+	\begin{aligned}
+		dr
+		&=
+		\sin\theta\cos\varphi\,dx_1
+		+\sin\theta\sin\varphi\,dx_2
+		+\cos\theta\,dx_3,\\[4pt]
+		d\theta
+		&=
+		\frac{\cos\theta\cos\varphi}{r}\,dx_1
+		+\frac{\cos\theta\sin\varphi}{r}\,dx_2
+		-\frac{\sin\theta}{r}\,dx_3,\\[4pt]
+		d\varphi
+		&=
+		-\frac{\sin\varphi}{r\sin\theta}\,dx_1
+		+\frac{\cos\varphi}{r\sin\theta}\,dx_2.
+	\end{aligned}
+}
+\]
+其中 \(d\varphi\) 要求 \(\sin\theta\neq 0\)，这对应球坐标在 \(x_3\) 轴上的坐标奇性。
+
+接下来计算欧氏度量。对坐标函数求微分：
+\[
+dx_1
+=
+\sin\theta\cos\varphi\,dr
++r\cos\theta\cos\varphi\,d\theta
+-r\sin\theta\sin\varphi\,d\varphi,
+\]
+\[
+dx_2
+=
+\sin\theta\sin\varphi\,dr
++r\cos\theta\sin\varphi\,d\theta
++r\sin\theta\cos\varphi\,d\varphi,
+\]
+\[
+dx_3
+=
+\cos\theta\,dr
+-r\sin\theta\,d\theta.
+\]
+欧氏度量为
+\[
+ds^2=dx_1^2+dx_2^2+dx_3^2.
+\]
+代入并化简得
+\[
+ds^2
+=
+dr^2+r^2d\theta^2+r^2\sin^2\theta\,d\varphi^2.
+\]
+因此
+\[
+\boxed{
+	ds^2=dr^2+r^2d\theta^2+r^2\sin^2\theta\,d\varphi^2.
+}
+\]
+
+换言之，球坐标下的度量矩阵为
+\[
+\boxed{
+	(g_{ij})
+	=
+	\begin{pmatrix}
+		1 & 0 & 0\\
+		0 & r^2 & 0\\
+		0 & 0 & r^2\sin^2\theta
+	\end{pmatrix}.
+}
+\]
+
+\item \textbf{题目}：证明一个子集 $S$ 若在某仿射坐标系中为光滑曲面，则在任意仿射坐标系中仍为光滑曲面。
+
+\textbf{解答}：两个仿射坐标系之间的变换为
+\[
+x'=Ax+b,\qquad \det A\ne0.
+\]
+若 $S$ 在 $x$ 坐标中由参数化 $r(u,v)$ 给出且 Jacobi 矩阵秩为 2，则在 $x'$ 坐标中参数化为
+\[
+r'(u,v)=Ar(u,v)+b.
+\]
+其 Jacobi 矩阵为
+\[
+D r'=A\,D r.
+\]
+由于 $A$ 可逆，$\rank(D r')=\rank(D r)=2$，光滑性和正则性均保持。
+
+
+\homeworkweek{第6周作业}
+\item \textbf{题目}：证明 Definition 4.7 中定义的 $\partial_u$ 确是点 $A$ 处的导算子。
+
+\textbf{解答}：定义中 $\partial_u f$ 是 $f$ 沿参数曲线的方向导数。方向导数对函数线性：
+\[
+\partial_u(af+bg)=a\partial_u f+b\partial_u g.
+\]
+又由一元函数乘积求导法则，
+\[
+\partial_u(fg)=f(A)\partial_u g+g(A)\partial_u f.
+\]
+这正是导算子的线性性与 Leibniz 法则，所以 $\partial_u$ 是 $A$ 处导算子。
+
+\item \textbf{题目}：单位球面参数
+\[
+x_1=\sin\theta\cos\varphi,\quad x_2=\sin\theta\sin\varphi,\quad x_3=\cos\theta
+\]
+写出局部参数标架。
+
+\textbf{解答}：
+\[
+\boxed{\partial_\theta=(\cos\theta\cos\varphi,\cos\theta\sin\varphi,-\sin\theta),}
+\]
+\[
+\boxed{\partial_\varphi=(-\sin\theta\sin\varphi,\sin\theta\cos\varphi,0).}
+\]
+二者张成球面切平面；在 $\sin\theta\ne0$ 的坐标邻域内线性无关。
+
+\item \textbf{题目}：图形曲面
+\[
+S=\{(x_1,x_2,f(x_1,x_2))\}
+\]
+求切空间。
+
+\textbf{解答}：取参数化
+\[
+r(u,v)=(u,v,f(u,v)).
+\]
+则
+\[
+r_u=(1,0,f_u),\qquad r_v=(0,1,f_v).
+\]
+故点 $(u,v,f(u,v))$ 处
+\[
+\boxed{T_AS=\spn\{(1,0,f_u),(0,1,f_v)\}.}
+\]
+
+\item \textbf{题目}：若 $F:S_1\to S_2$、$G:S_2\to S_3$ 光滑，证明 $G\circ F$ 光滑并证明切映射链式法则。
+
+\textbf{解答}：取局部坐标 $x,y,z$。光滑性在坐标中等价于坐标表示光滑：
+\[
+y\circ F\circ x^{-1},\qquad z\circ G\circ y^{-1}
+\]
+均光滑。复合的坐标表示为
+\[
+z\circ G\circ F\circ x^{-1}
+=(z\circ G\circ y^{-1})\circ(y\circ F\circ x^{-1}),
+\]
+故光滑。对任意切向量 $v$，按切映射定义作用于函数 $h$：
+\[
+((G\circ F)_*v)(h)=v(h\circ G\circ F)
+=(F_*v)(h\circ G)=(G_*(F_*v))(h).
+\]
+于是
+\[
+\boxed{(G\circ F)_*=G_*\circ F_*.}
+\]
+
+\homeworkweek{第7周作业}
+\item \textbf{题目}：平面 $a_ix^i=0$，若 $a_1\ne0$，取参数化
+\[
+x^1=-{a_2x^2+a_3x^3\over a_1},\quad x^2=x^2,\quad x^3=x^3.
+\]
+证明该自然标架下 $\Gamma^k_{ij}=0$。
+
+\textbf{解答}：令参数为 $(u,v)=(x^2,x^3)$。参数向量
+\[
+r_u=\left(-{a_2\over a_1},1,0\right),\qquad
+r_v=\left(-{a_3\over a_1},0,1\right)
+\]
+为常向量。因此度量分量 $g_{ij}=\inner{r_i}{r_j}$ 均为常数，所有一阶偏导 $\partial_k g_{ij}=0$。由 Christoffel 公式，
+\[
+\Gamma^k_{ij}={1\over2}g^{k\ell}(\partial_i g_{j\ell}+\partial_j g_{i\ell}-\partial_\ell g_{ij})=0.
+\]
+
+\item \textbf{题目}：圆柱面
+\[
+x_1=\cos\theta,\qquad x_2=\sin\theta,\qquad x_3=x_3
+\]
+上自由质点满足 $\theta(0)=x_3(0)=0$，初速度为 $\partial_\theta+\partial_3$，求运动方程。
+
+\textbf{解答}：参数向量为
+\[
+\partial_\theta=(-\sin\theta,\cos\theta,0),\qquad \partial_3=(0,0,1).
+\]
+第一基本形式为
+\[
+g_{\theta\theta}=1,\quad g_{\theta 3}=0,\quad g_{33}=1,
+\]
+故 $g$ 为常数矩阵，Christoffel 记号全为零。自由质点即测地线，方程为
+\[
+\ddot\theta=0,\qquad \ddot x_3=0.
+\]
+由初始条件 $\dot\theta(0)=1,\dot x_3(0)=1$ 得
+\[
+\boxed{\theta(t)=t,\qquad x_3(t)=t.}
+\]
+代回圆柱面为
+\[
+\boxed{r(t)=(\cos t,\sin t,t).}
+\]
+
+\item \textbf{题目}：单位球面在 $(1,0,0)$ 附近取参数
+\[
+x_1=\cos\theta\sin\Bigl({\pi\over2}+\varphi\Bigr),\quad
+x_2=\sin\theta\sin\Bigl({\pi\over2}+\varphi\Bigr),\quad
+x_3=\cos\Bigl({\pi\over2}+\varphi\Bigr).
+\]
+若 $\theta(0)=\varphi(0)=0$，初速度为 $\partial_\theta+\partial_\varphi$，写出测地线运动方程。
+
+\textbf{解答}：化简得
+\[
+r(\theta,\varphi)=(\cos\theta\cos\varphi,\sin\theta\cos\varphi,-\sin\varphi).
+\]
+于是
+\[
+g_{\theta\theta}=\cos^2\varphi,\qquad g_{\theta\varphi}=0,\qquad g_{\varphi\varphi}=1.
+\]
+由
+\[
+\Gamma^k_{ij}={1\over2}g^{k\ell}(\partial_i g_{j\ell}+\partial_j g_{i\ell}-\partial_\ell g_{ij})
+\]
+得唯一非零项
+\[
+\Gamma^\theta_{\theta\varphi}=\Gamma^\theta_{\varphi\theta}=-\tan\varphi,\qquad
+\Gamma^\varphi_{\theta\theta}=\sin\varphi\cos\varphi.
+\]
+测地线方程为
+\[
+\boxed{\ddot\theta-2\tan\varphi\,\dot\theta\dot\varphi=0,}
+\qquad
+\boxed{\ddot\varphi+\sin\varphi\cos\varphi\,\dot\theta^2=0,}
+\]
+初值为 $\theta(0)=\varphi(0)=0,\dot\theta(0)=\dot\varphi(0)=1$。
+
+\item \textbf{题目}：圆柱面
+\[
+x_1=\cos\theta,\quad x_2=\sin\theta,\quad x_3=z
+\]
+计算度量。
+
+\textbf{解答}：有
+\[
+r_\theta=(-\sin\theta,\cos\theta,0),\qquad r_z=(0,0,1).
+\]
+因此
+\[
+g_{\theta\theta}=1,\qquad g_{\theta z}=0,\qquad g_{zz}=1,
+\]
+即
+\[
+\boxed{I=d\theta^2+dz^2.}
+\]
+
+\item \textbf{题目}：单位球面在 $(1,0,0)$ 附近取第 2 题参数，计算度量。
+
+\textbf{解答}：由
+\[
+r(\theta,\varphi)=(\cos\theta\cos\varphi,\sin\theta\cos\varphi,-\sin\varphi)
+\]
+得
+\[
+r_\theta=(-\sin\theta\cos\varphi,\cos\theta\cos\varphi,0),\quad
+r_\varphi=(-\cos\theta\sin\varphi,-\sin\theta\sin\varphi,-\cos\varphi).
+\]
+内积为
+\[
+g_{\theta\theta}=\cos^2\varphi,\quad g_{\theta\varphi}=0,\quad g_{\varphi\varphi}=1.
+\]
+故
+\[
+\boxed{I=\cos^2\varphi\,d\theta^2+d\varphi^2.}
+\]
+
+\homeworkweek{第8周作业}
+\item \textbf{题目}：我们将通过下面的系列习题证明，在局部，沿着一段光滑曲线做平行移动将导致两个曲面两点的切空间之间的一个线性同构，并且这个同构还保持度量。
+
+设 $S$ 为 $\E^3$ 中的光滑曲面片，$A,B\in U\cap S$。$U\cap S$ 上有一个局部参数化
+\[
+\varphi_U:(-\epsilon,\epsilon)^2\to S,\qquad
+(y^1,y^2)\mapsto\varphi_U(y).
+\]
+设 $\gamma:(-\epsilon,\epsilon)\to S$ 是 $S$ 上一段光滑正则曲线，$\gamma(0)=A$，$\gamma(\delta)=B$。为方便起见，记 $y_\gamma^i$ 为曲线在参数空间的方程，也就是说
+\[
+\gamma(t)=\varphi_U\bigl(y_\gamma^1(t),y_\gamma^2(t)\bigr).
+\]
+\begin{enumerate}
+\item 设 $X_v$ 是沿着 $\gamma$ 的平行向量场，$X_v(A)=v$，写出 $X_v=X_v^i\partial_{y^i}$ 满足的方程。
+\item 定义
+\[
+T:T_A(S)\to T_B(S),\qquad v\mapsto X_v(B).
+\]
+证明 $T$ 是线性映射。
+\item 设 $v,w\in T_A(S)$，求证
+\[
+(v,w)=(T(v),T(w)).
+\]
+\end{enumerate}
+
+\textbf{解答}：记 $\partial_i=\partial_{y^i}$，并把
+\[
+X_v(t)=X_v^i(t)\partial_i|_{\gamma(t)},\qquad
+v=v^i\partial_i|_A
+\]
+写成局部参数标架下的分量。沿 $\gamma$ 的协变导数为
+\[
+\nabla_{\dot\gamma}X_v
+=\left({dX_v^k\over dt}
++\Gamma^k_{ij}\bigl(y_\gamma(t)\bigr)\dot y_\gamma^i(t)X_v^j(t)\right)\partial_k.
+\]
+因此平行向量场方程是
+\[
+\boxed{
+{dX_v^k\over dt}
++\Gamma^k_{ij}\bigl(y_\gamma(t)\bigr)\dot y_\gamma^i(t)X_v^j(t)=0,\qquad k=1,2,
+}
+\]
+并满足初值 $X_v^k(0)=v^k$。
+
+这是关于分量 $X_v^1,X_v^2$ 的线性齐次常微分方程组。若 $X_v,X_w$ 分别是初值为 $v,w$ 的平行场，则 $aX_v+bX_w$ 仍满足同一方程，且初值为 $av+bw$。由解的唯一性，
+\[
+X_{av+bw}=aX_v+bX_w.
+\]
+取 $t=\delta$ 得
+\[
+T(av+bw)=aT(v)+bT(w),
+\]
+所以 $T$ 是线性映射。反向沿同一曲线从 $B$ 平行移动到 $A$ 给出逆映射，故 $T$ 也是线性同构。
+
+最后证明保持度量。若 $X_v,X_w$ 均沿 $\gamma$ 平行，则由 Riemann 联络与第一基本形式相容，
+\[
+{d\over dt}(X_v,X_w)
+=\bigl(\nabla_{\dot\gamma}X_v,X_w\bigr)
++\bigl(X_v,\nabla_{\dot\gamma}X_w\bigr)=0.
+\]
+故 $(X_v(t),X_w(t))$ 沿曲线为常数。代入 $t=0$ 与 $t=\delta$，得到
+\[
+\boxed{(v,w)_A=(T(v),T(w))_B.}
+\]
+
+\item \textbf{题目}：证明平面上的线段是测地线，并证明平面测地线必为线段。
+
+\textbf{解答}：在平面直角坐标中 $g_{ij}$ 为常数，所以 $\Gamma^k_{ij}=0$。测地线方程为
+\[
+\ddot x^k=0.
+\]
+解为
+\[
+x^k(t)=a^k t+b^k.
+\]
+这正是直线的参数方程；限制在有限区间上就是线段。反过来，任何直线段在仿射参数下满足 $\ddot x^k=0$，故是测地线。
+
+\item \textbf{题目}：证明球面上的大圆是测地线，并证明球面测地线必为大圆。
+
+\textbf{解答}：大圆是过原点平面与单位球的交线，可写为
+\[
+r(s)=u\cos s+v\sin s,\qquad \norm u=\norm v=1,\quad u\perp v.
+\]
+则
+\[
+r''(s)=-r(s),
+\]
+加速度完全沿球面法向，切向分量为零，故为测地线。反过来，单位球面测地线满足加速度切向分量为零，故
+\[
+r''=\lambda r.
+\]
+又 $\norm r=1$，推出 $\inner{r''}{r}=-\norm{r'}^2$，所以 $r''$ 与 $r$ 平行。于是
+\[
+{d\over ds}(r\times r')=r\times r''=0.
+\]
+因此 $r\times r'$ 为常向量，曲线始终位于某个过原点的固定平面内，与球面的交线即大圆。
+
+
+\homeworkweek{第11周作业}
+\item \textbf{题目}：通过计算说明圆柱的基本形式，并解释为什么它不是外蕴意义下的平面。
+
+\textbf{解答}：单位圆柱 $r(\theta,z)=(\cos\theta,\sin\theta,z)$ 有
+\[
+I=d\theta^2+dz^2.
+\]
+这说明圆柱与平面在内蕴度量上局部相同。取单位法向
+\[
+n=(\cos\theta,\sin\theta,0).
+\]
+计算
+\[
+r_{\theta\theta}=(-\cos\theta,-\sin\theta,0),
+\]
+故
+\[
+\Pi_{\theta\theta}=\inner{r_{\theta\theta}}{n}=-1,\qquad
+\Pi_{\theta z}=\Pi_{zz}=0.
+\]
+所以
+\[
+II=-d\theta^2\ne0.
+\]
+平面的第二基本形式恒为零，因此圆柱不是外蕴意义下的平面。
+
+\item \textbf{题目}：验证：曲面的第二基本形式与具体的标准正交坐标系无关。
+
+\textbf{解答}：设曲面在某一标准正交坐标系下的参数方程为
+\[
+r=r(u,v),
+\]
+单位法向量为 $n$。第二基本形式为
+\[
+\mathrm{II}=Ldu^2+2Mdudv+Ndv^2,
+\]
+其中
+\[
+L=\inner{r_{uu}}{n},\qquad
+M=\inner{r_{uv}}{n},\qquad
+N=\inner{r_{vv}}{n}.
+\]
+
+换另一个标准正交坐标系，相当于作一个正交变换和平移：
+\[
+\widetilde r=Ar+b,
+\]
+其中 $A$ 为正交矩阵，即
+\[
+A^TA=I.
+\]
+于是
+\[
+\widetilde r_u=Ar_u,\qquad
+\widetilde r_v=Ar_v,
+\]
+并且
+\[
+\widetilde r_{uu}=Ar_{uu},\qquad
+\widetilde r_{uv}=Ar_{uv},\qquad
+\widetilde r_{vv}=Ar_{vv}.
+\]
+对应的单位法向量为
+\[
+\widetilde n=An.
+\]
+由于正交变换保持内积，所以
+\[
+\widetilde L
+=\inner{\widetilde r_{uu}}{\widetilde n}
+=\inner{Ar_{uu}}{An}
+=\inner{r_{uu}}{n}
+=L.
+\]
+同理，
+\[
+\widetilde M=M,\qquad \widetilde N=N.
+\]
+因此
+\[
+\boxed{\widetilde{\mathrm{II}}=\mathrm{II}.}
+\]
+
+所以曲面的第二基本形式与具体选取哪一个标准正交坐标系无关。需要注意的是，如果把法向量整体取反，则第二基本形式整体变号；这是法向选择的问题，不是坐标系选择的问题。
+\end{enumerate}
+
+
+
+\iffalse
+\section{作业题原始转写旧版备查}
+
+\subsection{作业题原题（LaTeX 转写）}
+\begin{enumerate}
+\item 设 $\E^3$ 上有标准正交坐标系 $\{O,e_i\}$。标准圆柱面
+\[
+x^1=\cos\theta,\qquad x^2=\sin\theta,\qquad x^3=x^3.
+\]
+在参数坐标下，质点 $P$ 在 $t=0$ 时位置为 $\theta(0)=x^3(0)=0$，初速度为 $\partial_\theta+\partial_3$。设该自由质点只受到柱面的约束力，求运动方程 $(\theta(t),x^3(t))$。
+
+\item 设 $\E^3$ 上有标准正交坐标系 $\{O,e_i\}$。单位球面在 $(1,0,0)$ 附近参数化为
+\[
+x^1=\cos\theta\sin(\pi/2+\varphi),\quad
+x^2=\sin\theta\sin(\pi/2+\varphi),\quad
+x^3=\cos(\pi/2+\varphi).
+\]
+参数区域为 $(-\pi/2,\pi/2)\times(-\pi/2,\pi/2)$。设自由质点初始位置为 $\theta(0)=\varphi(0)=0$，初速度为 $\partial_\theta+\partial_\varphi$。求运动方程 $(\theta(t),\varphi(t))$。
+
+\item 证明引理 3.7。
+
+\item 设 $D$ 为 $A\in\A^n$ 上的一个导算子，$f$ 为定义在 $A$ 的一个邻域上的可微函数，并且在 $A$ 的某个邻域 $U$ 上为常数。证明 $Df=0$。
+
+\item 设 $S$ 为 $\E^3$ 中的光滑曲面片，$A,B\in U\cap S$。$U\cap S$ 有局部参数化
+\[
+\varphi_U:(-\epsilon,\epsilon)\to S,\qquad (y^1,y^2)\mapsto\varphi_U(y).
+\]
+设 $\gamma:(-\epsilon,\epsilon)\to S$ 是 $S$ 上一段光滑正则曲线，$\gamma(0)=A,\gamma(\delta)=B$，且
+\[
+\gamma(t)=\varphi_U(y_\gamma^1(t),y_\gamma^2(t)).
+\]
+\begin{enumerate}
+\item 设 $X_v$ 是沿 $\gamma$ 的平行向量场，$X_v(A)=v$，写出 $X_v=X_v^i\partial_i$ 满足的方程。
+\item 定义 $T:T_A(S)\to T_B(S)$，$v\mapsto X_v(B)$，证明 $T$ 是线性映射。
+\item 设 $v,w\in T_A(S)$，证明
+\[
+(v,w)=(T(v),T(w)).
+\]
+\end{enumerate}
+
+\item 求曲线
+\[
+x^2+y^2+z^2=1,\qquad x^2+y^2=x
+\]
+在 $(0,0,1)$ 点的曲率和挠率。
+
+\item 证明：若曲线段曲率 $\kappa$ 处处不等于 $0$，且每个点的密切平面都过一个固定点，则这个曲线段在一个平面内。
+
+\item 设 $\{r(s),a_1(s),a_2(s),a_3(s)\}$ 是定义在弧长参数曲线 $r(s)$ 上的单位正交标架。令
+\[
+\dot a_i(s)=\sum_{j=1}^{3}\lambda_i^j(s)a_j(s).
+\]
+证明
+\[
+\lambda_i^j+\lambda_j^i=0.
+\]
+
+\item 设 $\A^3$ 上有四个点 $A_1,A_2,A_3,A_4$，其坐标分别为
+\[
+(a_i^1,a_i^2,a_i^3),\qquad i=1,2,3,4.
+\]
+定义
+\[
+\lambda=\frac{\sqrt{\sum_{j=1}^{3}|x_1^j-x_2^j|^2}}
+{\sqrt{\sum_{j=1}^{3}|x_3^j-x_4^j|^2}}.
+\]
+问在什么条件下 $\lambda$ 是仿射几何量？
+
+\item 设 $X,Y$ 为两个集合，$f:X\to Y$ 为一个映射。证明：
+\[
+f^{-1}\left(\bigcap_{\alpha\in\Lambda}A_\alpha\right)
+=\bigcap_{\alpha\in\Lambda}f^{-1}(A_\alpha),
+\]
+\[
+f^{-1}\left(\bigcup_{\alpha\in\Lambda}A_\alpha\right)
+=\bigcup_{\alpha\in\Lambda}f^{-1}(A_\alpha).
+\]
+
+\item 根据上一题性质，证明定义 3.4 中引入的开集族构成一个拓扑。
+
+\item 计算半径为 $r$ 的平面圆周的曲率。
+
+\item 计算螺线
+\[
+r(t)=(a\cos\omega t,a\sin\omega t,bt),\qquad a,\omega,b>0
+\]
+的曲率和挠率，并说明其均为常数。
+
+\item 证明：如果一条平面曲线挠率恒为 $0$，且曲率为常数且非零，则该曲线是一段圆弧。
+
+\item 证明定义 4.7 中定义的 $\partial_u$ 确是 $A$ 点的导算子。
+
+\item 考虑球面参数化
+\[
+x^1=\sin\theta\cos\varphi,\qquad
+x^2=\sin\theta\sin\varphi,\qquad
+x^3=\cos\theta.
+\]
+写出这个参数化的局部参数标架场。
+
+\item 考虑 $\R^3$ 中函数图像曲面
+\[
+S=\{(x^1,x^2,f(x^1,x^2))\mid -\epsilon<x^1,x^2<\epsilon\}.
+\]
+求 $S$ 上任一点的切空间。
+
+\item 从仿射空间的定义出发，证明仿射空间中过不同的两点有且只有一条直线。
+
+\item 证明本节映射 $\eta$ 定义合理：对任意 $s\in(c,d)$，存在唯一 $t=\eta(s)\in(a,b)$ 使
+\[
+\int_a^{\eta(s)}\norm{\gamma'(\tau)}_2\dd\tau=s-c,
+\]
+并且 $\eta$ 是 $C^1$ 正则参数变换，$\eta'(s)=1/\norm{\gamma'(t)}_2$，从而 $\norm{\dot r(s)}_2=1$。
+
+\item 计算标准圆柱面参数化
+\[
+x^1=\cos\theta,\qquad x^2=\sin\theta,\qquad x^3=x^3
+\]
+下柱面的度量形式。
+
+\item 对单位球面在 $(1,0,0)$ 附近的参数化
+\[
+x^1=\cos\theta\sin(\pi/2+\varphi),\quad
+x^2=\sin\theta\sin(\pi/2+\varphi),\quad
+x^3=\cos(\pi/2+\varphi),
+\]
+计算球面度量形式。
+
+\item 设 $S_1,S_2,S_3$ 为 $\A^3$ 中三个光滑曲面，$A_i\in S_i$。设 $F:S_1\to S_2$，$G:S_2\to S_3$ 为光滑映射，$F(A_1)=A_2,G(A_2)=A_3$。证明 $G\circ F$ 是光滑映射，且
+\[
+T(G\circ F)_{A_1}=TG_{A_2}\circ TF_{A_1}.
+\]
+
+\item 求 $\R^3\setminus\{0\}$ 上球坐标系
+\[
+x^1=r\sin\theta\cos\varphi,\qquad
+x^2=r\sin\theta\sin\varphi,\qquad
+x^3=r\cos\theta
+\]
+下的自然余标架，并把欧氏度量写在该自然余标架下。
+
+\item 证明：如果 $\A^3$ 中的子集 $S$ 在某个仿射坐标系中满足成为光滑曲面的条件，则它在任意仿射坐标系中也满足该条件。
+
+\item 计算柱面坐标
+\[
+x^1=r\cos\theta,\qquad x^2=r\sin\theta,\qquad x^3=z
+\]
+下的自然标架。计算球面坐标
+\[
+x^1=r\cos\theta\sin\phi,\qquad x^2=r\sin\theta\sin\phi,\qquad x^3=r\cos\phi
+\]
+下的自然标架。
+
+\item 设 $a,b,\omega>0$。求螺线
+\[
+r:(t_0,t_1)\to\R^3,\qquad t\mapsto(a\sin\omega t,a\cos\omega t,bt)
+\]
+的切向量，并给出一个弧长参数化。
+
+\item 证明命题 3.6 的逆命题也成立：如果一条仿射空间中的曲线在每一点附近都可被某个广义坐标系的坐标映射映到 $\R^3$ 中的连续/可微/光滑/正则曲线段，则曲线本身也连续/可微/光滑/正则。
+
+\item 证明向量恒等式：
+\[
+(\vct a\times\vct b)\cdot(\vct c\times\vct d)
+=(\vct a\cdot\vct c)(\vct b\cdot\vct d)-(\vct b\cdot\vct c)(\vct a\cdot\vct d),
+\]
+\[
+\vct a\times(\vct b\times\vct c)+\vct b\times(\vct c\times\vct a)+\vct c\times(\vct a\times\vct b)=0,
+\]
+\[
+(\vct a\times\vct b)\cdot\bigl((\vct b\times\vct c)\times(\vct c\times\vct a)\bigr)
+=\bigl(\vct a\cdot(\vct b\times\vct c)\bigr)^2.
+\]
+
+\item 证明定义 3.14 中引入的关系 $\sim$ 是 $\mathcal F_A$ 上的等价关系，并证明定义 3.15 在 $\mathcal F_A/\sim$ 上定义的线性运算合理。
+
+\item 证明引理 3.8。
+
+\item 在柱面坐标中
+\[
+x^1=r\cos\theta,\qquad x^2=r\sin\theta,\qquad x^3=z
+\]
+写出自然余标架，表示在 $(\dd x^1,\dd x^2,\dd x^3)$ 这组基之下。
+
+\item 给出命题 3.2 的证明。
+
+\item 通过计算说明圆柱面的第一基本形式不为零；这正是它不是外蕴意义下平面的原因。
+
+\item 设 $a_ix^i=0$ 为 $\E^3$ 上标准正交坐标系 $\{O,e_i\}$ 的一个平面。当 $a_1\ne0$ 时，平面有参数化
+\[
+x^1=-\frac1{a_1}(a_2x^2+a_3x^3),\qquad x^2=x^2,\qquad x^3=x^3.
+\]
+以 $(x^2,x^3)$ 为参数，证明在这个参数标架下 $\Gamma^k_{ij}=0$。
+
+\item 用向量方法证明：平面三角形三条中线交于一点，且该点分中线为 $1:2$ 两部分。
+
+\item 用向量方法证明：空间四面体顶点到对面三角形重心的连线交于一点，且该点分中线为 $1:3$ 两部分。
+
+\item 证明定义 3.7 中 Jacobi 矩阵可逆这一条件不依赖仿射坐标系选取。
+
+\item 证明：直线段是所在平面的测地线，反之平面的测地线一定是直线段。
+
+\item 证明：大圆是球面的测地线，反之球面上的测地线一定是大圆。
+
+\item 设三维仿射空间中有仿射坐标系 $\A=\{O,\vec e_1,\vec e_2,\vec e_3\}$。某两点 $P$ 坐标为 $(1,2,1)$，$O'$ 坐标为 $(2,1,-1)$。计算 $O$ 在坐标系 $\{P,\vec e_1+\vec e_2,\vec e_2,\vec e_3\}$ 中的坐标，以及 $P$ 在坐标系 $\{O',\vec e_1-\vec e_2,\vec e_2,\vec e_3\}$ 中的坐标。
+
+\item 严格证明引理 3.11：$V$ 上对称双线性型空间的基和维数。
+
+\item 验证：曲面的第二基本形式与具体的标准正交坐标系无关。
+\end{enumerate}
+
+\subsection{作业题答案要点}
+说明：作业截图中有些图片是一组题，当前“原题”部分为了便于查找把小问拆成了独立条目；答案部分按题组给出，尤其第 5 条答案覆盖原题中平行移动相关的若干小问。若题目只是后续小问的公共设定，则不单独列答案。
+
+\begin{enumerate}
+\item $g=\operatorname{diag}(1,1)$，$\Gamma^k_{ij}=0$，故 $\ddot\theta=0,\ddot x^3=0$。初值给出 $\theta=t,x^3=t$。
+\item $g=\operatorname{diag}(\cos^2\varphi,1)$，
+\[
+\Gamma^1_{12}=\Gamma^1_{21}=-\tan\varphi,\qquad
+\Gamma^2_{11}=\sin\varphi\cos\varphi.
+\]
+故
+\[
+\ddot\theta-2\tan\varphi\,\dot\theta\dot\varphi=0,\quad
+\ddot\varphi+\sin\varphi\cos\varphi\,\dot\theta^2=0.
+\]
+\item 引理 3.7 的核心是复合坐标变换的 Jacobi 矩阵为可逆矩阵乘积。
+\item 常函数方向导数为零，故 $Df=0$。
+\item 平行场方程 $\dot X^c+\Gamma^c_{ab}\dot y^aX^b=0$。线性来自线性常微分方程；保内积来自 $\frac{\dd}{\dd t}(X,Y)=0$。
+\item 可参数化为 $x=\cos^2 t,y=\sin t\cos t,z=\sin t$，在 $(0,0,1)$ 对应 $t=\pi/2$；代入一般参数公式求 $\kappa,\tau$。
+\item 设固定点为 $P$，密切平面条件为 $(P-r,\gamma)=0$。求导并用 Frenet 公式可推出 $\tau=0$，故曲线在一平面内。
+\item 对 $\inner{a_i}{a_j}=\delta_{ij}$ 求导，得 $\lambda_i^j+\lambda_j^i=0$。
+\item 在欧氏运动群下为几何量；一般仿射变换不保持长度比，故不是仿射几何量。
+\item 按元素属于关系逐项证明。
+\item 用逆像保持并、交和全空间、空集的性质验证拓扑三公理。
+\item $\kappa=1/r$。
+\item $\kappa=\frac{a\omega^2}{a^2\omega^2+b^2}$，$\tau=\frac{b\omega}{a^2\omega^2+b^2}$。
+\item 挠率为零说明平面曲线；曲率常数非零说明半径 $1/\kappa$ 的圆弧。
+\item 验证线性与 Leibniz 法则即可。
+\item $\partial_\theta=(\cos\theta\cos\varphi,\cos\theta\sin\varphi,-\sin\theta)$，
+$\partial_\varphi=(-\sin\theta\sin\varphi,\sin\theta\cos\varphi,0)$。
+\item $T_pS=\spn\{(1,0,f_{x^1}),(0,1,f_{x^2})\}$。
+\item 两点 $A,B$ 的直线为 $A+t\overrightarrow{AB}$；唯一性来自一维仿射子空间方向唯一。
+\item $s(t)$ 严格单调且 $C^1$，反函数定理给出 $\eta$，再链式法则得单位速度。
+\item $I=(\dd\theta)^2+(\dd z)^2$。
+\item $I=\cos^2\varphi(\dd\theta)^2+(\dd\varphi)^2$。
+\item 复合光滑；切映射链式法则即普通复合求导链式法则。
+\item 球坐标余标架为 $\dd r,\dd\theta,\dd\varphi$；度量为 $\dd r^2+r^2\dd\theta^2+r^2\sin^2\theta\,\dd\varphi^2$。
+\item 仿射坐标变换为非退化线性变换加平移，保持秩为 $2$ 的条件。
+\item 柱坐标自然标架为 $\partial_r=(\cos\theta,\sin\theta,0)$、$\partial_\theta=(-r\sin\theta,r\cos\theta,0)$、$\partial_z=(0,0,1)$；球坐标按偏导直接写。
+\item $r'(t)=(a\omega\cos\omega t,-a\omega\sin\omega t,b)$，$s=\sqrt{a^2\omega^2+b^2}\,t$。
+\item 用广义坐标变换的光滑性和可逆性，把局部性质从坐标像拉回。
+\item 分别用 Lagrange 恒等式、向量三重积公式、令 $\Delta=\vct a\cdot(\vct b\times\vct c)$ 证明。
+\item 等价关系验证自反、对称、传递；线性运算合理性验证代表元改变不影响等价类。
+\item 导算子与向量一一对应，取坐标基方向导数作为基。
+\item 柱坐标余标架可由
+\[
+\dd r=\cos\theta\,\dd x^1+\sin\theta\,\dd x^2,\quad
+\dd\theta=-\frac{\sin\theta}{r}\dd x^1+\frac{\cos\theta}{r}\dd x^2,\quad
+\dd z=\dd x^3.
+\]
+\item 命题 3.2 按仿射坐标变换和向量分量变换直接计算。
+\item 圆柱第一基本形式为 $(\dd\theta)^2+(\dd z)^2$，非零。
+\item 平面参数下 $g_{ab}$ 常数，故 Christoffel 记号为零。
+\item 三角形顶点向量为 $A,B,C$，重心 $G=(A+B+C)/3$，检查其在三条中线上且比例为 $1:2$。
+\item 四面体重心 $G=(A+B+C+D)/4$，检查顶点到对面重心连线比例为 $1:3$。
+\item Jacobi 矩阵在换仿射坐标后左乘可逆矩阵，故可逆性不变。
+\item 平面 Christoffel 为零，测地线方程给出直线；直线段满足方程。
+\item 大圆加速度纯法向；反向由初始点与速度张成平面保持不变。
+\item 第一问设 $O=P+a(e_1+e_2)+be_2+ce_3$，得 $(a,a+b,c)=(-1,-2,-1)$，故 $(-1,-1,-1)$。第二问设 $P=O'+a(e_1-e_2)+be_2+ce_3$，得 $(a,-a+b,c) = (-1,1,2)$，故 $(-1,0,2)$。
+\item 对称双线性型由 $b(e_i,e_j)$ 且 $i\le j$ 决定，维数为 $n(n+1)/2$。一组基可取 $e^i\odot e^j$，其中 $1\le i\le j\le n$。
+\item 第二基本形式在正交坐标变换下内积、法向与二阶导的几何意义不变，故与具体标准正交坐标系无关。若换标准正交坐标系，参数向量、二阶导数和单位法向同时作正交变换，内积 $(\partial_a\partial_b,n)$ 不变。
+\end{enumerate}
+
+\fi
+
+\section{往年题}
+
+\subsection{往年题题解}
+判断、填空按整组题排列；计算、证明题逐题给出过程。
+
+\subsubsection{2025 年数学强基、应数、信计期末题}
+\begin{enumerate}
+\item \textbf{题目}：判断题。
+\begin{enumerate}
+\item $\vct a\times\vct b=\vct b\times\vct a$。
+\item $(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct c\times\vct a)$。
+\item 正则曲线在任一点小邻域内均可取某个坐标作为参数。
+\item 曲面上沿一个确定初始点和方向可以局部存在多条测地线。
+\item 挠率依赖坐标系选取。
+\item 在某个仿射坐标系下是开集，可能在另一个仿射坐标系下是闭集。
+\item 两点间测地线距离是外蕴几何量。
+\item 球面、柱面不能局部合同，因为 Riemann 曲率不同。
+\item 切空间和余切空间是对偶关系。
+\item 束缚在曲面上的自由质点，其切向加速度为零。
+\end{enumerate}
+
+\textbf{解答}：
+\[
+\boxed{\text{错，对，对，错，错，错，错，对，对，对。}}
+\]
+理由：叉乘反交换，所以第 1 题错；混合积循环置换不变，所以第 2 题对。正则曲线某个分量导数非零，可局部作参数。测地线方程是二阶常微分方程，给定初始点和初速度局部唯一。曲率、挠率是欧氏几何量，不依赖标准正交坐标。仿射坐标变换是同胚，保持开闭性质。测地线距离由第一基本形式诱导，是内蕴量。球面高斯曲率为正，柱面为零，故不能局部等距。余切空间定义为切空间对偶。第 10 题若“自由质点”表示只受约束力，则运动方程为 $\nabla_{\dot r}\dot r=0$，切向加速度为零；若题目没有“自由”二字，则不能判定。
+
+\item \textbf{题目}：填空题。
+\begin{enumerate}
+\item Einstein 求和形式：$A_1B^1C^2+A_2B^2C^2+A_3B^3C^2=$ \underline{\hspace{3cm}}。
+\item $r(t)=(b\cos t,b\sin t,3t)$ 化为弧长参数化。
+\item 球面和双曲面上测地圆周长与同半径平面圆周长相比，\\
+分别为 \underline{\hspace{2cm}} 和 \underline{\hspace{2cm}}。
+\item 决定正则曲面存在、唯一的几何量为 \underline{\hspace{2cm}} 和 \underline{\hspace{2cm}}。
+\item 曲率的物理意义、几何意义分别为 \underline{\hspace{3cm}} 和 \underline{\hspace{3cm}}。
+\item 点上向量空间和余向量空间的关系是 \underline{\hspace{3cm}}。
+\item 曲线切向量方向不变，则曲线是 \underline{\hspace{2cm}}。
+\end{enumerate}
+
+\textbf{解答}：
+\begin{enumerate}
+\item $\boxed{A_iB^iC^2}$。重复指标 $i$ 自动从 $1$ 到 $3$ 求和。
+\item 速度 $\norm{r'}=\sqrt{b^2+9}$，故 $s=\sqrt{b^2+9}\,t$，取 $t=s/\sqrt{b^2+9}$：
+\[
+\boxed{r(s)=\left(b\cos{s\over\sqrt{b^2+9}},\ b\sin{s\over\sqrt{b^2+9}},\ {3s\over\sqrt{b^2+9}}\right).}
+\]
+\item 球面测地圆周长较短，双曲面较长。
+\item 第一基本形式 $I$ 与第二基本形式 $II$，并需满足 Gauss-Codazzi 相容方程。
+\item 弧长参数下加速度大小；切向方向变化快慢。
+\item 对偶。
+\item 直线。
+\end{enumerate}
+
+\item \textbf{题目}：写出 Frenet 运动公式。
+
+\textbf{解答}：设 $r(s)$ 为弧长参数曲线，Frenet 标架为切向 $\alpha$、主法向 $\beta$、副法向 $\gamma$，则
+\[
+\boxed{\alpha'=\kappa\beta,\qquad
+\beta'=-\kappa\alpha+\tau\gamma,\qquad
+\gamma'=-\tau\beta.}
+\]
+矩阵形式为
+\[
+{d\over ds}\begin{pmatrix}\alpha\\ \beta\\ \gamma\end{pmatrix}
+=
+\begin{pmatrix}
+0&\kappa&0\\
+-\kappa&0&\tau\\
+0&-\tau&0
+\end{pmatrix}
+\begin{pmatrix}\alpha\\ \beta\\ \gamma\end{pmatrix}.
+\]
+
+\item \textbf{题目}：证明
+\[
+(\vct a\times\vct b)\cdot((\vct b\times\vct c)\times(\vct c\times\vct a))
+=\bigl(\vct a\cdot(\vct b\times\vct c)\bigr)^2.
+\]
+
+\textbf{解答}：记
+\[
+\Delta=\vct a\cdot(\vct b\times\vct c).
+\]
+利用向量三重积公式
+\[
+u\times(v\times w)=(u\cdot w)v-(u\cdot v)w
+\]
+可得
+\[
+(\vct b\times\vct c)\times(\vct c\times\vct a)=\Delta\,\vct c.
+\]
+于是
+\[
+(\vct a\times\vct b)\cdot((\vct b\times\vct c)\times(\vct c\times\vct a))
+=\Delta(\vct a\times\vct b)\cdot\vct c
+=\Delta^2.
+\]
+
+\item \textbf{题目}：标准圆柱面上自由质点运动方程，初始位置 $\theta(0)=z(0)=0$，初速度 $\partial_\theta+\partial_z$。
+
+\textbf{解答}：圆柱参数化 $r(\theta,z)=(\cos\theta,\sin\theta,z)$，第一基本形式
+\[
+I=d\theta^2+dz^2.
+\]
+故 $\Gamma^k_{ij}=0$，测地线方程为
+\[
+\ddot\theta=0,\qquad \ddot z=0.
+\]
+由初值 $\dot\theta(0)=\dot z(0)=1$ 得
+\[
+\boxed{\theta=t,\qquad z=t,\qquad r(t)=(\cos t,\sin t,t).}
+\]
+
+\item \textbf{题目}：若 $r(s)$ 为弧长参数曲线，估计
+\[
+s-\norm{r(s)-r(0)}
+\]
+在 $s\to0$ 时的阶。
+
+\textbf{解答}：弧长参数下
+\[
+r'(0)=\alpha,\qquad r''(0)=\kappa\beta.
+\]
+Taylor 展开：
+\[
+r(s)-r(0)=s\alpha+{s^2\over2}\kappa\beta+O(s^3).
+\]
+因此
+\[
+\norm{r(s)-r(0)}^2=s^2+{s^4\over4}\kappa^2+{s^4\over3}\inner{\alpha}{r'''(0)}+O(s^5).
+\]
+由 $\inner{\alpha}{r''}=0$ 求导得 $\inner{\alpha}{r'''}=-\norm{r''}^2=-\kappa^2$，故
+\[
+\norm{r(s)-r(0)}^2=s^2-{\kappa^2\over12}s^4+O(s^5).
+\]
+开方得
+\[
+\norm{r(s)-r(0)}=s-{\kappa^2\over24}s^3+O(s^4),
+\]
+所以
+\[
+\boxed{s-\norm{r(s)-r(0)}=O(s^3),\quad \alpha=3.}
+\]
+\end{enumerate}
+
+\subsubsection{2020 级数试往年题}
+\begin{enumerate}
+\item \textbf{题目}：判断题。
+\begin{enumerate}
+\item $\vct a\cdot\vct b=\vct b\cdot\vct a$。
+\item $(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct a\times\vct c)$。
+\item 正则曲线的弧长、曲率和挠率均不依赖坐标系选取。
+\item 仿射坐标系下连续的函数，在广义坐标系下可能不连续。
+\item 一点处导算子构成线性空间，并与该点向量空间同构。
+\item 正则曲面的第一、第二基本形式在相容条件下决定局部存在与唯一。
+\item 束缚在曲面上不受外力的质点，速度大小和方向都不变。
+\item 曲面上两点间由欧氏范数定义的距离是内蕴几何量。
+\item 柱面和平面弯曲程度不同，故不能局部合同。
+\item 大圆是球面的测地线，反之球面测地线是大圆。
+\end{enumerate}
+
+\textbf{解答}：
+\[
+\boxed{\text{对，错，对，错，对，对，错，错，对，对。}}
+\]
+第 2 题右端
+\[
+\vct b\cdot(\vct a\times\vct c)=-\vct b\cdot(\vct c\times\vct a)
+\]
+一般与左端相反。第 7 题自由运动只保证速率不变和切向加速度为零，空间方向通常会因约束力改变。第 8 题欧氏直线距离依赖外部嵌入，不是内蕴量。第 9 题柱面和平面高斯曲率同为零，圆柱可展开到平面，局部等距。
+
+\item \textbf{题目}：填空题。
+\begin{enumerate}
+\item $A_1B^1C^2+A_2B^2C^2+A_3B^3C^2=$ \underline{\hspace{2cm}}。
+\item $\vct a=(1,-2,-3)$，$\vct b=(2,1,-1)$，$\vct c=(4,2,-2)$，求 $\vct a\cdot(\vct b\times\vct c)$。
+\item $\vct a\cdot(\vct b\times\vct c)+\vct b\cdot(\vct c\times\vct a)+\vct c\cdot(\vct a\times\vct b)=$ \underline{\hspace{2cm}}。
+\item 测地线的物理意义与几何意义。
+\item 曲面上一点切空间与余切空间的关系。
+\item 曲率为 $0$ 的孤立点处，Frenet 标架存在的判断依据。
+\item 球面上半径为 $r$ 的测地圆周长比平面同半径圆周长 \underline{\hspace{2cm}}。
+\item 二维情形中与 $R_{1212},R_{2121}$ 同类的不为零 Riemann 曲率分量。
+\end{enumerate}
+
+\textbf{解答}：
+\begin{enumerate}
+\item $\boxed{A_iB^iC^2}$。
+\item 因 $\vct c=2\vct b$，故 $\vct b\times\vct c=0$，答案为 $\boxed{0}$。
+\item 若沿用上一空数据，仍为 $\boxed{0}$。若为任意三向量，则三个混合积循环相等，总和为 $3\vct a\cdot(\vct b\times\vct c)$。
+\item 物理意义：只受曲面约束力的自由质点轨迹。几何意义：切向量沿自身平行，局部最短。
+\item 对偶。
+\item 看单位切向 $\alpha$ 的导数极限是否存在，或等价看主法向极限是否可定义。
+\item 短。
+\item $R_{1221},R_{2112}$，符号由教材曲率张量约定决定。
+\end{enumerate}
+
+\item \textbf{题目}：求
+\[
+r(t)=\left(5t,5\sqrt2\ln t,{5\over t}\right),\qquad t>0
+\]
+的曲率、挠率和 Frenet 标架。
+
+\textbf{解答}：先求导：
+\[
+r'=\left(5,{5\sqrt2\over t},-{5\over t^2}\right),\quad
+r''=\left(0,-{5\sqrt2\over t^2},{10\over t^3}\right),\quad
+r'''=\left(0,{10\sqrt2\over t^3},-{30\over t^4}\right).
+\]
+速度平方为
+\[
+\norm{r'}^2={25(t^2+1)^2\over t^4}.
+\]
+叉乘
+\[
+r'\times r''=\left({25\sqrt2\over t^4},-{50\over t^3},-{25\sqrt2\over t^2}\right),
+\]
+\[
+\norm{r'\times r''}^2={1250(t^2+1)^2\over t^8}.
+\]
+曲率为
+\[
+\boxed{\kappa={\norm{r'\times r''}\over\norm{r'}^3}
+={\sqrt2\,t^2\over5(t^2+1)^2}.}
+\]
+挠率为
+\[
+\boxed{\tau={\det(r',r'',r''')\over\norm{r'\times r''}^2}
+={\sqrt2\,t^2\over5(t^2+1)^2}.}
+\]
+Frenet 标架按
+\[
+\alpha={r'\over\norm{r'}},\qquad
+\gamma={r'\times r''\over\norm{r'\times r''}},\qquad
+\beta=\gamma\times\alpha
+\]
+得
+\[
+\boxed{\alpha=\left({t^2\over t^2+1},{\sqrt2t\over t^2+1},-{1\over t^2+1}\right),}
+\]
+\[
+\boxed{\gamma=\left({1\over t^2+1},-{\sqrt2t\over t^2+1},-{t^2\over t^2+1}\right),}
+\]
+\[
+\boxed{\beta=\left({\sqrt2t\over t^2+1},{1-t^2\over t^2+1},{\sqrt2t\over t^2+1}\right).}
+\]
+验算：三者长度均为 $1$，两两内积为 $0$，且 $\alpha\times\beta=\gamma$。
+
+\item \textbf{题目}：设 $C:r(s)$ 是半径为 $R$ 的球面上一条弧长参数正则闭曲线，曲率、挠率为 $\kappa,\tau$，证明
+\[
+\int_C{\tau(s)\over\kappa(s)}\,ds=0.
+\]
+
+\textbf{解答}：球面条件为
+\[
+\inner{r}{r}=R^2.
+\]
+求导得 $\inner{r}{\alpha}=0$。再求导：
+\[
+0=\inner{\alpha}{\alpha}+\inner{r}{\kappa\beta}
+=1+\kappa\inner{r}{\beta},
+\]
+故
+\[
+\inner{r}{\beta}=-{1\over\kappa}.
+\]
+因为 $r$ 同时垂直于 $\alpha$，可写为
+\[
+r=-{1\over\kappa}\beta+\lambda\gamma.
+\]
+对 $\inner{r}{\gamma}$ 求导：
+\[
+{d\over ds}\inner{r}{\gamma}
+=\inner{\alpha}{\gamma}+\inner{r}{-\tau\beta}
+=-\tau\inner{r}{\beta}
+={\tau\over\kappa}.
+\]
+闭曲线首尾 $r,\gamma$ 相同，故 $\inner{r}{\gamma}$ 的积分首尾差为零：
+\[
+\boxed{\int_C{\tau\over\kappa}\,ds=0.}
+\]
+
+\item \textbf{题目}：单位球面在 $(1,0,0)$ 附近取
+\[
+r(\theta,\varphi)=(\cos\theta\cos\varphi,\sin\theta\cos\varphi,-\sin\varphi),
+\]
+求度量，并写出初速度 $\partial_\theta+\partial_\varphi$ 的自由质点方程。
+
+\textbf{解答}：计算得
+\[
+I=\cos^2\varphi\,d\theta^2+d\varphi^2.
+\]
+非零 Christoffel 记号为
+\[
+\Gamma^\theta_{\theta\varphi}=\Gamma^\theta_{\varphi\theta}=-\tan\varphi,\qquad
+\Gamma^\varphi_{\theta\theta}=\sin\varphi\cos\varphi.
+\]
+于是测地线初值问题为
+\[
+\boxed{\ddot\theta-2\tan\varphi\,\dot\theta\dot\varphi=0,\quad
+\ddot\varphi+\sin\varphi\cos\varphi\,\dot\theta^2=0,}
+\]
+\[
+\theta(0)=\varphi(0)=0,\qquad \dot\theta(0)=\dot\varphi(0)=1.
+\]
+
+\item \textbf{题目}：写出正则曲面的局部参数化定义。
+
+\textbf{解答}：集合 $S\subset\E^3$ 称为正则曲面，若对任意 $p\in S$，存在开集 $U\subset\R^2$、$V\subset\E^3$ 和映射
+\[
+x:U\to V\cap S
+\]
+使得 $x$ 为光滑同胚到其像，且
+\[
+\rank(x_u,x_v)=2,
+\]
+即 $x_u,x_v$ 线性无关。等价地，$x_u\times x_v\ne0$。
+
+\item \textbf{题目}：写出并推导曲面自然标架运动公式。
+
+\textbf{解答}：设局部参数标架为 $\partial_a$，单位法向为 $n$。二阶导数可分解为切向和法向：
+\[
+\boxed{\partial_a\partial_b=\Gamma^c_{ab}\partial_c+\Pi_{ab}n.}
+\]
+这里
+\[
+\Pi_{ab}=\inner{\partial_a\partial_b}{n}.
+\]
+对 $\inner{n,\partial_b}=0$ 求 $\partial_a$ 导数：
+\[
+0=\inner{\partial_an}{\partial_b}+\inner{n}{\partial_a\partial_b}
+=\inner{\partial_an}{\partial_b}+\Pi_{ab}.
+\]
+设 $\partial_an=A^c_a\partial_c$，则
+\[
+A^c_ag_{cb}=-\Pi_{ab},
+\]
+乘以 $g^{bd}$ 得
+\[
+\boxed{\partial_an=-g^{cb}\Pi_{ab}\partial_c.}
+\]
+
+\item \textbf{题目}：圆柱面
+\[
+x(\theta,z)=(\cos\theta,\sin\theta,z)
+\]
+证明该参数化是标准正交参数化，并求 Riemann 曲率分量。
+
+\textbf{解答}：
+\[
+x_\theta=(-\sin\theta,\cos\theta,0),\quad x_z=(0,0,1).
+\]
+所以
+\[
+g_{\theta\theta}=1,\quad g_{\theta z}=0,\quad g_{zz}=1.
+\]
+它是正交且单位的参数标架。因 $g_{ij}$ 常数，全部 $\Gamma^k_{ij}=0$。Riemann 曲率由
+\[
+R^l_{ijk}=\partial_j\Gamma^l_{ik}-\partial_k\Gamma^l_{ij}
+\,+\Gamma^m_{ik}\Gamma^l_{mj}-\Gamma^m_{ij}\Gamma^l_{mk}
+\]
+给出，故所有分量均为
+\[
+\boxed{0.}
+\]
+
+\item \textbf{题目}：写出圆锥面的一个参数化，并证明除顶点外局部平坦。
+
+\textbf{解答}：可取
+\[
+x(r,\theta)=(r\cos\theta,r\sin\theta,ar),\qquad r>0.
+\]
+第一基本形式为
+\[
+I=(1+a^2)\,dr^2+r^2\,d\theta^2.
+\]
+令 $\rho=\sqrt{1+a^2}\,r$，则
+\[
+I=d\rho^2+{\rho^2\over1+a^2}\,d\theta^2.
+\]
+在局部令 $\tilde\theta=\theta/\sqrt{1+a^2}$，得到
+\[
+I=d\rho^2+\rho^2\,d\tilde\theta^2,
+\]
+即局部与平面极坐标度量相同，所以除顶点外局部平坦，Riemann 曲率为零。
+\end{enumerate}
+
+\subsubsection{22 届往年题回顾}
+\begin{enumerate}
+\item \textbf{题目}：判断、填空重点。
+
+\textbf{解答}：重点是：向量点乘/叉乘/混合积符号，正则曲线局部参数，曲率挠率坐标无关，切空间与余切空间对偶，测地线局部唯一，测地线距离内蕴，柱面和平面局部等距，球面大圆为测地线，Frenet 标架在 $\kappa=0$ 孤立点处的延拓判断。
+
+\item \textbf{题目}：计算 Frenet 标架、曲率、挠率。
+
+\textbf{解答}：通用流程为
+\[
+\alpha={r'\over\norm{r'}},\qquad
+\kappa={\norm{r'\times r''}\over\norm{r'}^3},\qquad
+\gamma={r'\times r''\over\norm{r'\times r''}},
+\]
+\[
+\beta=\gamma\times\alpha,\qquad
+\tau={\det(r',r'',r''')\over\norm{r'\times r''}^2}.
+\]
+若已是弧长参数，则可简化为 $\kappa=\norm{r''}$，$\beta=r''/\kappa$，再由 Frenet 公式求 $\tau$。
+
+\item \textbf{题目}：给定初位置、初速度，计算曲面上自由质点的测地线方程并求解。
+
+\textbf{解答}：先由参数化求
+\[
+g_{ij}=\inner{\partial_i}{\partial_j}.
+\]
+再代入
+\[
+\Gamma^k_{ij}={1\over2}g^{k\ell}(\partial_i g_{j\ell}+\partial_jg_{i\ell}-\partial_\ell g_{ij}),
+\]
+最后写
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0.
+\]
+若是圆柱或平面，常有 $\Gamma=0$，解为参数坐标中的直线；若是球面，写出球面测地线二阶方程。
+
+\item \textbf{题目}：光滑曲面局部参数化的四个等价命题。
+
+\textbf{解答}：可写为：局部正则参数化；局部为二元函数图像；局部为正则等值面；在广义坐标下局部等同于坐标平面。互推思路：正则参数化到函数图像用某个 $2\times2$ 子 Jacobi 矩阵可逆和反函数定理；函数图像到等值面取 $F=x^3-f(x^1,x^2)$；等值面到图像用隐函数定理；广义坐标形式由可逆坐标变换统一表达。
+
+\item \textbf{题目}：用 Taylor 展开估计弧长与弦长之差。
+
+\textbf{解答}：见 2025 年第 6 题。标准结论为
+\[
+\boxed{s-\norm{r(s)-r(0)}={\kappa(0)^2\over24}s^3+O(s^4),}
+\]
+因此只问阶数时答案为三阶。
+\end{enumerate}
+
+\subsubsection{数学实验班往年题}
+\begin{enumerate}
+\item \textbf{题目}：题型包括判断题、填空题、螺线曲率挠率 Frenet 标架、球面曲线积分、向量恒等式、自然标架运动公式。
+
+\textbf{解答}：重点掌握判断填空、螺线 Frenet 计算、球面闭曲线积分、向量恒等式和自然标架运动公式。
+
+\item \textbf{题目}：螺线
+\[
+r(t)=(a\cos\omega t,a\sin\omega t,bt)
+\]
+求曲率、挠率与 Frenet 标架。
+
+\textbf{解答}：曲率挠率为
+\[
+\boxed{\kappa={a\omega^2\over a^2\omega^2+b^2},\qquad
+\tau={b\omega\over a^2\omega^2+b^2}.}
+\]
+令 $v=\sqrt{a^2\omega^2+b^2}$。单位切向
+\[
+\alpha={1\over v}(-a\omega\sin\omega t,a\omega\cos\omega t,b).
+\]
+副法向取
+\[
+\gamma={1\over v}(b\sin\omega t,-b\cos\omega t,a\omega).
+\]
+主法向
+\[
+\beta=\gamma\times\alpha=(-\cos\omega t,-\sin\omega t,0).
+\]
+验算：三向量正交单位，且满足 $\alpha'=(v\kappa)\beta$ 对一般参数的对应形式。
+
+\item \textbf{题目}：球面闭曲线积分
+\[
+\int_C{\tau\over\kappa}\,ds=0.
+\]
+
+\textbf{解答}：同 2020 级数试第 4 题。关键恒等式是
+\[
+{d\over ds}\inner{r}{\gamma}={\tau\over\kappa},
+\]
+闭曲线积分化为首尾差，因此为零。
+
+\item \textbf{题目}：自然标架运动公式。
+
+\textbf{解答}：
+\[
+\boxed{\partial_a\partial_b=\Gamma^c_{ab}\partial_c+\Pi_{ab}n,\qquad
+\partial_an=-g^{cb}\Pi_{ab}\partial_c.}
+\]
+推导同 2020 级数试自然标架运动公式题。
+\end{enumerate}
+
+\subsubsection{选择填空强化题}
+\begin{enumerate}
+\item \textbf{题目}：若 $\kappa\equiv0$，曲线是什么？
+
+\textbf{解答}：$\alpha'=0$，切向方向恒定，所以曲线是直线或直线段。
+
+\item \textbf{题目}：若曲线挠率 $\tau\equiv0$ 且 $\kappa\ne0$，曲线有什么性质？
+
+\textbf{解答}：由 $\gamma'=-\tau\beta=0$，副法向 $\gamma$ 恒定，曲线始终位于垂直于该固定向量的平面中，是平面曲线。
+
+\item \textbf{题目}：测地线方程填空：
+\[
+\ddot y^k+\underline{\hspace{2cm}}\dot y^i\dot y^j=0.
+\]
+
+\textbf{解答}：填
+\[
+\boxed{\Gamma^k_{ij}}.
+\]
+完整式为
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0.
+\]
+
+\item \textbf{题目}：Frenet 标架中
+\[
+\gamma=\underline{\hspace{3cm}}.
+\]
+
+\textbf{解答}：对一般参数曲线，
+\[
+\boxed{\gamma={r'\times r''\over\norm{r'\times r''}}.}
+\]
+弧长参数下也可写为 $\gamma=\alpha\times\beta$。
+
+\item \textbf{题目}：哪些量是内蕴量：第一基本形式、测地线距离、第二基本形式、法向量？
+
+\textbf{解答}：第一基本形式与测地线距离是内蕴量；第二基本形式与法向量依赖嵌入，是外蕴量。
+
+\item \textbf{题目}：为什么球面大圆是测地线？
+
+\textbf{解答}：大圆弧长参数满足 $r''=-r/R^2$，加速度沿球面法向，没有切向分量，所以 $\nabla_{\dot r}\dot r=0$，是测地线。
+\end{enumerate}
+
+\iffalse
+\section{往年题原始整理备查}
+
+\subsection{2025 年数学强基、应数、信计期末题}
+\subsubsection*{原题}
+\paragraph{判断题}
+\begin{enumerate}
+\item $\vct a\times\vct b=\vct b\times\vct a$。
+\item $(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct c\times\vct a)$。
+\item 正则曲线在任一点小邻域内均可选取 $(x,y,z)$ 中某坐标作为参数。
+\item 曲面上沿一个确定方向可以局部存在多条测地线。
+\item 挠率依赖坐标系选取。
+\item 在某个仿射坐标系下是开集，可能在某个仿射坐标系下是闭集。
+\item 两点间测地线距离是外蕴几何量。
+\item 球面、柱面不能局部合同，因为 Riemann 曲率不同。
+\item 切空间、余切空间是对偶关系。
+\item 束缚在曲面上的点，切向加速度不变。
+\end{enumerate}
+\paragraph{填空题}
+\begin{enumerate}
+\item Einstein 求和形式。
+\item $r=(b\cos t,b\sin t,3t)$ 化成弧长参数化。
+\item 球面和双曲面上测地圆周长和相同半径的平面圆周长相比：\underline{\hspace{2cm}}和\underline{\hspace{2cm}}。
+\item 决定正则曲面存在、唯一的几何量为\underline{\hspace{2cm}}和\underline{\hspace{2cm}}。
+\item 曲率的物理意义、几何意义是\underline{\hspace{3cm}}和\underline{\hspace{3cm}}。
+\item 点上向量空间和余向量空间的关系是\underline{\hspace{3cm}}。
+\item 曲线切向量方向不变，该曲线是\underline{\hspace{2cm}}。
+\end{enumerate}
+\paragraph{大题}
+\begin{enumerate}
+\item 计算题：求曲率、挠率、Frenet 标架。
+\item 证明：
+\[
+(\vct a\times\vct b)\cdot\bigl((\vct b\times\vct c)\times(\vct c\times\vct a)\bigr)
+=\bigl(\vct a\cdot(\vct b\times\vct c)\bigr)^2.
+\]
+\item 计算标准圆柱面上质点的运动方程，类似教材 5.1 章练习 1。
+\item 写出曲面的局部参数化定义和三个等价定义。
+\item 写出 Frenet 运动公式。
+\item $r(s)$ 是弧长参数化，若 $s-|r(s)-r(0)|\sim O(s^\alpha)$，$s\to0$，求 $\alpha$。
+\end{enumerate}
+\subsubsection*{答案}
+判断：错、对、对、错、错、错、错、对、对、需看题意。第 10 题若指只受约束力的自由质点，则切向加速度为 $0$，可判对；若只说“束缚在曲面上的点”而未说明只受约束力，则不一定，判错更稳。
+
+填空：Einstein 求和形式为 $A_iB^iC^2$。弧长参数化为
+\[
+r(s)=\left(b\cos\frac{s}{\sqrt{b^2+9}},b\sin\frac{s}{\sqrt{b^2+9}},\frac{3s}{\sqrt{b^2+9}}\right).
+\]
+球面短，双曲面长；第一基本形式、第二基本形式；曲率物理意义为单位速度加速度大小，几何意义为切向方向变化快慢；对偶；直线。大题答案见作业和知识点模板，最后一题 $\alpha=3$。
+
+\subsection{2020 级数试往年题}
+\subsubsection*{原题}
+\paragraph{判断题}
+\begin{enumerate}
+\item $\vct a\cdot\vct b=\vct b\cdot\vct a$。
+\item $(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct a\times\vct c)$。
+\item 正则曲线的弧长、曲率和挠率均不依赖坐标系的选取。
+\item 一个仿射坐标系下读取的连续函数，在广义坐标系下读取可能不连续。
+\item 仿射空间中一点的导算子集合构成线性空间，且与该点的向量空间同构。
+\item 正则曲面的第一和第二基本形式，完全决定了曲面的存在性和唯一性。
+\item 束缚在曲面上不受外力的质点，其运动速度大小和方向都是不变的。
+\item 曲面上两点之间由欧氏范数定义的距离是内蕴几何量。
+\item 由于柱面和平面的弯曲程度不同，故不能建立局部合同。
+\item 大圆是球面的测地线，反之球面的测地线是大圆。
+\end{enumerate}
+\paragraph{填空题}
+\begin{enumerate}
+\item 根据 Einstein 求和约定，$A_1B^1C^2+A_2B^2C^2+A_3B^3C^2=$。
+\item $\vct a=\vec i-2\vec j-3\vec k$，$\vct b=2\vec i+\vec j-\vec k$，$\vct c=4\vec i+2\vec j-2\vec k$，求 $\vct a\cdot(\vct b\times\vct c)$。
+\item $\vct a\cdot(\vct b\times\vct c)+\vct b\cdot(\vct c\times\vct a)+\vct c\cdot(\vct a\times\vct b)=$。
+\item 测地线的物理意义是\underline{\hspace{4cm}}，几何意义是\underline{\hspace{4cm}}。
+\item 曲面上一点的切空间与余切空间的关系是\underline{\hspace{3cm}}。
+\item 曲线上曲率为 $0$ 的孤立点处，存在 Frenet 标架的判断依据是\underline{\hspace{4cm}}。
+\item 球面上半径为 $r$ 的测地圆周的周长比平面上半径为 $r$ 的圆周\underline{\hspace{2cm}}。
+\item 二维情形不为 $0$ 的 Riemann 曲率分别为\underline{\hspace{2cm}}，\underline{\hspace{2cm}}，$R_{1212}$ 和 $R_{2121}$。
+\end{enumerate}
+\paragraph{大题}
+\begin{enumerate}
+\item 求曲线
+\[
+r(t)=\left(5t,5\sqrt2\ln t,\frac5t\right)
+\]
+的曲率、挠率和 Frenet 标架。
+\item 设 $C:r(s)$ 是半径为 $R$ 的球面上一条弧长参数化的正则闭曲线，$\kappa(s),\tau(s)$ 分别是曲线 $C$ 的曲率和挠率。证明
+\[
+\int_C\frac{\tau(s)}{\kappa(s)}\dd s=0.
+\]
+\item 对单位球面在 $(1,0,0)$ 附近的参数化，求度量形式，以及初始速度 $\partial_\theta+\partial_\varphi$ 的自由质点方程。
+\item 写出三维仿射空间中正则曲面的局部参数化定义。
+\item 写出正则曲面的自然标架运动公式及推导。
+\item 对圆柱面
+\[
+(\theta,z)\mapsto(\cos\theta,\sin\theta,z)
+\]
+证明该参数化是标准正交参数化，并求 Riemann 曲率分量。
+\item 写出锥面的一个参数化方程，并证明锥面除顶点外是局部平坦曲面。
+\end{enumerate}
+\subsubsection*{答案}
+判断：对、错、对、错、对、对、错、错、对、对。
+
+填空：$A_iB^iC^2$；$0$；本卷承接上一空给定的 $\vct b,\vct c$ 线性相关，故为 $0$。若作为任意三向量恒等式，则
+\[
+\vct a\cdot(\vct b\times\vct c)+\vct b\cdot(\vct c\times\vct a)+\vct c\cdot(\vct a\times\vct b)
+=3\,\vct a\cdot(\vct b\times\vct c).
+\]
+测地线物理意义为不受外力只受约束力的自由运动，几何意义为切向量沿自身平行且局部最短；对偶；看 $\dot\alpha(s)$ 的极限是否存在；短；$R_{1221},R_{2112}$。
+
+Frenet 题：
+\[
+\kappa(t)=\frac{\sqrt2}{5t^2}\left(1+\frac1{t^2}\right)^{-2},\qquad
+\tau(t)=\frac{\sqrt2}{5t^2}\left(1+\frac1{t^2}\right)^{-2}.
+\]
+\[
+\alpha=\left(\frac{t^2}{t^2+1},\frac{\sqrt2t}{t^2+1},-\frac1{t^2+1}\right),
+\quad
+\gamma=\left(\frac1{t^2+1},-\frac{\sqrt2t}{t^2+1},-\frac{t^2}{t^2+1}\right),
+\]
+\[
+\beta=\left(\frac{\sqrt2t}{t^2+1},\frac{1-t^2}{t^2+1},\frac{\sqrt2t}{t^2+1}\right).
+\]
+球面闭曲线积分、球面方程、自然标架、圆柱和锥面题答案见前文模板。
+
+\subsubsection*{2020 题源附加可能考题}
+原 PDF 后半部分还列出若干“可能考的题”，整理如下。
+\begin{enumerate}
+\item 写出正则曲面的四个等价定义，并说明互推思路。
+\item 证明：若 $r(t)$ 是测地线，则 $\norm{\dot r}$ 为常数。
+\item 推导正则曲面的自然标架运动公式。
+\item 证明圆柱面
+\[
+(\theta,z)\mapsto(\cos\theta,\sin\theta,z)
+\]
+是标准正交参数化，并求 Riemann 曲率分量。
+\item 写出锥面一个参数化，并证明锥面除顶点外局部平坦。
+\end{enumerate}
+
+答案要点：
+\begin{enumerate}
+\item 四个定义为局部参数化、二元函数图像、正则等值面、广义坐标下展平。互推主要用隐函数定理和广义坐标变换。
+\item 测地线满足 $\nabla_{\dot r}\dot r=0$，所以
+\[
+\frac{\dd}{\dd t}\inner{\dot r}{\dot r}
+=2\inner{\nabla_{\dot r}\dot r}{\dot r}=0.
+\]
+\item 见“自然标架运动公式”：
+\[
+\partial_a\partial_b=\Gamma^c_{ab}\partial_c+\Pi_{ab}n,\qquad
+\partial_an=-g^{cb}\Pi_{ab}\partial_c.
+\]
+\item 圆柱面有 $\partial_\theta=(-\sin\theta,\cos\theta,0)$，$\partial_z=(0,0,1)$，故 $g=\operatorname{diag}(1,1)$，Christoffel 记号全为 $0$，从而 $R_{1212},R_{1221},R_{2112},R_{2121}$ 全为 $0$。
+\item 锥面可取
+\[
+(\theta,z)\mapsto(z\cos\theta,z\sin\theta,z),\qquad z\ne0.
+\]
+其第一基本形式为
+\[
+I=z^2\dd\theta^2+2\dd z^2.
+\]
+令 $\rho=\sqrt2 z$，则
+\[
+I=\dd\rho^2+\frac{\rho^2}{2}\dd\theta^2.
+\]
+局部再令 $\phi=\theta/\sqrt2$，得到平面极坐标形式
+\[
+I=\dd\rho^2+\rho^2\dd\phi^2,
+\]
+故除顶点外局部平坦。
+\end{enumerate}
+
+\subsection{22 届回忆版}
+
+来源为回忆截图，题型信息如下：小题基本同 20 级数学实验班往年题；大题集中在以下四类。
+
+\subsubsection*{原题回忆}
+\begin{enumerate}
+\item 计算 Frenet 标架、曲率、挠率。
+\item 给定曲面上质点的初位置、初速度，计算测地线方程，并解出运动方程。
+\item 光滑曲面局部参数化的四个等价命题。
+\item 写出 Frenet 运动公式。
+\item 用 Taylor 展开估计曲线弧长与两点直线距离之差的阶。
+\end{enumerate}
+
+\subsubsection*{答案与复习指向}
+\begin{enumerate}
+\item Frenet 计算按一般参数公式：
+\[
+\kappa=\frac{\norm{r'\times r''}}{\norm{r'}^3},\qquad
+\tau=\frac{\det(r',r'',r''')}{\norm{r'\times r''}^2},
+\]
+\[
+\alpha=\frac{r'}{\norm{r'}},\qquad
+\gamma=\frac{r'\times r''}{\norm{r'\times r''}},\qquad
+\beta=\gamma\times\alpha.
+\]
+\item 测地线初值问题先求 $g_{ab}$，再求 $\Gamma^k_{ij}$，最后写
+\[
+\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0
+\]
+并代入初始条件。若 Christoffel 全为 $0$，则 $y^k(t)=y^k(0)+\dot y^k(0)t$。
+\item 四个等价定义：局部参数化、二元函数图像、正则等值面、广义坐标下展平。互推核心是隐函数定理与广义坐标变换。
+\item Frenet 运动公式：
+\[
+\dot\alpha=\kappa\beta,\qquad
+\dot\beta=-\kappa\alpha+\tau\gamma,\qquad
+\dot\gamma=-\tau\beta.
+\]
+\item Taylor 估阶标准答案：
+\[
+s-\norm{r(s)-r(0)}=O(s^3),
+\]
+若 $\kappa(0)\ne0$，更精确为
+\[
+s-\norm{r(s)-r(0)}=\frac{\kappa(0)^2}{24}s^3+O(s^4).
+\]
+\end{enumerate}
+
+\subsection{数学实验班 JPG 题}
+\subsubsection*{原题}
+\begin{enumerate}
+\item 判断题 10 个，与前面题型相近。
+\item 填空题 10 个，与前面题型相近。
+\item 计算螺线的曲率、挠率、Frenet 标架。
+\item 设 $C:r(s)$ 是半径为 $R$ 的球面上一条弧长参数化的正则闭曲线，证明
+\[
+\int_C\frac{\tau(s)}{\kappa(s)}\dd s=0.
+\]
+\item 证明教材 7.2 节某命题的第二和第三问。该题涉及外微分形式，不列为本课本核心范围。
+\item 写出正则曲面的四个定义，挑三个写出来；写出正则曲面的运动公式，并推导。
+\item 证明锥面除顶点外是局部平坦的。
+\end{enumerate}
+\subsubsection*{答案}
+第 3、4、6、7 题均见前文模板。第 5 题属于数学实验班额外内容，若考试只按本教材目录，可不作为核心押题。
+
+\subsection{选择填空强化题}
+\subsubsection*{选择题}
+\begin{enumerate}
+\item 下列量中属于曲面内蕴几何量的是（\quad）。
+\[
+\begin{array}{ll}
+\text{A. 法向量} & \text{B. 第二基本形式}\\
+\text{C. Riemann 曲率} & \text{D. 普通空间法向加速度}
+\end{array}
+\]
+
+\item 下列关于圆柱面与平面的说法正确的是（\quad）。
+\[
+\begin{array}{ll}
+\text{A. 不局部等距} & \text{B. 局部等距但不一定局部合同}\\
+\text{C. Riemann 曲率不同} & \text{D. 第一基本形式一定不同}
+\end{array}
+\]
+
+\item 一条曲线的切向量方向处处不变，则该曲线是（\quad）。
+\[
+\begin{array}{llll}
+\text{A. 圆} & \text{B. 螺线} & \text{C. 直线} & \text{D. 测地线}
+\end{array}
+\]
+
+\item 若 $\gamma$ 是曲面上的测地线，则一定有（\quad）。
+\[
+\begin{array}{ll}
+\text{A. }\ddot\gamma=0 & \text{B. }\nabla_{\dot\gamma}\dot\gamma=0\\
+\text{C. 曲率为 }0 & \text{D. 挠率为 }0
+\end{array}
+\]
+
+\item 对一般参数曲线 $r(t)$，挠率公式是（\quad）。
+\[
+\begin{array}{ll}
+\text{A. }\dfrac{\norm{r'\times r''}}{\norm{r'}^3} &
+\text{B. }\dfrac{\det(r',r'',r''')}{\norm{r'\times r''}^2}\\
+\text{C. }\norm{\dot\alpha} &
+\text{D. }(\partial_a,\partial_b)
+\end{array}
+\]
+
+\item 正则曲面局部参数化最关键的正则条件是（\quad）。
+\[
+\begin{array}{ll}
+\text{A. }\partial_1,\partial_2\text{线性无关} &
+\text{B. }\partial_1,\partial_2\text{长度相等}\\
+\text{C. }\Pi_{ab}=0 &
+\text{D. }\Gamma^c_{ab}=0
+\end{array}
+\]
+
+\item 下列哪一个通常是外蕴几何量（\quad）。
+\[
+\begin{array}{ll}
+\text{A. 第一基本形式} & \text{B. 测地线距离}\\
+\text{C. 第二基本形式} & \text{D. Riemann 曲率}
+\end{array}
+\]
+
+\item 在二维曲面中，Riemann 曲率本质上有（\quad）个自由度。
+\[
+\text{A. 1}\qquad \text{B. 2}\qquad \text{C. 3}\qquad \text{D. 4}
+\]
+
+\item 标准圆柱面参数化 $x^1=\cos\theta,x^2=\sin\theta,x^3=z$ 的第一基本形式为（\quad）。
+\[
+\begin{array}{ll}
+\text{A. }\dd\theta^2+\dd z^2 &
+\text{B. }\sin^2\theta\,\dd\theta^2+\dd z^2\\
+\text{C. }\dd r^2+r^2\dd\theta^2 &
+\text{D. }\dd\theta^2+\sin^2\theta\,\dd z^2
+\end{array}
+\]
+
+\item 球面上的大圆是测地线，其原因可理解为（\quad）。
+\[
+\begin{array}{ll}
+\text{A. 加速度切向分量为零} & \text{B. 加速度恒为零}\\
+\text{C. 挠率必为零} & \text{D. 第二基本形式为零}
+\end{array}
+\]
+\end{enumerate}
+
+\subsubsection*{填空题}
+\begin{enumerate}
+\item $\vct a\cdot(\vct b\times\vct c)=\vct b\cdot(\underline{\hspace{2cm}}\times\underline{\hspace{2cm}})$。
+\item 若 $r(s)$ 为弧长参数，则 $\norm{\dot r(s)}_2=$\underline{\hspace{2cm}}。
+\item Frenet 标架中 $\gamma=$\underline{\hspace{3cm}}。
+\item 对曲线 $r(t)$，$\kappa(t)=$\underline{\hspace{5cm}}。
+\item 对曲线 $r(t)$，$\tau(t)=$\underline{\hspace{5cm}}。
+\item 曲面局部参数标架为 $\partial_a=$\underline{\hspace{5cm}}。
+\item 第一基本形式分量 $g_{ab}=$\underline{\hspace{4cm}}。
+\item 第二基本形式分量 $\Pi_{ab}=$\underline{\hspace{4cm}}。
+\item 标准圆柱面上自由质点方程为 $\ddot\theta=$\underline{\hspace{1cm}}，$\ddot z=$\underline{\hspace{1cm}}。
+\item 测地线方程 $\ddot y^k+\underline{\hspace{2cm}}\dot y^i\dot y^j=0$。
+\item 自然标架运动公式中 $\partial_a\partial_b=$\underline{\hspace{5cm}}。
+\item 自然标架运动公式中 $\partial_an=$\underline{\hspace{5cm}}。
+\item 曲面上一点的切空间 $T_A(S)$ 与余切空间 $T_A^*(S)$ 的关系为\underline{\hspace{3cm}}。
+\item 若 $f$ 在 $A$ 的某邻域内为常数，$D$ 为 $A$ 点导算子，则 $Df=$\underline{\hspace{2cm}}。
+\item Gauss 绝妙定理说明高斯曲率只由\underline{\hspace{3cm}}决定。
+\end{enumerate}
+
+\subsubsection*{答案}
+选择题：1 C；2 B；3 C；4 B；5 B；6 A；7 C；8 A；9 A；10 A。
+
+填空题：
+\begin{enumerate}
+\item $\vct c,\vct a$。
+\item $1$。
+\item $\alpha\times\beta$。
+\item $\displaystyle \frac{\norm{r'\times r''}_2}{\norm{r'}_2^3}$。
+\item $\displaystyle \frac{\det(r',r'',r''')}{\norm{r'\times r''}_2^2}$。
+\item $\displaystyle \frac{\partial x^i}{\partial y^a}e_i$。
+\item $(\partial_a,\partial_b)$。
+\item $(\partial_a\partial_b,n)$。
+\item $0,0$。
+\item $\Gamma^k_{ij}$。
+\item $\Gamma^c_{ab}\partial_c+\Pi_{ab}n$。
+\item $-g^{cb}\Pi_{ab}\partial_c$。
+\item 对偶。
+\item $0$。
+\item 第一基本形式。
+\end{enumerate}
+
+\fi
+
+\section{押题卷}
+
+\subsection*{一、判断题}
+\begin{enumerate}
+\item $\vct a\times\vct b=\vct b\times\vct a$。
+\item $(\vct a\times\vct b)\cdot\vct c=\vct b\cdot(\vct c\times\vct a)$。
+\item 正则曲线在任一点小邻域内可选某坐标作为参数。
+\item 挠率依赖坐标系选取。
+\item 仿射坐标系改变可能把开集变成闭集。
+\item 点上导算子空间与点上向量空间同构。
+\item 曲面上沿一个初始点和初始方向局部存在唯一测地线。
+\item 测地线距离是外蕴几何量。
+\item 标准圆柱面局部平坦。
+\item 球面与平面局部等距。
+\end{enumerate}
+
+\subsection*{二、填空题}
+\begin{enumerate}
+\item $A_iB^iC^2=$ \underline{\hspace{4cm}}。
+\item $\gamma=\alpha\times\beta$ 称为 \underline{\hspace{4cm}}。
+\item 一般参数曲率公式 $\kappa=$ \underline{\hspace{5cm}}。
+\item 一般参数挠率公式 $\tau=$ \underline{\hspace{5cm}}。
+\item Frenet 公式中 $\dot\gamma=$ \underline{\hspace{4cm}}。
+\item 第一基本形式为 \underline{\hspace{5cm}}。
+\item 第二基本形式分量 $\Pi_{ab}=$ \underline{\hspace{5cm}}。
+\item 测地线方程为 \underline{\hspace{5cm}}。
+\item 球面测地圆周长比平面同半径圆周长 \underline{\hspace{2cm}}。
+\item 曲线切向量方向不变，则曲线为 \underline{\hspace{2cm}}。
+\end{enumerate}
+
+\subsection*{三、计算题}
+\begin{enumerate}
+\item 求 $r(t)=(b\cos t,b\sin t,3t)$ 的弧长参数化、曲率、挠率和 Frenet 标架。
+\item 求标准圆柱面 $x^1=\cos\theta,x^2=\sin\theta,x^3=z$ 上自由质点运动方程。
+\item 对单位球面在 $(1,0,0)$ 附近的参数化，求度量与自由质点运动方程。
+\item 证明标准圆柱面 Riemann 曲率分量均为 $0$。
+\end{enumerate}
+
+\subsection*{四、证明题}
+\begin{enumerate}
+\item 证明向量恒等式
+\[
+(\vct a\times\vct b)\cdot\bigl((\vct b\times\vct c)\times(\vct c\times\vct a)\bigr)
+=\bigl(\vct a\cdot(\vct b\times\vct c)\bigr)^2.
+\]
+\item 写出正则曲面局部参数化定义和另外三个等价定义。
+\item 推导自然标架运动公式。
+\item 证明测地线速率守恒。
+\item 证明球面闭曲线积分 $\int_C\tau/\kappa\,\dd s=0$。
+\end{enumerate}
+
+\section{押题卷参考答案}
+\subsection*{判断}
+1 错；2 对；3 对；4 错；5 错；6 对；7 对；8 错；9 对；10 错。
+
+\subsection*{填空}
+\begin{enumerate}
+\item $A_iB^iC^2$。
+\item 次法向量。
+\item $\displaystyle \frac{\norm{r'\times r''}_2}{\norm{r'}_2^3}$。
+\item $\displaystyle \frac{\det(r',r'',r''')}{\norm{r'\times r''}_2^2}$。
+\item $-\tau\beta$。
+\item $I=g_{ab}\dd y^a\dd y^b$。
+\item $\inner{\partial_a\partial_b}{n}$。
+\item $\ddot y^k+\Gamma^k_{ij}\dot y^i\dot y^j=0$。
+\item 短。
+\item 直线。
+\end{enumerate}
+
+\subsection*{计算题要点}
+螺线 $r(t)=(b\cos t,b\sin t,3t)$：
+\[
+s=\sqrt{b^2+9}\,t,\qquad
+\kappa=\frac{b}{b^2+9},\qquad
+\tau=\frac{3}{b^2+9}.
+\]
+圆柱面：
+\[
+g=\begin{pmatrix}1&0\\0&1\end{pmatrix},\qquad
+\Gamma^k_{ij}=0,\qquad
+\ddot\theta=0,\quad\ddot z=0.
+\]
+球面题见作业详解第 2 题。圆柱 Riemann 曲率为零，因为 Christoffel 记号全为零。
+
+\subsection*{证明题要点}
+向量恒等式令 $\Delta=\vct a\cdot(\vct b\times\vct c)$，利用向量三重积化到 $\Delta^2$。自然标架写
+\[
+\partial_a\partial_b=\Gamma^c_{ab}\partial_c+\Pi_{ab}n,\qquad
+\partial_an=-g^{cb}\Pi_{ab}\partial_c.
+\]
+测地线速率守恒由
+\[
+{d\over dt}\inner{\dot c}{\dot c}=2\inner{\nabla_{\dot c}\dot c}{\dot c}=0
+\]
+得到。球面闭曲线积分用
+\[
+{d\over ds}\inner{r}{\gamma}={\tau\over\kappa}
+\]
+化为闭曲线首尾差。
+
+\end{document}

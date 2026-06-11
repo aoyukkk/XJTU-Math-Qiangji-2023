@@ -1,0 +1,171 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xeCJK}             % 中文支持
+\usepackage{geometry}          % 页面设置
+\usepackage{enumitem}          % 自定义列表
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% 空白下划线命令
+\newcommand{\blank}[1]{\underline{\hspace{#1}}}
+% 二范数命令
+\newcommand{\norm}[1]{\lVert#1\rVert_2}
+
+% 让 enumerate 列表标号为 1. 2. 3. ...
+\renewcommand{\theenumi}{\arabic{enumi}}
+\renewcommand{\labelenumi}{\theenumi.}
+
+\setlength{\parindent}{0pt}
+\title{数值分析2024期末B}
+\author{Lizhou Ke}
+\date{}
+
+
+\begin{document}
+	
+	\maketitle
+	
+	\section*{一、填空题（共20分）}
+	\begin{enumerate}[leftmargin=*,itemsep=1.5ex]
+		\item 近似数 $x=2.71810$ 关于欧拉数 $e=2.7182818\ldots$ 有\blank{20pt}位有效数字；
+		\item 已知 
+		\[
+		x=\begin{pmatrix}1\\3\\5\\-2\end{pmatrix},\quad
+		A=\begin{pmatrix}2&-2&0\\-2&1&-2\\0&-2&0\end{pmatrix},
+		\]
+		则 $\norm{x}=$\blank{20pt}, $\mathrm{Cond}_2(A)=$\blank{20pt}, 谱半径 $\rho(A)=$\blank{20pt}；
+		\item 设 $l_j(x)$ 为互异节点 $x_j$ $(j=0,1,2,3)$ 的三次Lagrange插值基函数，则
+		\[
+		\sum_{j=0}^3 l_j(x)\bigl(x_j^3 + 2x_j^2 + 1\bigr)
+		= \blank{40pt};
+		\]
+		\item 求解线性方程组
+		\[
+		\begin{cases}
+			x_1 - 2x_2 = 1,\\
+			4x_1 + x_2 = 1
+		\end{cases}
+		\]
+		的高斯--赛德尔迭代格式为\blank{40pt}，其迭代矩阵为\blank{40pt}；
+		\item 已知 $f\in C^3[-1,1]$，且 $f(-1)=-1,\;f(0)=1,\;f(1)=1$，则二次插值多项式 $L_2(x)=$\blank{40pt}，截断误差为\blank{40pt}；
+		\item 求函数 $y=\sin x$ 在 $[1,2]$ 上的最优一致逼近一次多项式 $p_1(x)=a+bx$ 时，可取 $1,c,2$ 作为三个偏差点。设带符号偏差为 $\mu$，写出 $a,b,c,\mu$ 所满足的方程组\blank{60pt}；
+		\item 迭代
+		\[
+		x_{k+1} = \frac{4}{5}x_k + \frac{2024}{5x_k^4},
+		\]
+		若收敛，则收敛于 $x^*=$\blank{20pt}，收敛阶为\blank{20pt}；
+		\item 已知 $p_3(x)=\tfrac12(5x^3-3x)$ 为三次勒让德多项式，$q_2(x)$ 为次数不超过 $2$ 的多项式，则
+		\[
+		\int_{-1}^1 p_3(x)\,q_2(x)\,\mathrm{d}x
+		= \blank{30pt};
+		\]
+		\item 计算非线性方程组
+		\[
+		\begin{cases}
+			x + f(x,y) = 0,\\
+			\ln x - y = 0
+		\end{cases}
+		\]
+		的简单迭代格式为\blank{30pt}，Gauss--Seidel 迭代格式为\blank{30pt}；
+		\item 用牛顿法解方程组
+		\[
+		\begin{cases}
+			x + y^2 = 3,\\
+			x^2 + 2y = 7
+		\end{cases},
+		\quad (x^{(0)},y^{(0)})^T=(0,0)^T,
+		\]
+		则
+		\[
+		\begin{pmatrix}x^{(1)}\\y^{(1)}\end{pmatrix}
+		= \blank{20pt}.
+		\]
+	\end{enumerate}
+	
+	\newpage
+	\section*{二、（8分）LU分解及解方程}
+	将矩阵
+	\[
+	A=\begin{pmatrix}
+		-2&0&0&0&0\\
+		2&-1&0&0&-1\\
+		4&-2&-3&1&-4\\
+		-2&-1&3&1&3\\
+		2&-1&-3&5&0
+	\end{pmatrix},\quad
+	b=\begin{pmatrix}-2\\1\\0\\1\\2\end{pmatrix}
+	\]
+	分解为 $A=LU$（$L$ 为单位下三角矩阵，$U$ 为上三角矩阵）并解 $Ax=b$。
+	
+	\vspace{20cm}
+	
+	\newpage
+	\section*{三、（8分）牛顿插值法}
+	利用牛顿差商构造五次插值多项式 $H_5(x)$，使其满足：
+	\[
+	\begin{array}{c|ccc}
+		x_i & 0 & 1 & 2\\\hline
+		f(x_i) & 2 & 5 & 70\\\hline
+		f'(x_i)&   &12&164\\\hline
+		f''(x_i)&  &42&
+	\end{array}
+	\]
+	并给出截断误差表示。
+	
+	\vspace{20cm}
+	
+	\newpage
+	\section*{四、（8分）最小二乘拟合}
+	给定数据：
+	\[
+	\begin{array}{c|cccc}
+		x_i & -2 & -1 & 1 & 2\\\hline
+		f(x_i) & 0 & 1 & 3 & 6
+	\end{array}
+	\]
+	利用最小二乘法拟合直线 $P_1(x)=c_0+c_1x$，并求 $f(0)$ 的近似值。
+	
+	\vspace{20cm}
+	
+	\newpage
+	\section*{五、（8分）迭代法求方程根}
+	已知方程 $f(x)=x^3-2x^2-1=0$ 在 $2.2$ 附近有根 $x^*$，写出两种简单迭代格式（其中一个为 Newton），给出初值并证明收敛性。
+	
+	\vspace{20cm}
+	
+	\newpage
+	\section*{六、（8分）数值积分公式}
+	确定 $A,B,C$ 使
+	\[
+	\int_{-2h}^{2h} f(x)\,\mathrm{d}x
+	\approx A\,f(-h) + B\,f(0) + C\,f(h)
+	\]
+	具有尽可能高的代数精度，并求代数精度及误差表达式。
+	
+	\vspace{20cm}
+	
+	\newpage
+	\section*{七、（7分）极限证明}
+	设 $p>1$，用迭代思想证明：
+	\[
+	\lim_{n\to\infty}
+	\underbrace{\sqrt{p(p+1)+\sqrt{p(p+1)+\cdots+\sqrt{p(p+1)}}}}
+	_{n}
+	= p+1.
+	\]
+	
+	\vspace{20cm}
+	
+	\newpage
+	\section*{八、（8分）ODE 数值解}
+	求解初值问题
+	\[
+	\begin{cases}
+		y''(x) + 2y(x) = e^x\sin x,\quad 1\le x\le2,\\
+		y(1)=a,\;y'(1)=b,
+	\end{cases}
+	\]
+	设步长 $h$，分别写出后退 Euler 法和标准四阶 Runge--Kutta 法的数值格式。
+	
+	\vspace{20cm}
+	
+\end{document}

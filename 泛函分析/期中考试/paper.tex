@@ -1,0 +1,53 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[UTF8]{ctex} % 支持中文
+\usepackage{geometry}   % 页面设置
+\usepackage{amsmath, amssymb, amsthm} % 数学宏包
+\usepackage{mathrsfs}   % 花体字
+
+% 页面边距设置
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\title{\textbf{2025数学强基泛函分析 - 期中考试试题}}
+\author{傲宇}
+\date{2025年11月18日}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{enumerate}
+		% 题目 1
+		\item \textbf{(15分)} 设 $X$ 和 $Y$ 是 Banach 空间，$A_n \in L(X, Y)$ ($n=1,2,\dots$)。对 $\forall x \in X$，$A_n x$ 在 $Y$ 中收敛。\\
+		证明：存在 $A \in L(X, Y)$ 使得 $A_n$ 强收敛到 $A$（即 $\forall x \in X, A_n x \to Ax$），且
+		$$ \|A\| \le \liminf_{n\to\infty} \|A_n\|. $$
+		
+		% 题目 2
+		\item \textbf{(15分)} 设 $y \in L^2[0,1]$。证明：有且仅有一个解 $x \in L^2[0,1]$ 满足方程
+		$$ x(t) + \int_{0}^{t} e^{ts} x(s) ds = y(t), \quad 0 \le t \le 1. $$
+		
+		% 题目 3
+		\item \textbf{(15分)} 设 $A = \{ f \in C^2[a,b] : f(a)=1, f(b)=f'(a)=f'(b)=0 \}$。\\
+		请确定使下式成立的最大常数 $C>0$，并证明此不等式及 $C$ 的最大性：
+		$$ \int_{a}^{b} |f''(x)|^2 dx \ge \frac{C}{(b-a)^3}, \quad \forall f \in A. $$
+		
+		% 题目 4
+		\item \textbf{(20分)} 设 $0 < \alpha \le 1$。定义 $C^{0,\alpha}[0,1] := \{ f \in C[0,1] : |f|_\alpha < \infty \}$，其中范数定义为
+		$$ \|f\|_{0,\alpha} := \max_{x\in[0,1]}|f(x)| + |f|_\alpha, \quad \text{其中 } |f|_\alpha := \sup_{x,y\in[0,1], x\ne y} \frac{|f(x)-f(y)|}{|x-y|^\alpha}. $$
+		\begin{enumerate}
+			\item[(1)] \textbf{(10分)} 证明：$(C^{0,\alpha}[0,1], \|\cdot\|_{0,\alpha})$ 是 Banach 空间。
+			\item[(2)] \textbf{(10分)} 证明：$C^{0,\alpha}[0,1]$ 中的有界集是 $C[0,1]$ 中的列紧集。
+		\end{enumerate}
+		
+		% 题目 5
+		\item \textbf{(15分)} 设 $f$ 是 Banach 空间 $X$ 上的非零线性泛函。\\
+		证明：$f$ 无界当且仅当 $\text{Ker}(f)$ 在 $X$ 中稠密。
+		
+		% 题目 6
+		\item \textbf{(20分)} 设 $X, Y$ 是 Banach 空间，$T$ 是闭算子，$D(T) \subset X, R(T) \subset Y$。\\
+		证明：$R(T)$ 在 $Y$ 中闭当且仅当存在常数 $C>0$ 使得
+		$$ \rho(x, N(T)) \le C \|Tx\|, \quad \forall x \in D(T). $$
+		（注：$N(T)$ 表示算子 $T$ 的零空间/核空间）
+		
+	\end{enumerate}
+	
+\end{document}

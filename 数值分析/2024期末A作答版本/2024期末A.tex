@@ -1,0 +1,161 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{calc}
+\usepackage{xeCJK}  % For Chinese characters
+
+\title{数值分析2024期末A}
+\author{Lizhou Ke}
+\date{}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+
+% 定义解答区域命令
+\newcommand{\answerspace}[1]{\vspace{#1}}
+\newcommand{\answerlines}[1]{\vspace{0.5cm}\begin{center}\rule{0.8\textwidth}{0.5pt}\\\vspace{0.3cm}
+\foreach \n in {1,...,#1}{
+\rule{0.8\textwidth}{0.5pt}\\
+\vspace{0.3cm}
+}
+\end{center}}
+
+\begin{document}
+	
+\maketitle
+
+\begin{enumerate}
+    \item $\sqrt{2} = 1.414213562373 \cdots$，则近似值：$x_1 = 1.41421361$有\underline{\hspace{2cm}}位有效数字；
+    
+    \item 已知$A = \begin{pmatrix}
+        6 & 4 & 2 \\
+        0 & 2 & 4 \\
+        0 & 4 & 8
+    \end{pmatrix}$，测$\|A\|_\infty = \underline{\hspace{2cm}}$，$\|A\|_1 = \underline{\hspace{2cm}}$，谱半径$\rho(A) = \underline{\hspace{2cm}}$
+    
+    \item 将对称正定矩阵$A = \begin{pmatrix}
+        4 & -2 & -2 \\
+        -2 & 5 & -1 \\
+        -2 & -1 & 3
+    \end{pmatrix}$进行形式为$A = GG^T$的楚列斯基分解，则下三角矩阵\\
+    $G = \underline{\hspace{6cm}}$；
+    
+    \item 求解线性方程组$\begin{cases}
+        x_1 - 2x_2 + 2x_3 = 1 \\
+        4x_1 + x_2 + 2x_3 = 5 \\
+        3x_1 + x_2 + x_3 = 0
+    \end{cases}$的雅克比迭代格式与高斯-赛德尔迭代格式分别为\\
+    $\underline{\hspace{8cm}}$；
+    
+    \item 已知$f(x) = x^3 + x^2 + x + 1$，则差商差商$f[0,1,2,3,4] = \underline{\hspace{2cm}}$，\\
+    $f[-1,0,1,0] = \underline{\hspace{1cm}}$，$f[1,1,1] = \underline{\hspace{2cm}}$；
+    
+    \item 若$S(x) = \begin{cases}
+        2x^3 + x^2 + cx + a, & -1 \leq x \leq 0 \\
+        x^3 + bx^2 + x + 2, & 0 \leq x \leq 1
+    \end{cases}$为三次样条值函数，则\\
+    $a = \underline{\hspace{1cm}}$，$b = \underline{\hspace{1cm}}$，$c = \underline{\hspace{1cm}}$；
+
+    \item 设$g_3(x)$为区间$[a,b]$上关于权函数$\omega(x) = \sqrt{x}$的最高项系数为$1$的三次正交多项式，则积分$$\int_a^b x^2\sqrt{x}g_3(x)dx = \underline{\hspace{2cm}}$$；
+    
+    \item 迭代$x_{k+1} = \frac{2}{3}x_k + \frac{2024}{3x_k^2}$，若收敛则收敛于$x^* = \sqrt[3]{2024}$，收敛阶为$\underline{\hspace{2cm}}$；
+    
+    \item 计算非线性方程组$\begin{cases}
+        x + \sin(x + y) = 0 \\
+        \cos(x - y) - y = 1
+    \end{cases}$的Gauss-Seidel迭代格式为$\underline{\hspace{2cm}}$
+    
+    \item 用牛顿法解方程组$\begin{cases}
+        x + \cos^2 y = 1 \\
+        \cos^2 x + 2y = 2
+    \end{cases}$，取$(x^{(0)}, y^{(0)})^T = (0, 0)^T$，则$\begin{pmatrix}
+        x^{(1)} \\
+        y^{(1)}
+    \end{pmatrix} = \underline{\hspace{2cm}}$。
+\end{enumerate}
+
+\newpage
+\noindent{\large 二、(7分) 将以下矩阵$A$分解为$A=LU$形式，其中$L$是单位下三角矩阵，$U$是上三角矩阵，并解方程组$Ax=b$,}
+$$
+A = \begin{pmatrix}
+    2 & 1 & 1 & 1 & 1 \\
+    4 & 3 & 2 & 2 & 2 \\
+    2 & 1 & 2 & 2 & 2 \\
+    2 & 2 & 2 & 4 & 3 \\
+    4 & 2 & 2 & 2 & 3
+\end{pmatrix}, \quad
+b = \begin{pmatrix}
+    6 \\
+    13 \\
+    9 \\
+    13 \\
+    13
+\end{pmatrix}
+$$
+
+\vspace{18cm}
+
+\newpage
+\noindent{\large 三、(7分) 利用牛顿插值法构造一个五次插值多项式$H_5(x)$，使其满足如下插值条件，并给出截断误差表示。}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$x_i$ & -1 & 0 & 1 \\
+\hline
+$f(x_i)$ & 1 & 1 & 5 \\
+\hline
+$f^{(1)}(x_i)$ & 2 & 0 & \\
+\hline
+$f^{(2)}(x_i)$ & -12 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{18cm}
+
+\newpage
+\noindent{\large 四、(7分) 求函数$f(x) = 2x^4 + 2x$在区间$[-1,1]$上的最佳平方逼近二次多项式。}
+
+\vspace{18cm}
+
+\newpage
+\noindent{\large 五、(7分)。方程$2^x - 5x + 2 = 0$ 在区间$[0,1]$中有唯一一解，请：}
+\begin{enumerate}
+\item[1)] 写出两个收敛的简单迭代计算式（要求其中一个为牛顿迭代格式）；
+\item[2)] 给出初值并证明它们的收敛性
+\end{enumerate}
+
+\vspace{18cm}
+
+\newpage
+\noindent{\large 六、(7分) 确定求积公式}
+$$\int_{-1}^1 f(x)dx \approx Af(-\frac{1}{2}) + Bf(0) + Cf(\frac{1}{2})$$
+\noindent 中的A、B、C，使得上述数值求积公式具有最高代数精度，并利用广义皮亚诺定理确定其误差。
+
+\vspace{18cm}
+
+\newpage
+\noindent{\large 七、(7分) 曲线$f(x) = x^3 - 0.51x + 1$与$f(x) = 2.4x^2 - 1.89$在点$(1.6, 1)$附近相切，写出求切点的横坐标的牛顿迭代格式，并证明其收敛性。}
+
+\vspace{18cm}
+
+\newpage
+\noindent{\large 八、(7分) 求解常微分方程初值问题}
+$$\begin{cases}
+y''(x) + 2y(x) = e^x \cos x, 1 \leq x \leq 2, \\
+y(1) = a, y'(1) = b,
+\end{cases}$$
+\noindent 取步长为$h$，分别利用后退Euler法和标准的四级四阶Runge-Kutta法写出求解该问题的数值格式。
+
+\vspace{18cm}
+
+\end{document}

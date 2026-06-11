@@ -1,0 +1,69 @@
+\documentclass[11pt, a4paper]{ctexart}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathrsfs} % 用于 \mathscr 花体字母
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% 定义题目环境
+\newenvironment{problem}[1]
+{\subsection*{#1}}
+{}
+
+\begin{document}
+	
+	\section*{23级强基期末}
+	
+	\vspace{1cm}
+	
+	\begin{problem}{1 (15 分)}
+		设 $X$ 和 $Y$ 是 $B$ 空间, $A_n \in \mathscr{L}(X, Y)(n=1, 2, \cdots)$. 对 $\forall x \in X, \{A_n x\}$ 在 $Y$ 中收敛. 证明: 存在 $A \in \mathscr{L}(X, Y)$ 使 $A_n$ 强收敛到 $A$ 且 $\|A\| \leqslant \varliminf\limits_{n\to\infty} \|A_n\|$.
+	\end{problem}
+	
+	\vspace{0.5cm}
+	
+	\begin{problem}{2 (20 分)}
+		\begin{enumerate}
+			\item (10 分) 若 $T$ 是紧算子, 则 $T$ 是全连续算子.
+			\item (10 分) 若 $X$ 自反, $Y$ 是线性赋范空间, $T$ 是全连续算子, 则 $T \in \mathfrak{C}(X, Y)$.
+		\end{enumerate}
+	\end{problem}
+	
+	\vspace{0.5cm}
+	
+	\begin{problem}{3 (15 分)}
+		设 $X, Y$ 是 $B$ 空间, $A \in \mathscr{L}(X, Y), K \in \mathfrak{C}(X, Y)$, 如果 $R(A) \subset R(K)$, 求证: $A \in \mathfrak{C}(X, Y)$.
+	\end{problem}
+	
+	\vspace{0.5cm}
+	
+	\begin{problem}{4 (20 分)}
+		设 $0 < \alpha \leqslant 1$. 令 $C^{0,\alpha}[0, 1] := \{f \in C[0, 1] : |f|_\alpha < \infty \}$ 并定义
+		$$
+		\|f\|_{0,\alpha} = \max_{x\in[0,1]} |f(x)| + |f|_\alpha, \quad |f|_\alpha = \sup_{x,y\in[0,1], x\neq y} \frac{|f(x) - f(y)|}{|x - y|^\alpha}.
+		$$
+		\begin{enumerate}
+			\item (10 分) 证明: $\|f\|_{0,\alpha}$ 是 $C^{0,\alpha}[0, 1]$ 上的范数且 $(C^{0,\alpha}[0, 1], \|\cdot\|_{0,\alpha})$ 完备.
+			\item (10 分) 证明 $C^{0,\alpha}[0, 1]$ 中的有界集是 $C[0, 1]$ 中的列紧集.
+		\end{enumerate}
+	\end{problem}
+	
+	\vspace{0.5cm}
+	
+	\begin{problem}{5 (15 分)}
+		设 $\mathscr{X}$ 是 $B$ 空间, $M \subset \mathscr{X}$ 是一个闭线性子空间, $\operatorname{codim} M = n$, 求证: 存在线性无关集 $\{\varphi_k\}_{k=1}^{n} \subset \mathscr{X}^*$, 使得
+		$$
+		M = \bigcap_{k=1}^n N(\varphi_k).
+		$$
+	\end{problem}
+	
+	\vspace{0.5cm}
+	
+	\begin{problem}{6 (15 分)}
+		设 $X$ 是 Hilbert 空间, $A \in \mathscr{L}(X)$ 自伴, 则
+		\begin{enumerate}
+			\item $\sigma(A) \subset \mathbb{R}$;
+			\item $\sigma_r(A) = \varnothing$.
+		\end{enumerate}
+	\end{problem}
+	
+\end{document}

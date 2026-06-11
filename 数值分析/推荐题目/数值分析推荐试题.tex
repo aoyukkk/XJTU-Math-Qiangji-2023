@@ -1,0 +1,252 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{bm}
+
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+\newtheorem{problem}{题目}
+\newcommand{\answerspace}{\vspace{3cm}} % 定义答题空间命令
+\newcommand{\largeanswer}{\newpage\vspace*{0.5cm}\vspace{0.5cm}}
+
+    \title{数值分析推荐试题}
+    \author{Lizhou Ke}
+    \date{\today}
+
+\begin{document}
+    
+    \maketitle
+    
+    \section{填空题}
+    
+    \begin{enumerate}
+        
+        \item 已知准确值为 $x^{*} = 0.064831$，则其近似值 $x = 0.064$ 有\_\_\_\_\_\_\_\_\_\_位有效数字。
+        
+        \item 已知向量 $x = (\sqrt{3}, -\sqrt{2}, 2, -1)^T$，则 $\|x\|_2 = \_\_\_\_\_\_\_\_\_\_$；\\
+        已知矩阵 $A = \begin{pmatrix} 1 & 0 & 0 \\ 2 & -3 & 0 \\ -1 & 4 & -5 \end{pmatrix}$，则 $\|A\|_1 = \_\_\_\_\_\_\_\_\_\_$，\\
+        $Cond_{\infty}(A)= \_\_\_\_\_\_\_\_\_\_$\\
+        谱半径 $\rho(A) = \_\_\_\_\_\_\_\_\_\_$。
+        
+        \item 对于线性方程组 $Ax = b$，其中 $A = D - E - F$，Jacobi 迭代格式的迭代矩阵为 $B = \_\_\_\_\_\_\_\_\_\_$。\\
+        对于方程组 $Ax = b$，$A = \begin{pmatrix} a & 1 \\ 2 & a \end{pmatrix}$，当 $a$ 满足\_\_\_\_\_\_\_\_\_\_时 Jacobi 迭代格式收敛。
+        
+        \item 已知 $S(x) = \begin{cases}
+            1-ax^3, & 0 \leq x \leq 1 \\
+            3ax - bx^2, & 1 < x \leq 2 \\
+            16 - 7bx + 9x^2 - 2x^3, & 2 < x \leq 3
+        \end{cases}$ 是定义在区间 $[0,3]$ 上的以 $x_1 = 1, x_2 = 2$ 为内点的三次样条插值函数，则有 $a = \_\_\_\_\_\_$，$b = \_\_\_\_\_\_$。
+        
+        \item 已知 $f(x) = x^7 + x^3 + x + 1$，则 $f[2^0, 2^1, \cdots, 2^8] = \_\_\_\_\_\_$，\\
+        $f[3^0, 3^1, \cdots, 3^7] = \_\_\_\_\_\_\_\_\_\_$。
+        
+        \item 计算积分：$\int_{-1}^{1} \frac{x}{\sqrt{1-x^2}}dx = \_\_\_\_\_\_\_\_\_\_$
+        
+        \item 计算已知函数 $f(x)$ 在区间 $[a,b]$ 上数值积分的只有一个数值积分节点的数值积分公式有 \\
+        $Q[f] = \_\_\_\_\_\_\_\_\_\_$，其截断误差的绝对值为\_\_\_\_\_\_\_\_\_\_。
+        
+        \item 迭代 $x_{k+1} = \frac{2}{3}x_k + \frac{1}{x_k^2}$，若收敛则将收敛于 $x^* = \_\_\_\_\_\_$，收敛阶为\_\_\_\_\_\_；
+        
+        \item 已知矩阵 $A = \begin{pmatrix} 2 & 3 & 1 \\ 4 & 1 & 0 \\ 2 & 7 & 3 \end{pmatrix}$。若迭代初值 $z_0 = (1,1,1)^T$，利用幂迭法求矩阵 $A$ 按模最大的特征值和特征向量时，迭代一次后特征值的近似值 $m_1 = \_\_\_\_\_\_\_\_\_\_$，特征向量的近似值 $z_1 = \_\_\_\_\_\_\_\_\_\_$。
+        
+        \item 已知 $g_2(x)$ 为区间 $[a,b]$ 上关于权函数 $\omega(x) = x$ 的最高项系数为 $1$ 的二次正交多项式，则积分 \\
+        $\int_a^b x^2 g_2(x) dx = \_\_\_\_\_\_\_\_\_\_$。
+        
+        \item 已知 $f(0) = 1, f(1) = 2, f(2) = 3$，则利用辛普森公式计算定积分 $\int_0^2 f(x)dx$ 的近似值为 \\
+        $\_\_\_\_\_\_\_\_\_\_$。
+        
+        \item 利用共轭梯度法求解对称正定方程组 $\begin{pmatrix} 10 & 4 & 4 \\ 4 & 10 & 8 \\ 4 & 8 & 10 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 3 \\ 1 \\ 5 \end{pmatrix}$，若选取初始近似向量 \\
+        $x_0 = (1,1,1)^T$，则第一次迭代的搜索方向 $d^{(0)} = \_\_\_\_\_\_\_\_\_\_$。
+        
+        \item 已知函数 $f(x,y)$ 计算为 $x$ 和 $y$ 的非线性函数，则计算非线性方程组 $\begin{cases} x + f(x,y) = 0 \\ \ln(x) - y = 0 \end{cases}$ 的简单迭代格式为\_\_\_\_\_\_\_\_\_\_。
+        
+        \item 已知矩阵 $A = \begin{pmatrix} 2 & 3 & 1 \\ 4 & 1 & 0 \\ 2 & 7 & 4 \end{pmatrix}$。若迭代初值 $z_0 = (1,1,1)^T$，利用幂迭法求矩阵 $A$ 按模最大的特征值和特征向量时，迭代一次后特征值的近似值 $\lambda_1 = \_\_\_\_\_\_\_\_\_\_$，特征向量的近似值 $z_1 = \_\_\_\_\_\_\_\_\_\_$
+        
+         \item 在计算公式
+        \[
+          \cos\!\bigl(\sqrt{x^2+1}-1\bigr)\quad (|x|\ll1)
+        \]
+        时，为了使计算结果较为准确，可将其改写为 \_\_\_\_\_\_\_\_\_\_。
+        
+        \item 设
+        \[
+          l_i(x)
+          =\frac{(x-x_0)\cdots(x-x_{i-1})(x-x_{i+1})\cdots(x-x_n)}
+                 {(x_i-x_0)\cdots(x_i-x_{i-1})(x_i-x_{i+1})\cdots(x_i-x_n)},
+          \quad i=0,1,\dots,n,\;n\ge2,
+        \]
+        且当 $i\neq j$ 时 $x_i\neq x_j$。则
+        \[
+          \sum_{k=0}^n x_k\,l_k(x)
+          =\_\_\_\_\_\_\_\_\_\_。
+        \]
+        
+        \item 已知
+        \[
+          S(x)=
+          \begin{cases}
+            x^3, & 0\le x<2,\\
+            2(x-1)^3 + a(x-2) + b, & 2\le x<3.
+          \end{cases}
+        \]
+        则 $a=\_\_\_\_\_\_$，\quad $b=\_\_\_\_\_\_$。
+        
+    \end{enumerate}
+    
+    \section{解答题}
+    
+    \begin{problem}
+        利用 $LU$ 分解法求解线性方程组 $Ax = b$，其中 $L$ 为单位下三角矩阵，$U$ 为上三角矩阵，系数矩阵 $A$ 与列向量 $b$ 分别为：
+        \begin{align*}
+            A = \begin{pmatrix} 2 & 0 & 1 & 0 & 1 \\ 4 & 2 & 3 & 1 & 5 \\ 2 & 0 & 4 & 1 & 4 \\ 6 & 4 & 8 & 4 & 14 \\ 4 & 2 & 6 & 2 & 10 \end{pmatrix}, \quad b = \begin{pmatrix} 4 \\ 15 \\ 11 \\ 36 \\ 24 \end{pmatrix}
+        \end{align*}
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        根据如下插值条件构造一个 $4$ 次插值多项式 $H_4(x)$，并给出截断误差表示式。
+        
+        \begin{center}
+            \begin{tabular}{|c|c|c|c|}
+                \hline
+                $x_i$ & $1$ & $2$ & $3$ \\
+                \hline
+                $f(x_i)$ & $5$ & $23$ & $147$ \\
+                \hline
+                $f'(x_i)$ & $5$ & $44$ & \quad \\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        分别写出求解线性方程组 
+        $\begin{cases} 
+            x_1 + 0.4x_2 + 0.4x_3 = 2 \\
+            0.4x_1 + x_2 + 0.8x_3 = 3 \\
+            0.4x_1 + 0.8x_2 + x_3 = 1
+        \end{cases}$
+        的雅可比迭代格式和高斯-赛德尔迭代格式，并且讨论这两种迭代格式的收敛性。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        已知方程 $e^x + 10x - 2 = 0$ 在区间 $[0,1]$ 内存在唯一一根且在 $\bar{x} = 0.1$ 附近。
+        \begin{enumerate}
+            \item 判断迭代格式 $x_{k+1} = \frac{1}{10}(2 - e^{x_k})$ 的收敛性。
+            \item 若上述迭代格式不收敛，则对其进行改善，使得改善后的迭代格式收敛；若收敛，使改善后的迭代格式加速。
+        \end{enumerate}
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        已知一组数据如下：
+        
+        \begin{center}
+            \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                $x_i$ & $2$ & $4$ & $6$ & $8$ \\
+                \hline
+                $y_i$ & $2$ & $11$ & $28$ & $40$ \\
+                \hline
+            \end{tabular}
+        \end{center}
+        
+        用最小二乘法拟合这组数据的一条直线 $c_0 + c_1 x$。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        设 $f(x) \in C^4[a,b]$，记数值积分公式为 $$\int_0^h f(x) dx \approx \frac{h}{2}[f(0) + f(h)] + \lambda h^2[f'(0) - f'(h)]$$
+        求参数 $\lambda$，使上述数值积分公式具有尽可能高的代数精度，并导出截断误差公式。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        分别写出求解常微分方程初值问题 
+        $\begin{cases}
+            y''(x) + 2y(x) = e^x, 1 \leq x \leq 2 \\
+            y(1) = a, y'(1) = b
+        \end{cases}$
+        的后退 Euler 格式和标准的四阶四步龙格-库塔格式，其中 $a,b$ 为已知实数，步长为 $h$。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        求解常微分方程初值问题 
+        $\begin{cases}
+            y''(x) - 2y'(x)y(x) + 4y(x) = e^{-3x} \cos x, \quad 0 \leq x \leq 1 \\
+            y(0) = a, y'(0) = b
+        \end{cases}$
+        取步长为 $h$，分别利用欧拉法和标准的四级四阶 Runge-Kutta 法写出求解该问题的数值格式。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        已知在 $x = -2, -1, 0, 2$ 处有 $f(x) = -8, 3, 4, 24$，求 $f(x)$ 的三次拉格朗日插值多项式，并估计函数在 $x = 1$ 处的值及插值误差。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        求 $a, b, c$ 的值，使得下列积分
+        \begin{align*}
+            \int_0^1 (\sin 2\pi x - a - bx - cx^2)^2 dx
+        \end{align*}
+        达到最小。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        已知线性方程组 $Ax = b$，其中矩阵 $A$ 与列向量 $b$ 如下：
+        \begin{align*}
+            A = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 2 & 6 & 9 & 12 & 15 \\ 3 & 10 & 18 & 24 & 30 \\ 0 & 4 & 12 & 20 & 25 \\ 1 & 4 & 9 & 16 & 25 \end{pmatrix}, \quad b = \begin{pmatrix} 15 \\ 44 \\ 85 \\ 61 \\ 55 \end{pmatrix}
+        \end{align*}
+        
+        对矩阵 $A$ 进行三角分解：$A = LU$（其中 $L$ 为单位下三角矩阵，$U$ 为上三角矩阵），并解方程组。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        有以下方程组
+        $\begin{cases}
+            12x_1 + 2x_2 + 3x_3 = 15 \\
+            x_1 + 8x_2 + x_3 = 8 \\
+            2x_1 - 3x_2 + 5x_3 = 7
+        \end{cases}$
+        给出 Jacobi 迭代格式和 Gauss-Seidel 迭代格式，并讨论这两种迭代格式对任意初始值 $x^{(0)} = (1 \quad 2 \quad 3)^T$ 的收敛性。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        确定以下求积公式 $I[f] = \int_{-1}^1 f(x)dx \approx A_0f(x_0) + A_2f(x_1) = Q[f]$，使其具有最高代数精度，即成为高斯型求积公式。
+    \end{problem}
+    
+    \largeanswer
+    
+    \begin{problem}
+        方程 $2^x - 5x + 1 = 0$ 在区间 $[0,1]$ 中有唯一解，请
+        \begin{enumerate}
+            \item 写出两个收敛的简单迭代计算式；
+            \item 证明它们的收敛性
+        \end{enumerate}
+    \end{problem}
+
+    
+\end{document}
